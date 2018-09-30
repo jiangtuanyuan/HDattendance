@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar" />
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:splitMotionEvents="false">
+
+        <TableRow>
+
+            <TextView
+                android:id="@+id/tv_kq"
+                style="@style/TextViewStyle"
+                android:drawableTop="@mipmap/hd_logo"
+                android:text="考勤管理" />
+
+            <TextView
+                android:id="@+id/tv_jc"
+                style="@style/TextViewStyle"
+                android:drawableTop="@drawable/ic_management_eat"
+                android:text="就餐管理" />
+
+            <TextView
+                android:id="@+id/tv_ws"
+                style="@style/TextViewStyle"
+                android:drawableTop="@drawable/ic_management_health"
+                android:text="卫生管理" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:id="@+id/tv_yg"
+                style="@style/TextViewStyle"
+                android:drawableTop="@drawable/ic_management_employees"
+                android:text="员工管理" />
+
+            <TextView
+                android:id="@+id/tv_xz"
+                style="@style/TextViewStyle"
+                android:drawableTop="@drawable/ic_management_group"
+                android:text="小组管理" />
+
+            <TextView
+                android:id="@+id/tv_zw"
+                style="@style/TextViewStyle"
+                android:drawableTop="@drawable/ic_management_fingerprint"
+                android:text="指纹管理" />
+        </TableRow>
+    </TableLayout>
+</LinearLayout>
