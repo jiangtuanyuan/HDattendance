@@ -119,7 +119,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         ActivityCollector.removeActvity(this);
     }
 
-    //	加载对话框相关
+    //加载对话框相关
 
     public KProgressHUD getProgressDialog() {
         if (kProgressHUD != null) {

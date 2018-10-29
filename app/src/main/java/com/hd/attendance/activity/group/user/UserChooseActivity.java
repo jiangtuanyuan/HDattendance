@@ -41,6 +41,7 @@ public class UserChooseActivity extends BaseActivity implements Toolbar.OnMenuIt
     RecyclerView mRecyclerview;
 
     private String mChooseNums = "more";//单："single" 多:"more"   只能选择一个用户或者多个用户
+    private String isalls = "0";//是否可以随便选择一个 默认  0否 1可以
 
     private UserListAdapter adapter;
 
@@ -57,6 +58,7 @@ public class UserChooseActivity extends BaseActivity implements Toolbar.OnMenuIt
         if (getIntent().getExtras() != null) {
             Bundle bundle = getIntent().getExtras();
             mChooseNums = bundle.getString("mChooseNums");
+            isalls = bundle.getString("isalls");
         }
     }
 
@@ -83,6 +85,13 @@ public class UserChooseActivity extends BaseActivity implements Toolbar.OnMenuIt
             setTitle("多 选");
             adapter = new UserListAdapter(this, mList, false);
         }
+
+        if (!TextUtils.isEmpty(isalls)) {
+            if (isalls.equals("1")) {
+                adapter.setIsall(true);
+            }
+        }
+
 
         adapter.setmItemClickListener(this);
         mRecyclerview.setAdapter(adapter);
@@ -112,20 +121,17 @@ public class UserChooseActivity extends BaseActivity implements Toolbar.OnMenuIt
 
 
         RxTextView.textChanges(mSearchEdt)
-                .subscribe(new Consumer<CharSequence>() {
-                    @Override
-                    public void accept(CharSequence charSequence) throws Exception {
+                .subscribe(charSequence -> {
 
-                        if (charSequence.length() > 0) {
-                            mSearchEdtClear.setVisibility(View.VISIBLE);
-                            Search(charSequence.toString() + "");
+                    if (charSequence.length() > 0) {
+                        mSearchEdtClear.setVisibility(View.VISIBLE);
+                        Search(charSequence.toString() + "");
 
-                        } else {
-                            mList.clear();
-                            mList.addAll(mSumList);
-                            adapter.notifyDataSetChanged();
-                            mSearchEdtClear.setVisibility(View.INVISIBLE);
-                        }
+                    } else {
+                        mList.clear();
+                        mList.addAll(mSumList);
+                        adapter.notifyDataSetChanged();
+                        mSearchEdtClear.setVisibility(View.INVISIBLE);
                     }
                 });
 

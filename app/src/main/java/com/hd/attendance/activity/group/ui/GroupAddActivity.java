@@ -16,6 +16,7 @@ import com.hd.attendance.activity.group.user.UserChooseActivity;
 import com.hd.attendance.base.BaseActivity;
 import com.hd.attendance.db.EmployeesTable;
 import com.hd.attendance.db.GroupTable;
+import com.hd.attendance.utils.SystemLog;
 import com.hd.attendance.utils.ToastUtil;
 
 import org.litepal.LitePal;
@@ -28,8 +29,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class GroupAddActivity extends BaseActivity {
-
-
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.et_group_name)
@@ -44,8 +43,6 @@ public class GroupAddActivity extends BaseActivity {
     TextView tvGroupsChoose;
     @BindView(R.id.bt_save)
     Button btSave;
-
-
 
     private List<GroupTable> groupList = new ArrayList<>();
 
@@ -121,6 +118,9 @@ public class GroupAddActivity extends BaseActivity {
                 } else {
                     ToastUtil.showToast("新增小组成功!");
                 }
+
+                SystemLog.getInstance().AddLog("管理员-新增了小组:"+groupTable.getGroupName());
+
                 closeProgressDialog();
                 finish();
                 break;

@@ -1,5 +1,6 @@
 package com.hd.attendance.activity.group.adapter;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 import com.hd.attendance.R;
 import com.hd.attendance.activity.employees.ui.EmployeesAddActivity;
 import com.hd.attendance.db.EmployeesTable;
+import com.hd.attendance.utils.SystemLog;
 import com.hd.attendance.utils.ToastUtil;
 
 import org.litepal.LitePal;
@@ -66,6 +68,7 @@ public class UserItemAdapter extends RecyclerView.Adapter<UserItemAdapter.ViewHo
             holder.tvSex.setBackgroundResource(R.drawable.ic_sex_male);
             holder.tv_LeftName.setBackgroundResource(R.drawable.shape_rectangle_blue_bg);
         }
+
 
         holder.tvJobs.setText(bean.getJobs());
 
@@ -128,6 +131,8 @@ public class UserItemAdapter extends RecyclerView.Adapter<UserItemAdapter.ViewHo
                 mList.addAll(LitePal.where("group_ID=?", gropuID + "").find(EmployeesTable.class));
                 notifyDataSetChanged();
 
+
+                SystemLog.getInstance().AddLog("管理员-将"+e.getName()+"移出了所属小组");
                 ToastUtil.showToast("移除成功!");
 
             }

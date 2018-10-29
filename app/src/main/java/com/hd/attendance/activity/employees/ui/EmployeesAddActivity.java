@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.hd.attendance.R;
 import com.hd.attendance.base.BaseActivity;
 import com.hd.attendance.db.EmployeesTable;
+import com.hd.attendance.utils.SystemLog;
 import com.hd.attendance.utils.ToastUtil;
 
 import org.litepal.LitePal;
@@ -78,6 +79,7 @@ public class EmployeesAddActivity extends BaseActivity {
             tvNum.setVisibility(View.VISIBLE);
             tvNum.setText("工     号: " + id);
             etName.setText(name + "");
+            etName.setEnabled(false);
             etJobs.setText(jobs);
             if (sex.equals("男")) {
                 rbSexMale.setChecked(true);
@@ -86,6 +88,7 @@ public class EmployeesAddActivity extends BaseActivity {
             }
             btSave.setText("修  改");
         }
+
     }
 
 
@@ -93,6 +96,7 @@ public class EmployeesAddActivity extends BaseActivity {
     public void onViewClicked() {
         String name = etName.getText().toString()
                 .replace(";", "")
+                .replace("_", "")
                 .replace(" ", "");
         String jobs = etJobs.getText().toString();
         if (TextUtils.isEmpty(name)) {
@@ -116,27 +120,19 @@ public class EmployeesAddActivity extends BaseActivity {
 
         if (!isEditor) {
             e.save();
+            SystemLog.getInstance().AddLog("管理员-新增员工:" + e.getName());
+
             ToastUtil.showToast("新增成功!");
 
             etName.setText("");
             etJobs.setText("");
         } else {
             e.update(id);
+
+            SystemLog.getInstance().AddLog("管理员-修改了员工" + e.getName() + "的信息");
             ToastUtil.showToast("修改成功!");
 
         }
         finish();
     }
-
-   /*
-    List<EmployeesTable> eList = new ArrayList<>();
-    private boolean isExist(String name) {
-        eList.clear();
-        eList.addAll(LitePal.where("name like ?", name)
-                .find(EmployeesTable.class));
-        if (eList.size() > 0) {
-            return true;
-        }
-        return false;
-    }*/
 }

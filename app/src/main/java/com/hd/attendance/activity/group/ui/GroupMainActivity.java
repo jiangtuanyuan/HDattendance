@@ -20,6 +20,7 @@ import com.hd.attendance.activity.group.user.UserChooseActivity;
 import com.hd.attendance.base.BaseActivity;
 import com.hd.attendance.db.EmployeesTable;
 import com.hd.attendance.db.GroupTable;
+import com.hd.attendance.utils.SystemLog;
 
 import org.litepal.LitePal;
 
@@ -59,6 +60,7 @@ public class GroupMainActivity extends BaseActivity implements FingerGroupAdapte
 
     }
 
+
     @Override
     protected void initViews(Bundle savedInstanceState) {
         setContentView(R.layout.activity_group_main);
@@ -84,6 +86,8 @@ public class GroupMainActivity extends BaseActivity implements FingerGroupAdapte
             GropList.add("#" + g.getGroupName());
         }
         GroupAdapter.notifyDataSetChanged();
+
+
     }
 
     @Override
@@ -190,13 +194,14 @@ public class GroupMainActivity extends BaseActivity implements FingerGroupAdapte
                     em.setGroup_ID(groupList.get(this.GropuPotion).getId());
                     em.update(mCheckListS.get(0).getUser_id());
 
+
+                    SystemLog.getInstance().AddLog("管理员-将" + mCheckListS.get(0).getUser_name() + "加入了" + groupList.get(this.GropuPotion).getGroupName() + "小组");
+
                     emList.clear();
                     emList.addAll(LitePal.where("group_ID=?", groupList.get(this.GropuPotion).getId() + "").find(EmployeesTable.class));
                     userItemAdapter.notifyDataSetChanged();
                 }
             }
         }
-
-
     }
 }

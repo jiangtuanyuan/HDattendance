@@ -17,7 +17,6 @@ public class EmployeesTable extends LitePalSupport {
     private String Sex;//性别
     @Column
     private String jobs;//岗位
-
     @Column(defaultValue = "0")
     private int group_ID;//所属小组 默认0 表示没分组
 

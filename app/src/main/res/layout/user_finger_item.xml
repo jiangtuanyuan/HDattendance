@@ -16,10 +16,11 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_margin="10dp"
-            android:background="@color/blue"
+            android:background="@drawable/shape_rectangle_blue_bg"
             android:gravity="center"
             android:text="嘿"
             android:textColor="@color/white"
+
             android:textSize="20sp" />
 
         <LinearLayout
@@ -37,15 +38,15 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="姓            名 :" />
+                    android:text="指 纹 编 号:" />
 
                 <TextView
-                    android:id="@+id/tv_name"
+                    android:id="@+id/tv_num"
                     style="@style/font_16_black"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:text="张 三" />
+                    android:text="19" />
 
             </LinearLayout>
 
@@ -59,15 +60,15 @@
 
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="所 属 小 组 :" />
+                    android:text="姓            名:" />
 
                 <TextView
-                    android:id="@+id/tv_grouping"
+                    android:id="@+id/tv_name"
                     style="@style/font_16_black"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:text="第一小组" />
+                    android:text="张三" />
 
             </LinearLayout>
 

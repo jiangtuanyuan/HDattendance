@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="atten_type">
+        <item>全部</item>
+        <item>正常打卡</item>
+        <item>迟到打卡</item>
+        <item>早退打卡</item>
+        <item>忘记打卡</item>
+        <item>补卡</item>
+        <item>请假</item>
+    </string-array>
+
+    <string-array name="atten">
+        <item>正常上班</item>
+        <item>请假</item>
+        <item>正常休息</item>
+        <item>旷工</item>
+        <item>加班</item>
+    </string-array>
+
+</resources>

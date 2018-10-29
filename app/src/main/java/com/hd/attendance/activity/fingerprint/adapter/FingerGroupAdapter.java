@@ -55,12 +55,7 @@ public class FingerGroupAdapter extends RecyclerView.Adapter<FingerGroupAdapter.
                 holder.tv_date.setBackgroundColor(ContextCompat.getColor(mContext, R.color.white));
             }
         }
-        holder.tv_date.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mOnItemClickListener.onItemClickListener(v, position);
-            }
-        });
+        holder.tv_date.setOnClickListener(v -> mOnItemClickListener.onItemClickListener(v, position));
     }
 
     @Override

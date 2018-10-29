@@ -8,7 +8,9 @@ import android.os.Environment;
  */
 
 public class FilePath {
-    public static  String  ROOT = Environment.getExternalStorageDirectory().getAbsolutePath();
-    public static  String  FILE_PATH = ROOT+"/android/data/com.hd.attendance"; //APP存放的根目录
-    public static  String  FINGER_IMAGES = FILE_PATH+"/FingerImages";// 存放指纹图片的目录
+    public static String ROOT = Environment.getExternalStorageDirectory().getAbsolutePath();
+    public static String FILE_PATH = ROOT + "/android/data/com.hd.attendance"; //APP存放的根目录
+    public static String FINGER_IMAGES = FILE_PATH + "/FingerImages";// 存放指纹图片的目录
+
+
 }

@@ -12,5 +12,7 @@
     <color name="gray_q">#cecece</color>
     <color name="pink">#ffc0cb</color>
     <color name="blue">#1DA1F2</color>
+    <color name="blues">#3Dc1F2</color>
+    <color name="yell">#FF9224</color>
 
 </resources>

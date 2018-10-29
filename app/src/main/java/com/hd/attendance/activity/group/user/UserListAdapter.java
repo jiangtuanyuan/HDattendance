@@ -29,6 +29,12 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
     private boolean single = false;//是否只能选择一个 默认否
     private int ischeckUser = 0;//没用选择用 0 或者 1
 
+    private boolean isall=false;//是否可以都选一个 这里再添加考勤选择员工用到
+
+    public void setIsall(boolean isall) {
+        this.isall = isall;
+    }
+
     public void setIscheckUser(int ischeckUser) {
         this.ischeckUser = ischeckUser;
     }
@@ -60,40 +66,37 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
         viewHolder.tvUserJobs.setText(userBean.getJobs());
         viewHolder.tvUserGroupName.setText(userBean.getGroup_name());
         viewHolder.cbCheckbox.setChecked(userBean.isChecked());
-        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    if (!userBean.getGroup_name().equals("无")) {
-                        ToastUtil.showToast("该成员已属于 " + userBean.getGroup_name() + " 小组,无法选择!");
-                        return;
-                    }
+        viewHolder.itemView.setOnClickListener(v -> {
+            try {
+                if (!userBean.getGroup_name().equals("无") && !isall) {
+                    ToastUtil.showToast("该成员已属于 " + userBean.getGroup_name() + " 小组!");
+                    return;
+                }
 
-                    if (userBean.isChecked()) {
+                if (userBean.isChecked()) {
 
-                        ischeckUser = 0;
-                        viewHolder.cbCheckbox.setChecked(false);
-                        userBean.setChecked(false);
+                    ischeckUser = 0;
+                    viewHolder.cbCheckbox.setChecked(false);
+                    userBean.setChecked(false);
 
-                    } else {
-                        //这里需要深深的思考一下
-                        if (single) {
-                            if (ischeckUser == 1) {
-                                ToastUtil.showToast("只能选择一个用户!");
-                            } else {
-                                ischeckUser = 1;
-                                viewHolder.cbCheckbox.setChecked(true);
-                                userBean.setChecked(true);
-                            }
+                } else {
+                    //这里需要深深的思考一下
+                    if (single) {
+                        if (ischeckUser == 1) {
+                            ToastUtil.showToast("只能选择一个用户!");
                         } else {
+                            ischeckUser = 1;
                             viewHolder.cbCheckbox.setChecked(true);
                             userBean.setChecked(true);
                         }
+                    } else {
+                        viewHolder.cbCheckbox.setChecked(true);
+                        userBean.setChecked(true);
                     }
-                    mItemClickListener.onItemClick(position, userBean);
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
+                mItemClickListener.onItemClick(position, userBean);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
     }

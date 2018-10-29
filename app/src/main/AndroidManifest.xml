@@ -29,7 +29,7 @@
         android:hardwareAccelerated="false"
         android:icon="@mipmap/hd_logo"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/hd_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
@@ -60,7 +60,13 @@
         <activity android:name=".activity.employees.ui.EmployeesAddActivity" />
         <activity android:name=".activity.group.ui.GroupMainActivity" />
         <activity android:name=".activity.group.ui.GroupAddActivity" />
-        <activity android:name=".activity.group.user.UserChooseActivity"></activity>
+        <activity android:name=".activity.group.user.UserChooseActivity" />
+        <activity android:name=".activity.fingerprint.chooseuser.FingerUserChooseActivity" />
+        <activity android:name=".activity.logs.LogsActivity" />
+        <activity android:name=".activity.attendancem.ui.AttendancemMainActivity" />
+        <activity android:name=".activity.attendancem.ui.AttendancemEditorActivity" />
+        <activity android:name=".activity.attendancem.ui.AttendancemAddActivity" />
+        <activity android:name=".activity.attendancem.ui.AttendancemSummaryActivity"></activity>
     </application>
 
 </manifest>

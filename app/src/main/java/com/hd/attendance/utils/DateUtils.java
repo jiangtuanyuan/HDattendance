@@ -17,15 +17,31 @@ public class DateUtils {
      * 获取时间 yyyy-MM-dd hh:mm:ss
      */
     private static SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private static SimpleDateFormat ymd = new SimpleDateFormat("yyyy-MM-dd");
+    private static SimpleDateFormat md = new SimpleDateFormat("MM月dd日");
+
+
     private static SimpleDateFormat datedf = new SimpleDateFormat("yyyy年MM月dd日");
     private static SimpleDateFormat Timedf = new SimpleDateFormat("HH:mm:ss");
+    private static SimpleDateFormat TimeHM = new SimpleDateFormat("HH:mm");
+
 
     private static String dayNames[] = {"星期天", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"};
 
     public static String getDate() {
         try {
-            //如果hh为小写 那么就搜12小时制 如果为大写 那么就是24小时制
             return df.format(System.currentTimeMillis());
+        } catch (Exception e) {
+            return "";
+        }
+    }
+
+    /**
+     * 返回当前年月日 2018-10-06
+     */
+    public static String getYMD() {
+        try {
+            return ymd.format(System.currentTimeMillis());
         } catch (Exception e) {
             return "";
         }
@@ -37,12 +53,25 @@ public class DateUtils {
      */
     public static String getTime() {
         try {
-            //如果hh为小写 那么就搜12小时制 如果为大写 那么就是24小时制
             return Timedf.format(System.currentTimeMillis());
         } catch (Exception e) {
             return "";
         }
+
     }
+
+    /**
+     * 获取Time
+     * HH:mm
+     */
+    public static String getTimeHM() {
+        try {
+            return TimeHM.format(System.currentTimeMillis());
+        } catch (Exception e) {
+            return "";
+        }
+    }
+
 
     /**
      * 通过日期判断是周几
@@ -59,6 +88,21 @@ public class DateUtils {
     }
 
     /**
+     * 通过日期判断是周几 2018-10-02
+     */
+    public static String DateToDayB(String daydate) {
+        Calendar c = Calendar.getInstance();// 获得一个日历的实例
+        try {
+            c.setTime(ymd.parse(daydate));
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return "";
+        }
+        return dayNames[c.get(Calendar.DAY_OF_WEEK) - 1];
+    }
+
+
+    /**
      * 返回当天是星期几  1 2 3 4 5 6 7
      */
     public static int getWeek() {
@@ -72,10 +116,80 @@ public class DateUtils {
      */
     public static String getYearMonthDayWeek() {
         try {
-            //如果hh为小写 那么就搜12小时制 如果为大写 那么就是24小时制
-            return datedf.format(System.currentTimeMillis()) + " (" + DateToDay(getDate()) + ")";
+            return datedf.format(System.currentTimeMillis()) + " [" + DateToDay(getDate()) + "]";
         } catch (Exception e) {
             return "";
+        }
+    }
+
+    /**
+     * 获取当年月份
+     */
+    public static int getThisMonth() {
+        try {
+            return Calendar.getInstance().get(Calendar.MONTH) + 1;
+        } catch (Exception e) {
+            return -1;
+        }
+    }
+
+    /**
+     * 获取当日
+     */
+    public static int getThisDay() {
+        try {
+            return Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+        } catch (Exception e) {
+            return -1;
+        }
+    }
+
+
+    /**
+     * 获取前的年
+     */
+    public static int getThisYear() {
+        try {
+            return Calendar.getInstance().get(Calendar.YEAR);
+        } catch (Exception e) {
+            return -1;
+        }
+    }
+
+    /**
+     * 通过时间 得到月日
+     */
+    public static String getMD(String date) {
+
+        try {
+            return date.substring(5, 10);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+
+
+    /**
+     * 得到指定月份的天数
+     *
+     * @param year
+     * @param month
+     * @return
+     */
+    public static int getMonthLastDay(int year, int month) {
+        try {
+            Calendar a = Calendar.getInstance();
+            a.set(Calendar.YEAR, year);
+            a.set(Calendar.MONTH, month - 1);
+            a.set(Calendar.DATE, 1);
+            a.roll(Calendar.DATE, -1);
+            int maxDate = a.get(Calendar.DATE);
+
+            return maxDate;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;
         }
     }
 }

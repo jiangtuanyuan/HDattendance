@@ -71,18 +71,8 @@ public class EmployeesItemAdapter extends RecyclerView.Adapter<EmployeesItemAdap
 
         holder.tvJobs.setText(bean.getJobs());
 
-        holder.btEditor.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                StartEditorUI(bean);
-            }
-        });
-        holder.btDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DeleteUser(bean);
-            }
-        });
+        holder.btEditor.setOnClickListener(v -> StartEditorUI(bean));
+        holder.btDelete.setOnClickListener(v -> DeleteUser(bean));
     }
 
     @Override
@@ -131,23 +121,17 @@ public class EmployeesItemAdapter extends RecyclerView.Adapter<EmployeesItemAdap
         builder.setMessage("删除之后不可恢复,请谨慎操作!");
         builder.setTitle("是否删除?");
 
-        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-                e.delete();
-                ToastUtil.showToast("删除成功");
+        builder.setPositiveButton("确定", (dialog, which) -> {
+            dialog.dismiss();
+            e.delete();
+            ToastUtil.showToast("删除成功");
 
-                mList.clear();
-                mList.addAll(LitePal.order("id desc").find(EmployeesTable.class));
-                notifyDataSetChanged();
+            mList.clear();
+            mList.addAll(LitePal.order("id desc").find(EmployeesTable.class));
+            notifyDataSetChanged();
 
-            }
         });
-        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
+        builder.setNegativeButton("取消", (dialog, which) -> dialog.dismiss());
         builder.show();
     }
 
