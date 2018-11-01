@@ -118,13 +118,6 @@ public class MainActivity extends BaseActivity {
     private List<FingerInfoTable> FingerList = new ArrayList<>();
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
-
-    @Override
     protected void onResume() {
         super.onResume();
         showHealth();
@@ -428,7 +421,7 @@ public class MainActivity extends BaseActivity {
                         //4.根据用户ID拿相关用户指纹数据
                         FingerInfoTable f = FingerUtils.getFingerinfo(names[0]);
 
-                        if (f == null) {;;;
+                        if (f == null) {
                             ToastUtil.showToast("未在指纹数据库找到[" + names[1] + "] 相关数据！");
                             isFingerA = false;
                         } else {
@@ -467,8 +460,8 @@ public class MainActivity extends BaseActivity {
 
 
                                                 //设置界面
-                                                tvLeftAttenType.setText("打开类型:[上午上班卡]");
-                                                tvLeftAttenTime.setText("打卡时间：" + userAtten.getMorning_start_time());
+                                                tvLeftAttenType.setText("  打开类型:[上午上班卡]");
+                                                tvLeftAttenTime.setText("  打卡时间：" + userAtten.getMorning_start_time());
 
                                                 //记录进日志文件
                                                 SystemLog.getInstance().AddLog("[" + names[1] + "] 上午上班打卡成功!");
@@ -505,8 +498,8 @@ public class MainActivity extends BaseActivity {
 
                                                 //设置界面
                                                 llLeftLayout.setVisibility(View.VISIBLE);
-                                                tvLeftAttenType.setText("打卡类型:[上午上班 迟到 卡]");
-                                                tvLeftAttenTime.setText("打卡时间 :" + userAtten.getMorning_start_time());
+                                                tvLeftAttenType.setText("  打卡类型:[上午上班 迟到 卡]");
+                                                tvLeftAttenTime.setText("  打卡时间 :" + userAtten.getMorning_start_time());
 
 
                                                 //记录进日志文件
@@ -549,8 +542,8 @@ public class MainActivity extends BaseActivity {
 
                                                 //设置界面
                                                 llLeftLayout.setVisibility(View.VISIBLE);
-                                                tvLeftAttenType.setText("打开类型:[上午上班 早退 卡]");
-                                                tvLeftAttenTime.setText("打卡时间：" + userAtten.getMorning_end_time());
+                                                tvLeftAttenType.setText("  打开类型:[上午上班 早退 卡]");
+                                                tvLeftAttenTime.setText("  打卡时间：" + userAtten.getMorning_end_time());
 
 
                                                 //记录进日志文件
@@ -583,8 +576,8 @@ public class MainActivity extends BaseActivity {
 
                                             //设置界面
                                             llLeftLayout.setVisibility(View.VISIBLE);
-                                            tvLeftAttenType.setText("打开类型:[上午下班卡]");
-                                            tvLeftAttenTime.setText("打卡时间：" + userAtten.getMorning_end_time());
+                                            tvLeftAttenType.setText("  打开类型:[上午下班卡]");
+                                            tvLeftAttenTime.setText("  打卡时间：" + userAtten.getMorning_end_time());
 
 
                                             //记录进日志文件
@@ -607,8 +600,8 @@ public class MainActivity extends BaseActivity {
 
                                                 //设置界面
                                                 llLeftLayout.setVisibility(View.VISIBLE);
-                                                tvLeftAttenType.setText("打开类型:[下午上班卡]");
-                                                tvLeftAttenTime.setText("打卡时间：" + userAtten.getAfternoon_start_time());
+                                                tvLeftAttenType.setText("  打开类型:[下午上班卡]");
+                                                tvLeftAttenTime.setText("  打卡时间：" + userAtten.getAfternoon_start_time());
 
                                                 //记录进日志文件
                                                 SystemLog.getInstance().AddLog("[" + names[1] + "] 下午上班打卡成功!");
@@ -642,8 +635,8 @@ public class MainActivity extends BaseActivity {
 
                                                 //设置界面
                                                 llLeftLayout.setVisibility(View.VISIBLE);
-                                                tvLeftAttenType.setText("打开类型:[上午上班 迟到 打卡]");
-                                                tvLeftAttenTime.setText("打卡时间：" + userAtten.getAfternoon_start_time());
+                                                tvLeftAttenType.setText("  打开类型:[上午上班 迟到 打卡]");
+                                                tvLeftAttenTime.setText("  打卡时间：" + userAtten.getAfternoon_start_time());
 
 
                                                 //记录进日志文件
@@ -683,8 +676,8 @@ public class MainActivity extends BaseActivity {
 
                                                 //设置界面
                                                 llLeftLayout.setVisibility(View.VISIBLE);
-                                                tvLeftAttenType.setText("打开类型:[下午下班 早退 卡]");
-                                                tvLeftAttenTime.setText("打卡时间：" + userAtten.getAfternoon_end_time());
+                                                tvLeftAttenType.setText("  打开类型:[下午下班 早退 卡]");
+                                                tvLeftAttenTime.setText("  打卡时间：" + userAtten.getAfternoon_end_time());
 
                                                 //记录进日志文件
                                                 SystemLog.getInstance().AddLog("[" + names[1] + "] 下午下班 [早退] 打卡成功!");
@@ -716,8 +709,8 @@ public class MainActivity extends BaseActivity {
 
                                             //设置界面
                                             llLeftLayout.setVisibility(View.VISIBLE);
-                                            tvLeftAttenType.setText("打开类型:[下午下班卡]");
-                                            tvLeftAttenTime.setText("打卡时间：" + userAtten.getAfternoon_end_time());
+                                            tvLeftAttenType.setText("  打开类型:[下午下班卡]");
+                                            tvLeftAttenTime.setText("  打卡时间：" + userAtten.getAfternoon_end_time());
 
                                             //记录进日志文件
                                             SystemLog.getInstance().AddLog("[" + names[1] + "] 下午下班打卡成功!");
@@ -1134,5 +1127,4 @@ public class MainActivity extends BaseActivity {
             }
         }
     }
-
 }

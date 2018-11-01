@@ -8,4 +8,49 @@
     tools:context="com.hd.attendance.activity.attendancem.ui.AttendancemSummaryActivity">
 
     <include layout="@layout/toolbar" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="员  工 :"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tv_choose_user"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:text="请 选 择"
+            android:textColor="@color/blue"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_year"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_month"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_data"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="5dp" />
+
+
+
 </LinearLayout>

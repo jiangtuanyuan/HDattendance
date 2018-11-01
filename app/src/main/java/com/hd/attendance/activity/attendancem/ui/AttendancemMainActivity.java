@@ -7,6 +7,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -136,7 +137,6 @@ public class AttendancemMainActivity extends BaseActivity {
     private void setSelectYear() {
         //加载4年的
         int year = DateUtils.getThisYear();
-        YearList.add((year - 3) + "年");
         YearList.add((year - 2) + "年");
         YearList.add((year - 1) + "年");
         YearList.add(year + "年");
@@ -173,6 +173,7 @@ public class AttendancemMainActivity extends BaseActivity {
         MonthAdapter.setDefSelect(0);
         MonthAdapter.setOnItemClickListener(position -> {
             MonthAdapter.setDefSelect(position);
+            selectMonth=position + 1;
             iniDayData(selectYear, position + 1);
             initListData();
         });
@@ -206,7 +207,6 @@ public class AttendancemMainActivity extends BaseActivity {
         recyclerData.setLayoutManager(layoutManager);
         attendListAdapter = new AttendListAdapter(this, AttenList);
         recyclerData.setAdapter(attendListAdapter);
-
     }
 
 
@@ -315,27 +315,12 @@ public class AttendancemMainActivity extends BaseActivity {
         TypeDialog.show();
     }
 
-
-        /*
-        spStautsType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                //对现有的数据进行筛选
-                ScreebListData(position);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });*/
-
-
     /**
      * 加载数据库的考勤数据
      */
     private void initListData() {
         String selectDBdateStr = selectYear + "-" + (selectMonth > 9 ? selectMonth + "" : "0" + selectMonth) + "-" + (selectDay > 9 ? selectDay + "" : "0" + selectDay);
+        Log.e("selectDBdateStr","selectDBdateStr="+selectDBdateStr);
 
         SumAttenList.clear();
         AttenList.clear();

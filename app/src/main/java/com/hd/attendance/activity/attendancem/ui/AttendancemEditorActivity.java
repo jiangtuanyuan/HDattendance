@@ -3,6 +3,7 @@ package com.hd.attendance.activity.attendancem.ui;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
+import android.graphics.Paint;
 import android.os.Bundle;
 
 import android.support.v7.app.AlertDialog;
@@ -112,6 +113,20 @@ public class AttendancemEditorActivity extends BaseActivity {
         ButterKnife.bind(this);
         initToolbarNav();
         setTitle("编 辑");
+
+        tvMorningStartTimeUpdate.getPaint().setFlags(Paint. UNDERLINE_TEXT_FLAG );
+        tvMorningStartTypeUpdate.getPaint().setFlags(Paint. UNDERLINE_TEXT_FLAG );
+
+        tvMorningEndTimeUpdate.getPaint().setFlags(Paint. UNDERLINE_TEXT_FLAG );
+        tvMorningEndTypeUpdate.getPaint().setFlags(Paint. UNDERLINE_TEXT_FLAG );
+
+        tvAfternoonStartTimeUpdate.getPaint().setFlags(Paint. UNDERLINE_TEXT_FLAG );
+        tvAfternoonStartTypeUpdate.getPaint().setFlags(Paint. UNDERLINE_TEXT_FLAG );
+
+        tvAfternoonEndTimeUpdate.getPaint().setFlags(Paint. UNDERLINE_TEXT_FLAG );
+        tvAfternoonEndTypeUpdate.getPaint().setFlags(Paint. UNDERLINE_TEXT_FLAG );
+
+
     }
 
     @Override

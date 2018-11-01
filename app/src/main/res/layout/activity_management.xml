@@ -22,13 +22,11 @@
                 style="@style/TextViewStyle"
                 android:drawableTop="@mipmap/hd_logo"
                 android:text="考勤管理" />
-
             <TextView
                 android:id="@+id/tv_jc"
                 style="@style/TextViewStyle"
                 android:drawableTop="@drawable/ic_management_eat"
                 android:text="就餐管理" />
-
             <TextView
                 android:id="@+id/tv_ws"
                 style="@style/TextViewStyle"
@@ -37,19 +35,16 @@
         </TableRow>
 
         <TableRow>
-
             <TextView
                 android:id="@+id/tv_yg"
                 style="@style/TextViewStyle"
                 android:drawableTop="@drawable/ic_management_employees"
                 android:text="员工管理" />
-
             <TextView
                 android:id="@+id/tv_xz"
                 style="@style/TextViewStyle"
                 android:drawableTop="@drawable/ic_management_group"
                 android:text="小组管理" />
-
             <TextView
                 android:id="@+id/tv_zw"
                 style="@style/TextViewStyle"

@@ -26,13 +26,18 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * 固定标准地调查列表适配器
- * jiang
+ * 考勤的列表信息
+ *
  */
 public class AttendListAdapter extends RecyclerView.Adapter<AttendListAdapter.ViewHolder> {
 
     private Context mContext;
     private List<AttendancemTable> mDataBeans;
+
+    private boolean isAdddateTop=false;//是否添加时间到头部
+    public void isAddTime(boolean isAdddateTop){
+        this.isAdddateTop=isAdddateTop;
+    }
 
     public AttendListAdapter(Context mContext, List<AttendancemTable> dataBeans) {
         this.mContext = mContext;
@@ -54,6 +59,11 @@ public class AttendListAdapter extends RecyclerView.Adapter<AttendListAdapter.Vi
 
         //1.设置头部信息 姓名  出勤情况:正常上班 打卡情况:
         StringBuffer sTop = new StringBuffer();
+
+        if(isAdddateTop){
+            sTop.append(atten.getDate()+"  ["+atten.getWeek() +"]\n");
+        }
+
         sTop.append("[" + atten.getUser_Name() + "]");
         sTop.append("\n出勤情况:");
         switch (atten.getWorkType()) {
@@ -109,7 +119,7 @@ public class AttendListAdapter extends RecyclerView.Adapter<AttendListAdapter.Vi
         holder.tvTopInfo.setText(sTop.toString());
 
         //2.设置上午上班时间
-        holder.tvMorningStartTime.setText("打卡时间:  " + atten.getMorning_start_time() == null ? "无" : atten.getMorning_start_time());
+        holder.tvMorningStartTime.setText("打卡时间:  " + (atten.getMorning_start_time() == null ? "无" : atten.getMorning_start_time()));
         switch (atten.getMorning_start_type()) {
             case 0:
                 holder.tvMorningStartType.setText("状        态:  正常打卡");
@@ -149,7 +159,7 @@ public class AttendListAdapter extends RecyclerView.Adapter<AttendListAdapter.Vi
         holder.tvMorningStartNote.setText("备注内容:  " + atten.getMorning_start_note());
 
         //3.设置上午下班时间
-        holder.tvMorningEndTime.setText("打卡时间:  " + atten.getMorning_end_time() == null ? "无" : atten.getMorning_end_time());
+        holder.tvMorningEndTime.setText("打卡时间:  " + (atten.getMorning_end_time() == null ? "无" : atten.getMorning_end_time()));
         switch (atten.getMorning_end_type()) {
             case 0:
                 holder.tvMorningEndType.setText("状        态:  正常打卡");
@@ -188,7 +198,7 @@ public class AttendListAdapter extends RecyclerView.Adapter<AttendListAdapter.Vi
         holder.tvMorningEndNote.setText("备注内容:  " + atten.getMorning_end_note());
 
         //4.设置下午上班时间
-        holder.tvAfternoonStartTime.setText("打卡时间:  " + atten.getAfternoon_start_time() == null ? "无" : atten.getAfternoon_start_time());
+        holder.tvAfternoonStartTime.setText("打卡时间:  " + (atten.getAfternoon_start_time() == null ? "无" : atten.getAfternoon_start_time()));
         switch (atten.getAfternoon_start_type()) {
             case 0:
                 holder.tvAfternoonStartType.setText("状        态:  正常打卡");
@@ -228,7 +238,7 @@ public class AttendListAdapter extends RecyclerView.Adapter<AttendListAdapter.Vi
         holder.tvAfternoonStartNote.setText("备注内容:  " + atten.getAfternoon_start_note());
 
         //5.设置下午下班时间
-        holder.tvAfternoonEndTime.setText("打卡时间:  " + atten.getAfternoon_end_time() == null ? "无" : atten.getAfternoon_end_time());
+        holder.tvAfternoonEndTime.setText("打卡时间:  " + (atten.getAfternoon_end_time() == null ? "无" : atten.getAfternoon_end_time()));
         switch (atten.getAfternoon_end_type()) {
             case 0:
                 holder.tvAfternoonEndType.setText("状        态:  正常打卡");
@@ -277,6 +287,7 @@ public class AttendListAdapter extends RecyclerView.Adapter<AttendListAdapter.Vi
                 holder.ivStatus.setImageResource(R.drawable.icon_shangla);
             }
         });
+
 
         holder.tvEditorInfo.setOnClickListener(v -> {
             Intent intent = new Intent(mContext, AttendancemEditorActivity.class);

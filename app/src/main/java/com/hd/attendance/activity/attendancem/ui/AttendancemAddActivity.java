@@ -199,6 +199,7 @@ public class AttendancemAddActivity extends BaseActivity {
                         Double money = Double.parseDouble(etDeductions.getText().toString());
                         attendancem.setDeductions(money);
                     } catch (Exception e) {
+                        closeProgressDialog();
                         ToastUtil.showToast("扣款金额填写错误!");
                     }
                     attendancem.setDeductionsInfo(etDeductionsInfo.getText().toString());
