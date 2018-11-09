@@ -87,7 +87,6 @@ public class GroupMainActivity extends BaseActivity implements FingerGroupAdapte
         }
         GroupAdapter.notifyDataSetChanged();
 
-
     }
 
     @Override
@@ -97,8 +96,8 @@ public class GroupMainActivity extends BaseActivity implements FingerGroupAdapte
         if (groupList.size() > 0) {
             getGroupUsersInfo(groupList.get(0));
         } else {
-            tvGroupName.setText("无");
-            tvGroupBoss.setText("无");
+            tvGroupName.setText("小 组 名 称:  无");
+            tvGroupBoss.setText("小 组 组 长:  无");
         }
 
         GropList.clear();

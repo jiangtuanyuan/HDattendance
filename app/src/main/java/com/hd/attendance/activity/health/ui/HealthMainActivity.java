@@ -2,14 +2,17 @@ package com.hd.attendance.activity.health.ui;
 
 
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.hd.attendance.R;
@@ -31,7 +34,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class HealthMainActivity extends BaseActivity implements FingerGroupAdapter.OnItemClickListener {
+public class HealthMainActivity extends BaseActivity implements FingerGroupAdapter.OnItemClickListener, RadioGroup.OnCheckedChangeListener {
     @BindView(R.id.recycler_week)
     RecyclerView recyclerWeek;
     @BindView(R.id.tv_a_users)
@@ -49,6 +52,22 @@ public class HealthMainActivity extends BaseActivity implements FingerGroupAdapt
 
     @BindView(R.id.bt_save)
     Button btSave;
+
+    //周六大扫除相关
+    @BindView(R.id.rb_single_weeks)
+    RadioButton rbSingleWeeks;
+    @BindView(R.id.rb_double_weeks)
+    RadioButton rbDoubleWeeks;
+    @BindView(R.id.rg_weeks)
+    RadioGroup rgWeeks;
+    @BindView(R.id.ll_weeks_layout)
+    LinearLayout llWeeksLayout;
+    @BindView(R.id.tv_week_info)
+    TextView tvWeekInfo;
+    @BindView(R.id.ll_this_weeks_layout)
+    LinearLayout llThisWeeksLayout;
+
+
     private int position = 0;
     //日期横向滚动
     private FingerGroupAdapter WeekAdapter;
@@ -56,6 +75,8 @@ public class HealthMainActivity extends BaseActivity implements FingerGroupAdapt
 
     //显示的
     private HealthTable healt;
+
+    private int number = 0;
 
     @Override
     protected void onDestroy() {
@@ -74,6 +95,10 @@ public class HealthMainActivity extends BaseActivity implements FingerGroupAdapt
         initToolbarNav();
         setTitle("卫生管理");
         setGroupRecyclerw();
+        rgWeeks.setOnCheckedChangeListener(this);
+        number = DateUtils.getThisWeeks();
+        tvAUserChoose.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+        tvBUserChoose.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
 
     }
 
@@ -91,28 +116,47 @@ public class HealthMainActivity extends BaseActivity implements FingerGroupAdapt
 
         try {
             int week = DateUtils.getWeek();
-            Log.e("week", week + "");
             position = week - 1;
 
-            if (week == 0) {
-                //等于0其实就是星期天
-                WeekAdapter.setDefSelect(6);
+            switch (week) {
+                case 0://星期天
+                    WeekAdapter.setDefSelect(6);
+                    GetHealth(7 + "");
+                    break;
+                case 6://星期六 大扫除
+                    WeekAdapter.setDefSelect(5);
+                    //1.显示布局
+                    llWeeksLayout.setVisibility(View.VISIBLE);
+                    llThisWeeksLayout.setVisibility(View.VISIBLE);
 
-                GetHealth(7 + "");
-            } else {
-                WeekAdapter.setDefSelect(position);
-                GetHealth(week + "");
+                    if (number % 2 == 0) {
+                        //双周
+                        tvWeekInfo.setText("双周 [当年第" + number + "周]");
+                        rbDoubleWeeks.setChecked(true);
+                        //加载双周的数据
+                        GetHealth(2);
+                    } else {
+                        tvWeekInfo.setText("单周 [当年第" + number + "周]");
+                        rbSingleWeeks.setChecked(true);
+                        //加载单周的数据
+                        GetHealth(1);
+                    }
 
+                    break;
+                default://1-5
+                    WeekAdapter.setDefSelect(position);
+                    GetHealth(week + "");
+                    break;
             }
-            recyclerWeek.scrollToPosition(position);
 
+            recyclerWeek.scrollToPosition(position);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     /**
-     * 设置小组
+     * 设置星期
      */
     private void setGroupRecyclerw() {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -128,7 +172,30 @@ public class HealthMainActivity extends BaseActivity implements FingerGroupAdapt
     public void onItemClickListener(View view, int position) {
         this.position = position;
         WeekAdapter.setDefSelect(position);
-        GetHealth(String.valueOf(position + 1));
+        if (position == 5) {
+            llWeeksLayout.setVisibility(View.VISIBLE);
+            llThisWeeksLayout.setVisibility(View.VISIBLE);
+
+            if (number % 2 == 0) {
+                //双周
+                tvWeekInfo.setText("双周 [当年第" + number + "周]");
+                rbDoubleWeeks.setChecked(true);
+                //加载双周的数据
+                GetHealth(2);
+            } else {
+                tvWeekInfo.setText("单周 [当年第" + number + "周]");
+                rbSingleWeeks.setChecked(true);
+                //加载单周的数据
+                GetHealth(1);
+            }
+
+        } else {
+            llWeeksLayout.setVisibility(View.GONE);
+            llThisWeeksLayout.setVisibility(View.GONE);
+
+            GetHealth(String.valueOf(position + 1));
+        }
+
     }
 
 
@@ -158,14 +225,30 @@ public class HealthMainActivity extends BaseActivity implements FingerGroupAdapt
                 healt.setTwoFloorUserID(BIDstring.toString());
                 healt.setTwoFloorUserName(tvBUsers.getText().toString());
                 healt.setTwoFloorInfo(etBInfo.getText().toString());
+
+                if (this.position == 5) {
+                    //设置大扫除
+                    if (rbSingleWeeks.isChecked()) {
+                        healt.setWeeks(1);//设置单周为1
+                    } else {
+                        healt.setWeeks(2);//设置双周为2
+                    }
+                }
+
                 healt.save();
                 ToastUtil.showToast("保存成功!");
 
-
                 SystemLog.getInstance().AddLog("[管理员] 修改了 [" + WeekList.get(position) + "]的卫生!");
 
-
-                GetHealth(String.valueOf(position + 1));
+                if (position == 5) {
+                    if (rbSingleWeeks.isChecked()) {
+                        GetHealth(1);
+                    } else {
+                        GetHealth(2);
+                    }
+                } else {
+                    GetHealth(String.valueOf(position + 1));
+                }
 
                 break;
             default:
@@ -239,6 +322,7 @@ public class HealthMainActivity extends BaseActivity implements FingerGroupAdapt
             healt = HList.get(0);
             tvAUsers.setText(healt.getOnFloorUserName());
             etAInfo.setText(healt.getOnFloorInfo());
+
             tvBUsers.setText(healt.getTwoFloorUserName());
             etBInfo.setText(healt.getTwoFloorInfo());
         } else {
@@ -247,13 +331,57 @@ public class HealthMainActivity extends BaseActivity implements FingerGroupAdapt
             etAInfo.setText("");
             etAInfo.setHint("未设置!");
 
+            tvBUsers.setText("无");
+            etBInfo.setText("");
+            etBInfo.setHint("未设置!");
+        }
+    }
+
+    /**
+     * 获取周六大扫除单双周的数据情况
+     */
+    private void GetHealth(int ds) {
+        HList.clear();
+        HList.addAll(LitePal.where("weekid = 6 and weeks= ?", ds + "").find(HealthTable.class));
+
+        if (HList.size() > 0) {
+            healt = HList.get(0);
+            tvAUsers.setText(healt.getOnFloorUserName());
+            etAInfo.setText(healt.getOnFloorInfo());
+
+            tvBUsers.setText(healt.getTwoFloorUserName());
+            etBInfo.setText(healt.getTwoFloorInfo());
+        } else {
+            healt = new HealthTable();
+            tvAUsers.setText("无");
+            etAInfo.setText("");
+            etAInfo.setHint("未设置!");
 
             tvBUsers.setText("无");
             etBInfo.setText("");
             etBInfo.setHint("未设置!");
         }
-
     }
 
 
+    /**
+     * 选择单双周的按钮组
+     *
+     * @param group
+     * @param checkedId
+     */
+    @Override
+    public void onCheckedChanged(RadioGroup group, int checkedId) {
+        switch (checkedId) {
+            case R.id.rb_single_weeks:
+                GetHealth(1);
+                break;
+            case R.id.rb_double_weeks:
+                GetHealth(2);
+                break;
+            default:
+                break;
+        }
+
+    }
 }

@@ -13,20 +13,83 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
+
+
+            <LinearLayout
+                android:id="@+id/ll_weeks_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:visibility="gone"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="大扫除周次:"
+                    android:textSize="16sp" />
+
+                <RadioGroup
+                    android:id="@+id/rg_weeks"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/rb_single_weeks"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:text="单周" />
+
+                    <RadioButton
+                        android:id="@+id/rb_double_weeks"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:text="双周" />
+                </RadioGroup>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_this_weeks_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:visibility="gone"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="本周:"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_week_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/blue"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="* 一楼卫生安排 *"
+                android:text="[ 一楼卫生安排 ]"
                 android:textColor="@color/blue"
                 android:textSize="16sp" />
 
@@ -41,6 +104,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
                     android:text=" 打扫人员:"
                     android:textSize="16sp" />
 
@@ -68,6 +132,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="5dp"
                 android:text=" 详细安排:"
                 android:textSize="16sp" />
 
@@ -75,7 +140,7 @@
                 android:id="@+id/et_a_info"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
-                android:layout_marginTop="5dp"
+                android:layout_margin="5dp"
                 android:background="@color/white"
                 android:gravity="left|top"
                 android:hint="未设置!"
@@ -88,7 +153,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:gravity="center"
-                android:text="* 二楼卫生安排 *"
+                android:text="[ 二楼卫生安排 ]"
                 android:textColor="@color/blue"
                 android:textSize="16sp" />
 
@@ -102,6 +167,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
                     android:text="打扫人员:"
                     android:textSize="16sp" />
 
@@ -130,6 +196,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="5dp"
                 android:text="详细安排:"
                 android:textSize="16sp" />
 
@@ -138,7 +205,7 @@
                 android:id="@+id/et_b_info"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
-                android:layout_marginTop="5dp"
+                android:layout_margin="5dp"
                 android:background="@color/white"
                 android:gravity="left|top"
                 android:hint="未设置!"
@@ -150,7 +217,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:text="* 员工在上午上班打卡时,会收到相应提示!"
+                android:text="* 员工在上午上班,下午上班打卡时,会收到2次相应的提示!"
                 android:textSize="13sp" />
 
             <Button

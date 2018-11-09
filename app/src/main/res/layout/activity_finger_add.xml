@@ -30,10 +30,10 @@
             android:layout_marginLeft="5dp"
             android:layout_weight="1"
             android:background="@color/white"
-            android:hint="请先选择员工"
+            android:hint="1.请先选择员工"
             android:padding="10dp"
             android:textColor="@color/blue"
-            android:textSize="16sp" />
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/tv_finger_user_choose"
@@ -58,14 +58,15 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="*1.指纹采集需要录取三次,请轻触左边指纹仪*"
-                android:textColor="@color/green" />
+                android:layout_margin="20dp"
+                android:gravity="center_horizontal"
+                android:text="2.指纹采集需要录取三次,请轻触左边指纹仪.."
+                android:textColor="@color/green"
+                android:textSize="16sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
                 android:orientation="horizontal">
 
                 <LinearLayout
@@ -78,7 +79,10 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="第一次" />
+                        android:layout_margin="10dp"
+                        android:text="第一次"
+                        android:textColor="@color/blue"
+                        android:textSize="16sp" />
 
                     <ImageView
                         android:id="@+id/iv_finger_one"
@@ -89,7 +93,8 @@
                     <TextView
                         android:id="@+id/tv_finger_one_msg"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -102,7 +107,10 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="第二次" />
+                        android:layout_margin="10dp"
+                        android:text="第二次"
+                        android:textColor="@color/blue"
+                        android:textSize="16sp" />
 
                     <ImageView
                         android:id="@+id/iv_finger_two"
@@ -113,7 +121,8 @@
                     <TextView
                         android:id="@+id/tv_finger_two_msg"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -126,7 +135,10 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="第三次" />
+                        android:layout_margin="10dp"
+                        android:text="第三次"
+                        android:textColor="@color/blue"
+                        android:textSize="16sp" />
 
                     <ImageView
                         android:id="@+id/iv_finger_three"
@@ -137,7 +149,8 @@
                     <TextView
                         android:id="@+id/tv_finger_three_msg"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -145,10 +158,11 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_margin="20dp"
                 android:gravity="center"
-                android:text="*三次合并指纹*"
-                android:textColor="@color/green" />
+                android:text="3.指纹合并"
+                android:textColor="@color/green"
+                android:textSize="16sp" />
 
             <ImageView
                 android:id="@+id/iv_finger_merge"
@@ -157,22 +171,22 @@
                 android:layout_gravity="center_horizontal"
                 android:src="@drawable/ic_main_finger" />
 
-
             <TextView
                 android:id="@+id/tv_finger_merge_msg"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_margin="10dp"
                 android:gravity="center" />
 
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_margin="20dp"
                 android:gravity="center"
-                android:text="*该枚指纹用于*"
-                android:textColor="@color/green" />
+                android:text="4.指纹用于"
+                android:textColor="@color/green"
+                android:textSize="16sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -186,17 +200,18 @@
                     android:layout_height="wrap_content"
                     android:checked="true"
                     android:text="考勤"
-                    android:textColor="@drawable/selector_font_blue_gray" />
+                    android:textColor="@drawable/selector_font_blue_gray"
+                    android:textSize="16sp" />
 
                 <CheckBox
                     android:id="@+id/cb_finger_meal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="30dp"
-                    android:text="就餐"
                     android:checked="true"
-                    android:textColor="@drawable/selector_font_blue_gray" />
-
+                    android:text="就餐"
+                    android:textColor="@drawable/selector_font_blue_gray"
+                    android:textSize="16sp" />
 
             </LinearLayout>
 
@@ -205,7 +220,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="20dp"
+                android:layout_margin="20dp"
                 android:background="@color/blue"
                 android:text="保  存"
                 android:textColor="@color/white"

@@ -17,6 +17,7 @@ import com.hd.attendance.activity.group.ui.GroupAddActivity;
 import com.hd.attendance.activity.group.ui.GroupMainActivity;
 import com.hd.attendance.activity.health.ui.HealthMainActivity;
 import com.hd.attendance.activity.logs.LogsActivity;
+import com.hd.attendance.activity.main.HDMainActivity;
 import com.hd.attendance.base.BaseActivity;
 import com.hd.attendance.db.AttendancemTable;
 import com.hd.attendance.utils.ToastUtil;
@@ -24,6 +25,8 @@ import com.hd.attendance.utils.ToastUtil;
 import org.litepal.LitePal;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -96,7 +99,7 @@ public class ManagementActivity extends BaseActivity {
                 startActivity(new Intent(this, AttendancemMainActivity.class));
                 break;
             case R.id.tv_jc://就餐管理
-                ToastUtil.showToast("就餐管理");
+                ToastUtil.showToast("就餐管理!");
                 break;
             case R.id.tv_yg://员工管理
                 startActivity(new Intent(this, EmployeesActivity.class));
@@ -114,8 +117,6 @@ public class ManagementActivity extends BaseActivity {
                 break;
         }
     }
-
-
 
 
 }

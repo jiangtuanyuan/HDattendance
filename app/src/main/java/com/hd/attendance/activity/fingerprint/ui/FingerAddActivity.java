@@ -1,11 +1,10 @@
 package com.hd.attendance.activity.fingerprint.ui;
 
-import android.annotation.TargetApi;
+
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.os.Build;
+import android.graphics.Paint;
 import android.os.Bundle;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -16,11 +15,8 @@ import android.widget.TextView;
 import com.hd.attendance.R;
 import com.hd.attendance.activity.fingerprint.chooseuser.FingerUserBean;
 import com.hd.attendance.activity.fingerprint.chooseuser.FingerUserChooseActivity;
-import com.hd.attendance.activity.group.user.UserBean;
-import com.hd.attendance.activity.group.user.UserChooseActivity;
 import com.hd.attendance.base.BaseActivity;
 import com.hd.attendance.db.FingerInfoTable;
-import com.hd.attendance.utils.FingerUtils;
 import com.hd.attendance.utils.SystemLog;
 import com.hd.attendance.utils.ToastUtil;
 import com.zkteco.android.biometric.core.device.ParameterHelper;
@@ -118,6 +114,7 @@ public class FingerAddActivity extends BaseActivity {
         ButterKnife.bind(this);
         initToolbarNav();
         setTitle("添加指纹");
+        tvFingerUserChoose.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
         iniFinger();
     }
 
@@ -156,9 +153,9 @@ public class FingerAddActivity extends BaseActivity {
                     fingerInfoTable.setIsdance(false);
                 }
                 if (cbFingerMeal.isChecked()) {
-                    fingerInfoTable.setIsdance(true);
+                    fingerInfoTable.setIsmeal(true);
                 } else {
-                    fingerInfoTable.setIsdance(false);
+                    fingerInfoTable.setIsmeal(false);
                 }
                 fingerInfoTable.save();
 
@@ -190,7 +187,6 @@ public class FingerAddActivity extends BaseActivity {
                     tvFingerUser.setText(mCheckListS.get(0).getUser_name());
                     //启动指纹仪
                     openFingers();
-
                 }
             }
         }
@@ -201,7 +197,7 @@ public class FingerAddActivity extends BaseActivity {
     private static final int VID = 6997;
     private static final int PID = 288;
     private FingerprintSensor fingerprintSensor = null;
-    private FingerprintCaptureListener FingerListener1, FingerListener2;
+    private FingerprintCaptureListener FingerListener1;
 
     private byte[][] regtemparray = new byte[3][2048];  //register template buffer array
     //注册需要三次
@@ -229,26 +225,22 @@ public class FingerAddActivity extends BaseActivity {
             public void captureOK(final byte[] fpImage) {
                 final int width = fingerprintSensor.getImageWidth();
                 final int height = fingerprintSensor.getImageHeight();
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (null != fpImage) {
-                            ToolUtils.outputHexString(fpImage);//处理字节
-                            Log.e(TAG, "width=" + width + "\nHeight=" + height);//高度宽度
-                            Bitmap bitmapFp = ToolUtils.renderCroppedGreyScaleBitmap(fpImage, width, height);
+                runOnUiThread(() -> {
+                    if (null != fpImage) {
+                        ToolUtils.outputHexString(fpImage);//处理字节
+                        Bitmap bitmapFp = ToolUtils.renderCroppedGreyScaleBitmap(fpImage, width, height);
 
-                            if (enrollidx == 0) {
-                                ivFingerOne.setImageBitmap(bitmapFp);//第一次的图像
-                                tvFingerOneMsg.setText("采集中..");
-                            }
-                            if (enrollidx == 1) {
-                                ivFingerTwo.setImageBitmap(bitmapFp);//第二次的图像
-                                tvFingerTwoMsg.setText("采集中..");
-                            }
-                            if (enrollidx == 2) {
-                                ivFingerThree.setImageBitmap(bitmapFp);//第三次的图像
-                                tvFingerThreeMsg.setText("采集中..");
-                            }
+                        if (enrollidx == 0) {
+                            ivFingerOne.setImageBitmap(bitmapFp);//第一次的图像
+                            tvFingerOneMsg.setText("采集中..");
+                        }
+                        if (enrollidx == 1) {
+                            ivFingerTwo.setImageBitmap(bitmapFp);//第二次的图像
+                            tvFingerTwoMsg.setText("采集中..");
+                        }
+                        if (enrollidx == 2) {
+                            ivFingerThree.setImageBitmap(bitmapFp);//第三次的图像
+                            tvFingerThreeMsg.setText("采集中..");
                         }
                     }
                 });
@@ -261,128 +253,121 @@ public class FingerAddActivity extends BaseActivity {
             @Override
             public void extractOK(final byte[] fpTemplate) {
                 final byte[] tmpBuffer = fpTemplate;
-                runOnUiThread(new Runnable() {
-                    @TargetApi(Build.VERSION_CODES.FROYO)
-                    @Override
-                    public void run() {
-                        byte[] bufids = new byte[256];
-                        //1.检测该枚指纹是否被注册了
-                        int ret = ZKFingerService.identify(tmpBuffer, bufids, 55, 1);
-                        if (ret > 0) {
-                            //表示该枚指纹被注册过
-                            String strRes[] = new String(bufids).split("\t");
-                            if (enrollidx == 0) {
-                                tvFingerOneMsg.setText("该枚指纹被注册过了,被" + strRes[0] + "注册过,请重试~");
-                                tvFingerOneMsg.setTextColor(getResources().getColor(R.color.red));
-
-                            }
-                            if (enrollidx == 1) {
-                                tvFingerTwoMsg.setText("该枚指纹被注册过了,被" + strRes[0] + "注册过,请重试~");
-                                tvFingerTwoMsg.setTextColor(getResources().getColor(R.color.red));
-
-                            }
-                            if (enrollidx == 2) {
-                                tvFingerThreeMsg.setText("该枚指纹被注册过了,被" + strRes[0] + "注册过,请重试~");
-                                tvFingerThreeMsg.setTextColor(getResources().getColor(R.color.red));
-                            }
-                            enrollidx = 0;
-                            return;
-                        }
-
-                        //效验指纹是否合格
-                        if (enrollidx > 0 && ZKFingerService.verify(regtemparray[enrollidx - 1], tmpBuffer) <= 0) {
-                            ToastUtil.showToast("请再按一次!");
-                            if (enrollidx == 0) {
-                                tvFingerOneMsg.setText("此次指纹异常,请使用同一手指再按一次!");
-                                tvFingerOneMsg.setTextColor(getResources().getColor(R.color.red));
-                            }
-                            if (enrollidx == 1) {
-                                tvFingerTwoMsg.setText("此次指纹异常,请使用同一手指再按一次!");
-                                tvFingerTwoMsg.setTextColor(getResources().getColor(R.color.red));
-
-                            }
-                            if (enrollidx == 2) {
-                                tvFingerThreeMsg.setText("此次指纹异常,请使用同一手指再按一次!");
-                                tvFingerThreeMsg.setTextColor(getResources().getColor(R.color.red));
-                            }
-                            return;
-                        }
-
-                        //2.记录指纹
-                        System.arraycopy(tmpBuffer, 0, regtemparray[enrollidx], 0, 2048);
+                runOnUiThread(() -> {
+                    byte[] bufids = new byte[256];
+                    //1.检测该枚指纹是否被注册了
+                    int ret = ZKFingerService.identify(tmpBuffer, bufids, 55, 1);
+                    if (ret > 0) {
+                        //表示该枚指纹被注册过
+                        String strRes[] = new String(bufids).split("\t");
                         if (enrollidx == 0) {
-                            tvFingerOneMsg.setText("成功!");
-                            tvFingerOneMsg.setTextColor(getResources().getColor(R.color.green));
+                            tvFingerOneMsg.setText("该枚指纹被注册过了,被" + strRes[0] + "注册过,请重试~");
+                            tvFingerOneMsg.setTextColor(getResources().getColor(R.color.red));
+
                         }
                         if (enrollidx == 1) {
-                            tvFingerTwoMsg.setText("成功!");
-                            tvFingerTwoMsg.setTextColor(getResources().getColor(R.color.green));
+                            tvFingerTwoMsg.setText("该枚指纹被注册过了,被" + strRes[0] + "注册过,请重试~");
+                            tvFingerTwoMsg.setTextColor(getResources().getColor(R.color.red));
+
                         }
                         if (enrollidx == 2) {
-                            tvFingerThreeMsg.setText("成功!");
-                            tvFingerThreeMsg.setTextColor(getResources().getColor(R.color.green));
+                            tvFingerThreeMsg.setText("该枚指纹被注册过了,被" + strRes[0] + "注册过,请重试~");
+                            tvFingerThreeMsg.setTextColor(getResources().getColor(R.color.red));
                         }
-                        enrollidx++;
+                        enrollidx = 0;
+                        return;
+                    }
 
-                        try {
-                            if (enrollidx == 3) {
-                                showProgressDialog("正在合并指纹,请稍后..");
-                                byte[] regTemp = new byte[2048];
-                                if (0 < (ret = ZKFingerService.merge(regtemparray[0], regtemparray[1], regtemparray[2], regTemp))) {
-                                    //
-                                    System.arraycopy(regTemp, 0, lastRegTemp, 0, ret);
-                                    //显示合并之后的指纹图像
+                    //效验指纹是否合格
+                    if (enrollidx > 0 && ZKFingerService.verify(regtemparray[enrollidx - 1], tmpBuffer) <= 0) {
+                        ToastUtil.showToast("请再按一次!");
+                        if (enrollidx == 0) {
+                            tvFingerOneMsg.setText("此次指纹异常,请使用同一手指再按一次!");
+                            tvFingerOneMsg.setTextColor(getResources().getColor(R.color.red));
+                        }
+                        if (enrollidx == 1) {
+                            tvFingerTwoMsg.setText("此次指纹异常,请使用同一手指再按一次!");
+                            tvFingerTwoMsg.setTextColor(getResources().getColor(R.color.red));
 
-                                    ToastUtil.showToast("合并成功");
-                                    tvFingerMergeMsg.setText("合并成功!");
-                                    tvFingerMergeMsg.setTextColor(getResources().getColor(R.color.green));
+                        }
+                        if (enrollidx == 2) {
+                            tvFingerThreeMsg.setText("此次指纹异常,请使用同一手指再按一次!");
+                            tvFingerThreeMsg.setTextColor(getResources().getColor(R.color.red));
+                        }
+                        return;
+                    }
 
-                                    fingerprintSensor.stopCapture(0);//停止采集 成功之后
+                    //2.记录指纹
+                    System.arraycopy(tmpBuffer, 0, regtemparray[enrollidx], 0, 2048);
+                    if (enrollidx == 0) {
+                        tvFingerOneMsg.setText("成功!");
+                        tvFingerOneMsg.setTextColor(getResources().getColor(R.color.green));
+                    }
+                    if (enrollidx == 1) {
+                        tvFingerTwoMsg.setText("成功!");
+                        tvFingerTwoMsg.setTextColor(getResources().getColor(R.color.green));
+                    }
+                    if (enrollidx == 2) {
+                        tvFingerThreeMsg.setText("成功!");
+                        tvFingerThreeMsg.setTextColor(getResources().getColor(R.color.green));
+                    }
+                    enrollidx++;
 
-                                } else {
-                                    tvFingerMergeMsg.setText("合并失败,请重试!");
-                                    tvFingerMergeMsg.setTextColor(getResources().getColor(R.color.red));
+                    try {
+                        if (enrollidx == 3) {
+                            showProgressDialog("正在合并指纹,请稍后..");
+                            byte[] regTemp = new byte[2048];
+                            if (0 < (ret = ZKFingerService.merge(regtemparray[0], regtemparray[1], regtemparray[2], regTemp))) {
+                                //
+                                System.arraycopy(regTemp, 0, lastRegTemp, 0, ret);
+                                //显示合并之后的指纹图像
 
-                                    ivFingerOne.setImageResource(R.drawable.ic_main_finger);
-                                    tvFingerOneMsg.setText("");
-                                    ivFingerTwo.setImageResource(R.drawable.ic_main_finger);
-                                    tvFingerTwoMsg.setText("");
-                                    ivFingerThree.setImageResource(R.drawable.ic_main_finger);
-                                    tvFingerThreeMsg.setText("");
+                                ToastUtil.showToast("合并成功");
 
-                                    regtemparray = new byte[3][2048];
-                                    //注册需要三次
-                                    enrollidx = 0;
-                                    //三枚指纹合并之后的指纹
-                                    lastRegTemp = new byte[2048];
-                                }
+                                tvFingerMergeMsg.setText("合并成功!");
+                                tvFingerMergeMsg.setTextColor(getResources().getColor(R.color.green));
 
-                                closeProgressDialog();
+                                fingerprintSensor.stopCapture(0);//停止采集 成功之后
+
+                            } else {
+                                tvFingerMergeMsg.setText("合并失败,请重试!");
+                                tvFingerMergeMsg.setTextColor(getResources().getColor(R.color.red));
+
+                                ivFingerOne.setImageResource(R.drawable.ic_main_finger);
+                                tvFingerOneMsg.setText("");
+                                ivFingerTwo.setImageResource(R.drawable.ic_main_finger);
+                                tvFingerTwoMsg.setText("");
+                                ivFingerThree.setImageResource(R.drawable.ic_main_finger);
+                                tvFingerThreeMsg.setText("");
+
+                                regtemparray = new byte[3][2048];
+                                //注册需要三次
+                                enrollidx = 0;
+                                //三枚指纹合并之后的指纹
+                                lastRegTemp = new byte[2048];
                             }
 
-                        } catch (Exception e) {
-                            tvFingerUser.setText(e.toString());
+                            closeProgressDialog();
                         }
 
+                    } catch (Exception e) {
+                        tvFingerUser.setText(e.toString());
                     }
+
                 });
             }
 
             @Override
             public void extractError(final int e) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (enrollidx == 0) {
-                            tvFingerOneMsg.setText("录入异常,请重试");
-                        }
-                        if (enrollidx == 1) {
-                            tvFingerTwoMsg.setText("录入异常,请重试");
-                        }
-                        if (enrollidx == 2) {
-                            tvFingerThreeMsg.setText("录入异常,请重试");
-                        }
-                        Log.e(TAG, "extract fail, errorcode:" + e);
+                runOnUiThread(() -> {
+                    if (enrollidx == 0) {
+                        tvFingerOneMsg.setText("录入异常,请重试");
+                    }
+                    if (enrollidx == 1) {
+                        tvFingerTwoMsg.setText("录入异常,请重试");
+                    }
+                    if (enrollidx == 2) {
+                        tvFingerThreeMsg.setText("录入异常,请重试");
                     }
                 });
             }
@@ -419,7 +404,6 @@ public class FingerAddActivity extends BaseActivity {
     private void stopFingers() {
         try {
             fingerprintSensor.stopCapture(0);
-
         } catch (FingerprintException e) {
             e.fillInStackTrace();
         }

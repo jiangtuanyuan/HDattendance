@@ -36,8 +36,12 @@
         <!-- 启动页面 -->
 
 
-        <!-- 主界面 -->
         <activity android:name=".activity.main.MainActivity">
+
+        </activity>
+
+        <!-- 主界面 -->
+        <activity android:name=".activity.main.HDMainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -51,6 +55,7 @@
                 android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
                 android:resource="@xml/device_filter" />
         </activity>
+
         <!-- 指纹管理 -->
         <activity android:name=".activity.fingerprint.ui.FingerMainActivity" />
         <activity android:name=".activity.fingerprint.ui.FingerAddActivity" />
@@ -66,7 +71,8 @@
         <activity android:name=".activity.attendancem.ui.AttendancemMainActivity" />
         <activity android:name=".activity.attendancem.ui.AttendancemEditorActivity" />
         <activity android:name=".activity.attendancem.ui.AttendancemAddActivity" />
-        <activity android:name=".activity.attendancem.ui.AttendancemSummaryActivity"></activity>
+        <activity android:name=".activity.attendancem.ui.AttendancemSummaryActivity" />
+
     </application>
 
 </manifest>

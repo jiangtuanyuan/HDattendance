@@ -50,6 +50,8 @@ public class AttendancemMainActivity extends BaseActivity {
     RecyclerView recyclerData;//数据
     @BindView(R.id.sp_stauts_type)
     TextView spStautsType;//状态
+    @BindView(R.id.tv_list_size)
+    TextView tvListSize;//共N条数据
     @BindView(R.id.ll_stauts_layout)
     LinearLayout llStautsLayout;//状态布局
 
@@ -80,6 +82,7 @@ public class AttendancemMainActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         initListData();//加载列表数据
+        ScreebListData();
     }
 
     @Override
@@ -173,7 +176,7 @@ public class AttendancemMainActivity extends BaseActivity {
         MonthAdapter.setDefSelect(0);
         MonthAdapter.setOnItemClickListener(position -> {
             MonthAdapter.setDefSelect(position);
-            selectMonth=position + 1;
+            selectMonth = position + 1;
             iniDayData(selectYear, position + 1);
             initListData();
         });
@@ -191,9 +194,9 @@ public class AttendancemMainActivity extends BaseActivity {
         DayAdapter.setDefSelect(0);
         DayAdapter.setOnItemClickListener(position -> {
             DayAdapter.setDefSelect(position);
-
             selectDay = position + 1;
             initListData();
+
         });
         recyclerDay.setAdapter(DayAdapter);
     }
@@ -299,8 +302,9 @@ public class AttendancemMainActivity extends BaseActivity {
     /**
      * 筛选数据
      */
-    private String[] areas = new String[]{"全部", "正常打卡", "迟到打卡", "早退打卡", "忘记打卡", "补卡", "请假"};
+    private String[] areas = new String[]{"全部", "正常打卡", "迟到打卡", "早退打卡", "补卡"};
     private AlertDialog.Builder TypeDialog;
+    private int selectType = 0;
 
     private void setStautsType() {
         if (TypeDialog == null) {
@@ -308,7 +312,9 @@ public class AttendancemMainActivity extends BaseActivity {
                     .setTitle("选择状态类型筛选")
                     .setItems(areas, (dialog, which) -> {
                         spStautsType.setText(areas[which]);
-                        ScreebListData(which);
+                        selectType = which;
+
+                        ScreebListData();
                         dialog.dismiss();
                     });
         }
@@ -320,7 +326,7 @@ public class AttendancemMainActivity extends BaseActivity {
      */
     private void initListData() {
         String selectDBdateStr = selectYear + "-" + (selectMonth > 9 ? selectMonth + "" : "0" + selectMonth) + "-" + (selectDay > 9 ? selectDay + "" : "0" + selectDay);
-        Log.e("selectDBdateStr","selectDBdateStr="+selectDBdateStr);
+        Log.e("selectDBdateStr", "selectDBdateStr=" + selectDBdateStr);
 
         SumAttenList.clear();
         AttenList.clear();
@@ -339,13 +345,18 @@ public class AttendancemMainActivity extends BaseActivity {
             llStautsLayout.setVisibility(View.GONE);
         }
         attendListAdapter.notifyDataSetChanged();
+
+
+        spStautsType.setText("全部");
+        selectType = 0;
+        ScreebListData();
     }
 
     /**
      * 对已经显示的数据做筛选
      */
-    private void ScreebListData(int x) {
-        switch (x) {
+    private void ScreebListData() {
+        switch (selectType) {
             case 0://显示全部
                 AttenList.clear();
                 for (AttendancemTable a : SumAttenList) {
@@ -380,26 +391,10 @@ public class AttendancemMainActivity extends BaseActivity {
                 }
                 break;
 
-            case 4://显示忘记打卡
-                AttenList.clear();
-                for (AttendancemTable a : SumAttenList) {
-                    if (a.getMorning_start_type() == AttendType.FORGET_CODE || a.getMorning_end_type() == AttendType.FORGET_CODE || a.getAfternoon_start_type() == AttendType.FORGET_CODE || a.getAfternoon_end_type() == AttendType.FORGET_CODE) {
-                        AttenList.add(a);
-                    }
-                }
-                break;
-            case 5://显示补卡
+            case 4://显示补卡
                 AttenList.clear();
                 for (AttendancemTable a : SumAttenList) {
                     if (a.getMorning_start_type() == AttendType.FILL_CODE || a.getMorning_end_type() == AttendType.FILL_CODE || a.getAfternoon_start_type() == AttendType.FILL_CODE || a.getAfternoon_end_type() == AttendType.FILL_CODE) {
-                        AttenList.add(a);
-                    }
-                }
-                break;
-            case 6://显示请假
-                AttenList.clear();
-                for (AttendancemTable a : SumAttenList) {
-                    if (a.getMorning_start_type() == AttendType.LEAVE_OFF_CODE || a.getMorning_end_type() == AttendType.LEAVE_OFF_CODE || a.getAfternoon_start_type() == AttendType.LEAVE_OFF_CODE || a.getAfternoon_end_type() == AttendType.LEAVE_OFF_CODE) {
                         AttenList.add(a);
                     }
                 }
@@ -414,6 +409,7 @@ public class AttendancemMainActivity extends BaseActivity {
         } else {
             tvNodata.setVisibility(View.VISIBLE);
         }
+        tvListSize.setText("(共" + AttenList.size() + "条数据!)");
         attendListAdapter.notifyDataSetChanged();
     }
 

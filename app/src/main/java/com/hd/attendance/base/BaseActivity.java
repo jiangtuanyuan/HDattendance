@@ -40,17 +40,14 @@ public abstract class BaseActivity extends AppCompatActivity {
             }
         }
         mToolbar.setNavigationIcon(R.drawable.ic_back);
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE))
-                            .hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-                } catch (Exception e) {
-                    onBackPressed();
-                } finally {
-                    onBackPressed();
-                }
+        mToolbar.setNavigationOnClickListener(v -> {
+            try {
+                ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE))
+                        .hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            } catch (Exception e) {
+                onBackPressed();
+            } finally {
+                onBackPressed();
             }
         });
     }

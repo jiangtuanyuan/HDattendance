@@ -21,8 +21,6 @@ public class AttendancemTable extends LitePalSupport {
     private String Date;//当天的日期 2018-10-20
     @Column
     private String Week;//当天星期几 周六
-    @Column
-    private int WorkType;//当天上班类型
 
     @Column
     private boolean isDeductions=false;//是否有扣款
@@ -32,6 +30,8 @@ public class AttendancemTable extends LitePalSupport {
     private String deductionsInfo="无";//扣款说明
 
 
+    @Column(defaultValue = "1")
+    private int MorningWorkType;//上午出勤情况: 正常上班 请假  旷工  加班  出差   默认正常上班
     //上午-上班打卡相关字段
     @Column
     private String morning_start_time;//上午上班打卡时间
@@ -47,6 +47,10 @@ public class AttendancemTable extends LitePalSupport {
     private int morning_end_type;//上午下班打卡类型 从AttendType里面获取
     @Column
     private String morning_end_note="无";//上下上班 备注
+
+
+    @Column(defaultValue = "1")
+    private int AfternoonWorkType;//下午出勤情况
 
     //下午-上班打卡相关字段
     @Column
@@ -97,13 +101,6 @@ public class AttendancemTable extends LitePalSupport {
         Week = week;
     }
 
-    public int getWorkType() {
-        return WorkType;
-    }
-
-    public void setWorkType(int workType) {
-        WorkType = workType;
-    }
 
     public String getMorning_start_time() {
         return morning_start_time;
@@ -230,4 +227,20 @@ public class AttendancemTable extends LitePalSupport {
         return id;
     }
 
+
+    public int getMorningWorkType() {
+        return MorningWorkType;
+    }
+
+    public void setMorningWorkType(int morningWorkType) {
+        MorningWorkType = morningWorkType;
+    }
+
+    public int getAfternoonWorkType() {
+        return AfternoonWorkType;
+    }
+
+    public void setAfternoonWorkType(int afternoonWorkType) {
+        AfternoonWorkType = afternoonWorkType;
+    }
 }

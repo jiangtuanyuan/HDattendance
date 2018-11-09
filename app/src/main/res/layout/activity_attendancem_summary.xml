@@ -45,12 +45,24 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp" />
 
+    <TextView
+        android:id="@+id/tv_month_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:textColor="@color/gray"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tv_nodata"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="没有记录!" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_data"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="5dp" />
-
-
+        android:layout_height="match_parent" />
 
 </LinearLayout>

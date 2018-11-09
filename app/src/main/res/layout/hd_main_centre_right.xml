@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:padding="4dp">
+
+    <RelativeLayout
+        android:layout_width="300dp"
+        android:layout_height="400dp"
+        android:layout_margin="4dp"
+        android:background="@drawable/shape_rectangle_main_finger_bg">
+
+        <ImageView
+            android:id="@+id/iv_right_finger_logo"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/main_finger_yell" />
+
+
+        <ImageView
+            android:id="@+id/iv_right_user_finger"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginBottom="30dp" />
+
+
+        <TextView
+            android:id="@+id/tv_right_finger_state"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:text="启动异常!"
+            android:textColor="@color/yellb"
+            android:textSize="16sp" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_center_right_success"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/main_daka_suees_yell" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="打卡成功"
+            android:textColor="@color/yellb" />
+
+        <TextView
+            android:id="@+id/tv_right_success_name"
+            style="@style/YellStyle"
+            android:text="姓名:张三" />
+
+        <TextView
+            android:id="@+id/tv_right_success_type"
+            style="@style/YellStyle"
+            android:text="打卡类型:中午报餐" />
+
+        <TextView
+            android:id="@+id/tv_right_success_time"
+            style="@style/YellStyle"
+            android:text="打卡时间: 09:19" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/ll_center_right_log"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <TextView
+            style="@style/YellStyle"
+            android:layout_width="200dp"
+            android:gravity="center"
+            android:text="今日就餐记录" />
+
+        <TextView
+            android:id="@+id/tv_right_log_name"
+            style="@style/YellStyle"
+            android:layout_width="200dp"
+            android:text="姓名: 张  三" />
+
+        <TextView
+            android:id="@+id/tv_right_log_afternoon_meal"
+            style="@style/YellStyle"
+            android:layout_width="200dp"
+            android:text="中餐报餐:是 【09:00】" />
+
+        <TextView
+            android:id="@+id/tv_right_log_afternoon_eat_meal"
+            style="@style/YellStyle"
+            android:layout_width="200dp"
+            android:text="中餐就餐:是 【12:06】" />
+
+        <TextView
+            android:id="@+id/tv_right_log_evening_meal"
+            style="@style/YellStyle"
+            android:layout_width="200dp"
+            android:text="晚餐报餐:是 【09:00】" />
+
+        <TextView
+            android:id="@+id/tv_right_log_evening_eat_meal"
+            style="@style/YellStyle"
+            android:layout_width="200dp"
+            android:text="晚餐就餐:是 【18:10】" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -8,6 +8,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import com.hd.attendance.R;
 import com.hd.attendance.activity.employees.adapter.EmployeesItemAdapter;
@@ -32,6 +34,8 @@ public class EmployeesActivity extends BaseActivity {
     RecyclerView mRecycler;
     @BindView(R.id.refresh_layout)
     SmartRefreshLayout refreshLayout;
+    @BindView(R.id.tv_nodata)
+    TextView tvNodata;//没有数据
 
     private EmployeesItemAdapter adapter;
     private List<EmployeesTable> mList = new ArrayList<>();
@@ -48,6 +52,13 @@ public class EmployeesActivity extends BaseActivity {
         mList.clear();
         mList.addAll(LitePal.order("id desc").find(EmployeesTable.class));
         adapter.notifyDataSetChanged();
+
+        if (mList.size() == 0) {
+            tvNodata.setVisibility(View.VISIBLE);
+        } else {
+            tvNodata.setVisibility(View.GONE);
+        }
+
     }
 
     @Override

@@ -39,8 +39,6 @@ import butterknife.OnClick;
 public class AttendancemEditorActivity extends BaseActivity {
     @BindView(R.id.tv_top_user_info)
     TextView tvTopUserInfo;
-    @BindView(R.id.sp_atten)
-    Spinner spAtten;
     @BindView(R.id.tv_morning_start_time)
     TextView tvMorningStartTime;
     @BindView(R.id.tv_morning_start_time_update)
@@ -93,9 +91,12 @@ public class AttendancemEditorActivity extends BaseActivity {
     EditText etDeductions;
     @BindView(R.id.et_deductionsInfo)
     EditText etDeductionsInfo;
+    @BindView(R.id.sp_morning_atten_type)
+    Spinner spMorningAttenType;
+    @BindView(R.id.sp_afternoon_atten_type)
+    Spinner spAfternoonAttenType;
     @BindView(R.id.bt_save)
     Button btSave;
-
 
     private String ID = "";
     private AttendancemTable attendancem;
@@ -114,17 +115,17 @@ public class AttendancemEditorActivity extends BaseActivity {
         initToolbarNav();
         setTitle("编 辑");
 
-        tvMorningStartTimeUpdate.getPaint().setFlags(Paint. UNDERLINE_TEXT_FLAG );
-        tvMorningStartTypeUpdate.getPaint().setFlags(Paint. UNDERLINE_TEXT_FLAG );
+        tvMorningStartTimeUpdate.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+        tvMorningStartTypeUpdate.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
 
-        tvMorningEndTimeUpdate.getPaint().setFlags(Paint. UNDERLINE_TEXT_FLAG );
-        tvMorningEndTypeUpdate.getPaint().setFlags(Paint. UNDERLINE_TEXT_FLAG );
+        tvMorningEndTimeUpdate.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+        tvMorningEndTypeUpdate.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
 
-        tvAfternoonStartTimeUpdate.getPaint().setFlags(Paint. UNDERLINE_TEXT_FLAG );
-        tvAfternoonStartTypeUpdate.getPaint().setFlags(Paint. UNDERLINE_TEXT_FLAG );
+        tvAfternoonStartTimeUpdate.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+        tvAfternoonStartTypeUpdate.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
 
-        tvAfternoonEndTimeUpdate.getPaint().setFlags(Paint. UNDERLINE_TEXT_FLAG );
-        tvAfternoonEndTypeUpdate.getPaint().setFlags(Paint. UNDERLINE_TEXT_FLAG );
+        tvAfternoonEndTimeUpdate.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+        tvAfternoonEndTypeUpdate.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
 
 
     }
@@ -168,43 +169,41 @@ public class AttendancemEditorActivity extends BaseActivity {
         uSbuff.append("] 的考勤记录");
         tvTopUserInfo.setText(uSbuff.toString());
 
-        if (attendancem.getWorkType() > 0) {
-            spAtten.setSelection(attendancem.getWorkType() - 1);
-        } else {
-            spAtten.setSelection(0);
-        }
+        spMorningAttenType.setSelection(attendancem.getMorningWorkType());
+        spAfternoonAttenType.setSelection(attendancem.getAfternoonWorkType());
+
 
         //2.1设置上午上班
         tvMorningStartTime.setText(attendancem.getMorning_start_time() == null ? "打卡时间: " + "00:00" : "打卡时间: " + attendancem.getMorning_start_time());
         //2.2设置上午上班状态
-            switch (attendancem.getMorning_start_type()) {
-                case 0://正常
-                    tvMorningStartType.setText("状   态: 正常打卡");
-                    tvMorningStartType.setTextColor(getResources().getColor(R.color.green));
-                    break;
-                case 1://迟到
-                    tvMorningStartType.setText("状   态: 迟到打卡");
-                    tvMorningStartType.setTextColor(getResources().getColor(R.color.red));
-                    break;
-                case 2://早退打卡
-                    tvMorningStartType.setText("状   态: 早退打卡");
-                    tvMorningStartType.setTextColor(getResources().getColor(R.color.red));
-                    break;
-                case 3://忘记打卡
-                    tvMorningStartType.setText("状   态: 忘记打卡");
-                    tvMorningStartType.setTextColor(getResources().getColor(R.color.yell));
-                    break;
-                case 4://补卡
-                    tvMorningStartType.setText("状   态: 补 卡");
-                    tvMorningStartType.setTextColor(getResources().getColor(R.color.blue));
-                    break;
-                case 5://上午请假
-                    tvMorningStartType.setText("状   态: 请 假");
-                    tvMorningStartType.setTextColor(getResources().getColor(R.color.yell));
-                    break;
-                default:
-                    break;
-            }
+        switch (attendancem.getMorning_start_type()) {
+            case 0://正常
+                tvMorningStartType.setText("状   态: 正常打卡");
+                tvMorningStartType.setTextColor(getResources().getColor(R.color.green));
+                break;
+            case 1://迟到
+                tvMorningStartType.setText("状   态: 迟到打卡");
+                tvMorningStartType.setTextColor(getResources().getColor(R.color.red));
+                break;
+            case 2://早退打卡
+                tvMorningStartType.setText("状   态: 早退打卡");
+                tvMorningStartType.setTextColor(getResources().getColor(R.color.red));
+                break;
+            case 3://忘记打卡
+                tvMorningStartType.setText("状   态: 忘记打卡");
+                tvMorningStartType.setTextColor(getResources().getColor(R.color.yell));
+                break;
+            case 4://补卡
+                tvMorningStartType.setText("状   态: 补 卡");
+                tvMorningStartType.setTextColor(getResources().getColor(R.color.blue));
+                break;
+            case 5://上午请假
+                tvMorningStartType.setText("状   态: 请 假");
+                tvMorningStartType.setTextColor(getResources().getColor(R.color.yell));
+                break;
+            default:
+                break;
+        }
 
         //2.3 备注内容
         etMorningStartNote.setText("备注内容:" + attendancem.getMorning_start_note() == null ? "" : attendancem.getMorning_start_note());
@@ -214,68 +213,68 @@ public class AttendancemEditorActivity extends BaseActivity {
         //2.1设置上午上班
         tvMorningEndTime.setText(attendancem.getMorning_end_time() == null ? "打卡时间: " + "00:00" : "打卡时间: " + attendancem.getMorning_end_time());
 
-            switch (attendancem.getMorning_end_type()) {
-                case 0://正常
-                    tvMorningEndType.setText("状   态: 正常打卡");
-                    tvMorningEndType.setTextColor(getResources().getColor(R.color.green));
-                    break;
-                case 1://迟到
-                    tvMorningEndType.setText("状   态: 迟到打卡");
-                    tvMorningEndType.setTextColor(getResources().getColor(R.color.red));
-                    break;
-                case 2://早退打卡
-                    tvMorningEndType.setText("状   态: 早退打卡");
-                    tvMorningEndType.setTextColor(getResources().getColor(R.color.red));
-                    break;
-                case 3://忘记打卡
-                    tvMorningEndType.setText("状   态: 忘记打卡");
-                    tvMorningEndType.setTextColor(getResources().getColor(R.color.yell));
-                    break;
-                case 4://补卡
-                    tvMorningEndType.setText("状   态: 补 卡");
-                    tvMorningEndType.setTextColor(getResources().getColor(R.color.blue));
-                    break;
-                case 5://上午请假
-                    tvMorningEndType.setText("状   态: 请 假");
-                    tvMorningEndType.setTextColor(getResources().getColor(R.color.yell));
-                    break;
-                default:
-                    break;
-            }
+        switch (attendancem.getMorning_end_type()) {
+            case 0://正常
+                tvMorningEndType.setText("状   态: 正常打卡");
+                tvMorningEndType.setTextColor(getResources().getColor(R.color.green));
+                break;
+            case 1://迟到
+                tvMorningEndType.setText("状   态: 迟到打卡");
+                tvMorningEndType.setTextColor(getResources().getColor(R.color.red));
+                break;
+            case 2://早退打卡
+                tvMorningEndType.setText("状   态: 早退打卡");
+                tvMorningEndType.setTextColor(getResources().getColor(R.color.red));
+                break;
+            case 3://忘记打卡
+                tvMorningEndType.setText("状   态: 忘记打卡");
+                tvMorningEndType.setTextColor(getResources().getColor(R.color.yell));
+                break;
+            case 4://补卡
+                tvMorningEndType.setText("状   态: 补 卡");
+                tvMorningEndType.setTextColor(getResources().getColor(R.color.blue));
+                break;
+            case 5://上午请假
+                tvMorningEndType.setText("状   态: 请 假");
+                tvMorningEndType.setTextColor(getResources().getColor(R.color.yell));
+                break;
+            default:
+                break;
+        }
 
         etMorningEndNote.setText("备注内容:" + attendancem.getMorning_end_note() == null ? "" : attendancem.getMorning_end_note());
 
         //下午上班
         tvAfternoonStartTime.setText(attendancem.getAfternoon_start_time() == null ? "打卡时间: " + "00:00" : "打卡时间: " + attendancem.getAfternoon_start_time());
 
-            switch (attendancem.getAfternoon_start_type()) {
-                case 0://正常
-                    tvAfternoonStartType.setText("状   态: 正常打卡");
-                    tvAfternoonStartType.setTextColor(getResources().getColor(R.color.green));
-                    break;
-                case 1://迟到
-                    tvAfternoonStartType.setText("状   态: 迟到打卡");
-                    tvAfternoonStartType.setTextColor(getResources().getColor(R.color.red));
-                    break;
-                case 2://早退打卡
-                    tvAfternoonStartType.setText("状   态: 早退打卡");
-                    tvAfternoonStartType.setTextColor(getResources().getColor(R.color.red));
-                    break;
-                case 3://忘记打卡
-                    tvAfternoonStartType.setText("状   态: 忘记打卡");
-                    tvAfternoonStartType.setTextColor(getResources().getColor(R.color.yell));
-                    break;
-                case 4://补卡
-                    tvAfternoonStartType.setText("状   态: 补 卡");
-                    tvAfternoonStartType.setTextColor(getResources().getColor(R.color.blue));
-                    break;
-                case 5://下午请假
-                    tvAfternoonStartType.setText("状   态: 请 假");
-                    tvAfternoonStartType.setTextColor(getResources().getColor(R.color.yell));
-                    break;
-                default:
-                    break;
-            }
+        switch (attendancem.getAfternoon_start_type()) {
+            case 0://正常
+                tvAfternoonStartType.setText("状   态: 正常打卡");
+                tvAfternoonStartType.setTextColor(getResources().getColor(R.color.green));
+                break;
+            case 1://迟到
+                tvAfternoonStartType.setText("状   态: 迟到打卡");
+                tvAfternoonStartType.setTextColor(getResources().getColor(R.color.red));
+                break;
+            case 2://早退打卡
+                tvAfternoonStartType.setText("状   态: 早退打卡");
+                tvAfternoonStartType.setTextColor(getResources().getColor(R.color.red));
+                break;
+            case 3://忘记打卡
+                tvAfternoonStartType.setText("状   态: 忘记打卡");
+                tvAfternoonStartType.setTextColor(getResources().getColor(R.color.yell));
+                break;
+            case 4://补卡
+                tvAfternoonStartType.setText("状   态: 补 卡");
+                tvAfternoonStartType.setTextColor(getResources().getColor(R.color.blue));
+                break;
+            case 5://下午请假
+                tvAfternoonStartType.setText("状   态: 请 假");
+                tvAfternoonStartType.setTextColor(getResources().getColor(R.color.yell));
+                break;
+            default:
+                break;
+        }
 
         etAfternoonStartNote.setText("备注内容:" + attendancem.getAfternoon_start_note() == null ? "" : attendancem.getAfternoon_start_note());
 
@@ -283,35 +282,35 @@ public class AttendancemEditorActivity extends BaseActivity {
         //下午下班
         tvAfternoonEndTime.setText(attendancem.getAfternoon_end_time() == null ? "打卡时间: " + "00:00" : "打卡时间: " + attendancem.getAfternoon_end_time());
 
-            switch (attendancem.getAfternoon_end_type()) {
-                case 0://正常
-                    tvAfternoonEndType.setText("状   态: 正常打卡");
-                    tvAfternoonEndType.setTextColor(getResources().getColor(R.color.green));
-                    break;
-                case 1://迟到
-                    tvAfternoonEndType.setText("状   态: 迟到打卡");
-                    tvAfternoonEndType.setTextColor(getResources().getColor(R.color.red));
-                    break;
-                case 2://早退打卡
-                    tvAfternoonEndType.setText("状   态: 早退打卡");
-                    tvAfternoonEndType.setTextColor(getResources().getColor(R.color.red));
-                    break;
-                case 3://忘记打卡
-                    tvAfternoonEndType.setText("状   态: 忘记打卡");
-                    tvAfternoonEndType.setTextColor(getResources().getColor(R.color.yell));
-                    break;
-                case 4://补卡
-                    tvAfternoonEndType.setText("状   态: 补 卡");
-                    tvAfternoonEndType.setTextColor(getResources().getColor(R.color.blue));
-                    break;
-                case 5://下午请假
-                    tvAfternoonEndType.setText("状   态: 请 假");
-                    tvAfternoonEndType.setTextColor(getResources().getColor(R.color.yell));
-                    break;
+        switch (attendancem.getAfternoon_end_type()) {
+            case 0://正常
+                tvAfternoonEndType.setText("状   态: 正常打卡");
+                tvAfternoonEndType.setTextColor(getResources().getColor(R.color.green));
+                break;
+            case 1://迟到
+                tvAfternoonEndType.setText("状   态: 迟到打卡");
+                tvAfternoonEndType.setTextColor(getResources().getColor(R.color.red));
+                break;
+            case 2://早退打卡
+                tvAfternoonEndType.setText("状   态: 早退打卡");
+                tvAfternoonEndType.setTextColor(getResources().getColor(R.color.red));
+                break;
+            case 3://忘记打卡
+                tvAfternoonEndType.setText("状   态: 忘记打卡");
+                tvAfternoonEndType.setTextColor(getResources().getColor(R.color.yell));
+                break;
+            case 4://补卡
+                tvAfternoonEndType.setText("状   态: 补 卡");
+                tvAfternoonEndType.setTextColor(getResources().getColor(R.color.blue));
+                break;
+            case 5://下午请假
+                tvAfternoonEndType.setText("状   态: 请 假");
+                tvAfternoonEndType.setTextColor(getResources().getColor(R.color.yell));
+                break;
 
-                default:
-                    break;
-            }
+            default:
+                break;
+        }
 
         etAfternoonEndNote.setText(attendancem.getAfternoon_end_note() == null ? "" : attendancem.getAfternoon_end_note());
 
@@ -361,7 +360,10 @@ public class AttendancemEditorActivity extends BaseActivity {
                 break;
             case R.id.bt_save://保存修改
                 showProgressDialog("保存中..");
-                attendancem.setWorkType(spAtten.getSelectedItemPosition() + 1);
+
+                attendancem.setMorningWorkType(spMorningAttenType.getSelectedItemPosition());
+                attendancem.setAfternoonWorkType(spAfternoonAttenType.getSelectedItemPosition());
+
                 attendancem.setMorning_start_note(etMorningStartNote.getText().toString());
                 attendancem.setMorning_end_note(etMorningEndNote.getText().toString());
                 attendancem.setAfternoon_start_note(etAfternoonStartNote.getText().toString());
@@ -456,7 +458,7 @@ public class AttendancemEditorActivity extends BaseActivity {
     /**
      * 选择打卡状态
      */
-    private String[] areas = new String[]{"正常打卡", "迟到打卡", "早退打卡", "忘记打卡", "补卡","请假"};
+    private String[] areas = new String[]{"正常打卡", "迟到打卡", "早退打卡", "补卡"};
 
     private void selevtType(int x) {
         new AlertDialog.Builder(this)

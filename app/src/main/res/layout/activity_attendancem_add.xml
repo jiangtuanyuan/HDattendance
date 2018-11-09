@@ -26,6 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="请选择"
+            android:layout_marginLeft="10dp"
             android:textColor="@color/blue"
             android:textSize="16sp" />
 
@@ -49,29 +50,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="请选择"
+            android:layout_marginLeft="10dp"
             android:textColor="@color/blue"
             android:textSize="16sp" />
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="今日出勤情况:"
-            android:textSize="16sp" />
-
-        <Spinner
-            android:id="@+id/sp_atten"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:entries="@array/atten" />
     </LinearLayout>
 
 
@@ -85,16 +66,30 @@
             android:orientation="vertical">
 
             <!-- 上午上班 -->
-            <TextView
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
                 android:background="@color/blue"
-                android:gravity="center_horizontal"
-                android:padding="5dp"
-                android:text="上 午 (08:00-12:00)"
-                android:textColor="@color/white"
-                android:textSize="16sp" />
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="上 午 (08:00-12:00)"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+
+                <Spinner
+                    android:id="@+id/sp_morning_atten_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:entries="@array/atten" />
+            </LinearLayout>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -103,7 +98,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="100dp"
+                    android:layout_width="120dp"
                     android:layout_height="150dp"
                     android:background="@color/blues"
                     android:gravity="center"
@@ -128,7 +123,7 @@
 
                         <TextView
                             android:id="@+id/tv_morning_start_time"
-                            android:layout_width="wrap_content"
+                            android:layout_width="150dp"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
                             android:singleLine="true"
@@ -154,7 +149,7 @@
 
                         <TextView
                             android:id="@+id/tv_morning_start_type"
-                            android:layout_width="wrap_content"
+                            android:layout_width="150dp"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
                             android:singleLine="true"
@@ -180,7 +175,7 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="150dp"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
                             android:singleLine="true"
@@ -189,9 +184,9 @@
 
                         <EditText
                             android:id="@+id/et_morning_start_note"
-
-                            android:layout_width="300dp"
-                            android:layout_height="50dp"
+                            android:layout_width="350dp"
+                            android:layout_height="80dp"
+                            android:gravity="top|left"
                             android:layout_marginLeft="20dp"
                             android:background="@color/white" />
 
@@ -211,7 +206,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="100dp"
+                    android:layout_width="120dp"
                     android:layout_height="150dp"
                     android:background="@color/gray_q"
                     android:gravity="center"
@@ -236,7 +231,7 @@
 
                         <TextView
                             android:id="@+id/tv_morning_end_time"
-                            android:layout_width="wrap_content"
+                            android:layout_width="150dp"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
                             android:singleLine="true"
@@ -262,7 +257,7 @@
 
                         <TextView
                             android:id="@+id/tv_morning_end_type"
-                            android:layout_width="wrap_content"
+                            android:layout_width="150dp"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
                             android:singleLine="true"
@@ -288,7 +283,7 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="150dp"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
                             android:singleLine="true"
@@ -297,9 +292,10 @@
 
                         <EditText
                             android:id="@+id/et_morning_end_note"
-                            android:layout_width="300dp"
-                            android:layout_height="50dp"
+                            android:layout_width="350dp"
+                            android:layout_height="80dp"
                             android:layout_marginLeft="20dp"
+                            android:gravity="left|top"
                             android:background="@color/white" />
 
                     </LinearLayout>
@@ -309,16 +305,31 @@
 
             <!--下午上班-->
 
-            <TextView
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="2dp"
                 android:background="@color/yell"
-                android:gravity="center_horizontal"
-                android:padding="5dp"
-                android:text="下 午 (13:30-18:00)"
-                android:textColor="@color/white"
-                android:textSize="16sp" />
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="下 午 (13:30-18:00)"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+
+                <Spinner
+                    android:id="@+id/sp_afternoon_atten_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:entries="@array/atten" />
+            </LinearLayout>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -327,7 +338,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="100dp"
+                    android:layout_width="120dp"
                     android:layout_height="150dp"
                     android:background="@color/blues"
                     android:gravity="center"
@@ -351,7 +362,7 @@
 
                         <TextView
                             android:id="@+id/tv_afternoon_start_time"
-                            android:layout_width="wrap_content"
+                            android:layout_width="150dp"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
                             android:singleLine="true"
@@ -377,7 +388,7 @@
 
                         <TextView
                             android:id="@+id/tv_afternoon_start_type"
-                            android:layout_width="wrap_content"
+                            android:layout_width="150dp"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
                             android:singleLine="true"
@@ -403,7 +414,7 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="150dp"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
                             android:singleLine="true"
@@ -412,11 +423,11 @@
 
                         <EditText
                             android:id="@+id/et_afternoon_start_note"
-                            android:layout_width="300dp"
-                            android:layout_height="50dp"
+                            android:layout_width="350dp"
+                            android:layout_height="80dp"
                             android:layout_marginLeft="20dp"
+                            android:gravity="left|top"
                             android:background="@color/white" />
-
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
@@ -433,7 +444,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="100dp"
+                    android:layout_width="120dp"
                     android:layout_height="150dp"
                     android:background="@color/gray_q"
                     android:gravity="center"
@@ -458,7 +469,7 @@
 
                         <TextView
                             android:id="@+id/tv_afternoon_end_time"
-                            android:layout_width="wrap_content"
+                            android:layout_width="150dp"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
                             android:singleLine="true"
@@ -484,7 +495,7 @@
 
                         <TextView
                             android:id="@+id/tv_afternoon_end_type"
-                            android:layout_width="wrap_content"
+                            android:layout_width="150dp"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
                             android:singleLine="true"
@@ -510,7 +521,7 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="150dp"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
                             android:singleLine="true"
@@ -519,9 +530,10 @@
 
                         <EditText
                             android:id="@+id/et_afternoon_end_note"
-                            android:layout_width="300dp"
-                            android:layout_height="50dp"
+                            android:layout_width="350dp"
+                            android:layout_height="80dp"
                             android:layout_marginLeft="20dp"
+                            android:gravity="left|top"
                             android:background="@color/white" />
 
                     </LinearLayout>
@@ -552,7 +564,7 @@
 
                 <TextView
                     android:id="@+id/tv_isDeductions"
-                    android:layout_width="wrap_content"
+                    android:layout_width="120dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="5dp"
@@ -595,7 +607,7 @@
 
                 <TextView
 
-                    android:layout_width="wrap_content"
+                    android:layout_width="120dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:singleLine="true"
@@ -606,11 +618,12 @@
                     android:id="@+id/et_Deductions"
                     android:layout_width="100dp"
                     android:layout_height="40dp"
+                    android:layout_marginLeft="5dp"
                     android:background="@color/white"
                     android:digits="0123456789."
                     android:maxLength="20"
-                    android:text="0.0"
-                    android:singleLine="true" />
+                    android:singleLine="true"
+                    android:text="0.0" />
             </LinearLayout>
 
             <LinearLayout
@@ -622,7 +635,7 @@
 
                 <TextView
 
-                    android:layout_width="wrap_content"
+                    android:layout_width="120dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:singleLine="false"
@@ -633,10 +646,11 @@
                     android:id="@+id/et_deductionsInfo"
                     android:layout_width="400dp"
                     android:layout_height="100dp"
+                    android:layout_marginLeft="5dp"
                     android:background="@color/white"
                     android:gravity="left|top"
-                    android:singleLine="false"
                     android:padding="3dp"
+                    android:singleLine="false"
                     tools:ignore="RtlHardcoded" />
 
             </LinearLayout>
@@ -650,7 +664,7 @@
                 android:layout_margin="10dp"
                 android:background="@color/blue"
                 android:padding="10sp"
-                android:text="新 增"
+                android:text="新     增"
                 android:textColor="@color/white"
                 android:textSize="16sp" />
 

@@ -16,11 +16,10 @@
         android:gravity="center">
 
         <TableRow>
-
             <TextView
                 android:id="@+id/tv_kq"
                 style="@style/TextViewStyle"
-                android:drawableTop="@mipmap/hd_logo"
+                android:drawableTop="@drawable/ic_management_attendance"
                 android:text="考勤管理" />
             <TextView
                 android:id="@+id/tv_jc"
@@ -33,7 +32,6 @@
                 android:drawableTop="@drawable/ic_management_health"
                 android:text="卫生管理" />
         </TableRow>
-
         <TableRow>
             <TextView
                 android:id="@+id/tv_yg"
@@ -52,4 +50,6 @@
                 android:text="指纹管理" />
         </TableRow>
     </TableLayout>
+
+
 </LinearLayout>

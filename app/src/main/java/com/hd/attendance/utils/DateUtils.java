@@ -26,7 +26,7 @@ public class DateUtils {
     private static SimpleDateFormat TimeHM = new SimpleDateFormat("HH:mm");
 
 
-    private static String dayNames[] = {"星期天", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"};
+    private static String dayNames[] = {"星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"};
 
     public static String getDate() {
         try {
@@ -102,6 +102,7 @@ public class DateUtils {
     }
 
 
+
     /**
      * 返回当天是星期几  1 2 3 4 5 6 7
      */
@@ -109,6 +110,7 @@ public class DateUtils {
         Calendar c = Calendar.getInstance();// 获得一个日历的实例
         return c.get(Calendar.DAY_OF_WEEK) - 1;
     }
+
 
     /**
      * 获取当前 年月日和星期
@@ -191,5 +193,15 @@ public class DateUtils {
             e.printStackTrace();
             return -1;
         }
+    }
+
+    /**
+     * 获取当前日期是当年的第多少周
+     */
+    public static int getThisWeeks() {
+        Date d = new Date();
+        Calendar c = Calendar.getInstance();
+        c.setTime(d);
+        return c.get(Calendar.WEEK_OF_YEAR);
     }
 }

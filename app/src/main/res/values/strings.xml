@@ -1,3 +1,19 @@
 <resources>
     <string name="app_name">黑豆考勤系统</string>
+
+
+    <!--主界面的文本-->
+    <string name="main_today">今日卫生安排:</string>
+    <string name="main_today_test">【周N】</string>
+    <string name="main_today_date">0000-00-00</string>
+    <string name="main_today_time">00:00:00</string>
+
+    <string name="main_health_one">一 楼</string>
+    <string name="main_health_two">二 楼</string>
+    <string name="main_health_health"> 打扫人员 : </string>
+    <string name="main_health_pai"> 详细安排 : </string>
+
+    <string name="main_centre_atten"> 考 勤 打 卡 </string>
+    <string name="main_centre_meal"> 就 餐 打 卡 </string>
+
 </resources>

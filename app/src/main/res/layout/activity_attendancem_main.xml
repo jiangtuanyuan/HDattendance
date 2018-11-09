@@ -38,8 +38,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:text="状 态:"
+            android:text="打卡状态:"
             android:textSize="16sp" />
 
         <TextView
@@ -48,9 +47,18 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:text="全部"
-            android:textSize="16sp"
             android:textColor="@color/blue"
-          />
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tv_list_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="共0条记录!"
+            android:textColor="@color/gray"
+            android:textSize="15sp" />
+
     </LinearLayout>
 
 
@@ -64,7 +72,6 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_data"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="5dp" />
+        android:layout_height="match_parent" />
 
 </LinearLayout>

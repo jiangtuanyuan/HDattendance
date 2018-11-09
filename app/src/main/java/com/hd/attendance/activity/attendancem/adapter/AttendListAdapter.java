@@ -2,6 +2,7 @@ package com.hd.attendance.activity.attendancem.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -61,36 +62,56 @@ public class AttendListAdapter extends RecyclerView.Adapter<AttendListAdapter.Vi
         StringBuffer sTop = new StringBuffer();
 
         if(isAdddateTop){
-            sTop.append(atten.getDate()+"  ["+atten.getWeek() +"]\n");
+            sTop.append("时   间: "+atten.getDate()+"  ["+atten.getWeek() +"]\n");
         }
 
         sTop.append("[" + atten.getUser_Name() + "]");
         sTop.append("\n出勤情况:");
-        switch (atten.getWorkType()) {
+        sTop.append(" (上午:");
+        switch (atten.getMorningWorkType()) {
+            case 0:
+                sTop.append(" 正常上班 ");
+                break;
             case 1:
-                sTop.append("正常上班 ");
+                sTop.append(" 请 假 ");
                 break;
             case 2:
-                sTop.append("请 假 ");
+                sTop.append(" 旷 工 ");
                 break;
             case 3:
-                sTop.append("正常休息 ");
+                sTop.append(" 加 班 ");
                 break;
             case 4:
-                sTop.append("旷 工 ");
-                break;
-            case 5:
-                sTop.append("加 班 ");
+                sTop.append(" 出 差 ");
                 break;
             default:
                 break;
         }
-        if (atten.getMorning_start_type() == AttendType.LEAVE_OFF_CODE || atten.getMorning_end_type() == AttendType.LEAVE_OFF_CODE) {
-            sTop.append("(上午请假)");
+        sTop.append(")");
+
+        sTop.append(" (下午:");
+        switch (atten.getAfternoonWorkType()) {
+            case 0:
+                sTop.append(" 正常上班 ");
+                break;
+            case 1:
+                sTop.append(" 请 假 ");
+                break;
+            case 2:
+                sTop.append(" 旷 工 ");
+                break;
+            case 3:
+                sTop.append(" 加 班 ");
+                break;
+            case 4:
+                sTop.append(" 出 差 ");
+                break;
+            default:
+                break;
         }
-        if (atten.getAfternoon_start_type() == AttendType.LEAVE_OFF_CODE || atten.getAfternoon_end_type() == AttendType.LEAVE_OFF_CODE) {
-            sTop.append("(下午请假)");
-        }
+        sTop.append(")");
+
+
 
 
         sTop.append("\n打卡情况: ");
@@ -102,10 +123,10 @@ public class AttendListAdapter extends RecyclerView.Adapter<AttendListAdapter.Vi
 
 
         if (atten.isDeductions()) {
-            sTop.append("\n扣款情况: 有 (金额:" + atten.getDeductions() + ")");
+            sTop.append("\n扣款情况: 有 (金额:" + atten.getDeductions() + " ￥)");
 
             holder.tvIsDeductions.setText("扣款情况: 有");
-            holder.tvDeductions.setText("扣款金额:" + atten.getDeductions());
+            holder.tvDeductions.setText("扣款金额:" + atten.getDeductions()+" ￥");
             holder.tvDeductionsInfo.setText("扣款说明:" + atten.getDeductionsInfo());
         } else {
             sTop.append("\n扣款情况: 无");
@@ -137,23 +158,13 @@ public class AttendListAdapter extends RecyclerView.Adapter<AttendListAdapter.Vi
 
                 break;
             case 3:
-                holder.tvMorningStartType.setText("状        态:  忘记打卡");
-                holder.tvMorningStartType.setTextColor(mContext.getResources().getColor(R.color.yell));
-
-                break;
-            case 4:
                 holder.tvMorningStartType.setText("状        态:  补 卡");
-                holder.tvMorningStartType.setTextColor(mContext.getResources().getColor(R.color.blue));
-
-                break;
-            case 5:
-                holder.tvMorningStartType.setText("状        态:  请 假");
                 holder.tvMorningStartType.setTextColor(mContext.getResources().getColor(R.color.yell));
+
                 break;
             default:
                 holder.tvMorningStartType.setText("状        态:  正常打卡");
                 holder.tvMorningStartType.setTextColor(mContext.getResources().getColor(R.color.green));
-
                 break;
         }
         holder.tvMorningStartNote.setText("备注内容:  " + atten.getMorning_start_note());
@@ -177,16 +188,7 @@ public class AttendListAdapter extends RecyclerView.Adapter<AttendListAdapter.Vi
 
                 break;
             case 3:
-                holder.tvMorningEndType.setText("状        态:  忘记打卡");
-                holder.tvMorningEndType.setTextColor(mContext.getResources().getColor(R.color.yell));
-
-                break;
-            case 4:
-                holder.tvMorningEndType.setText("状        态:  补卡");
-                holder.tvMorningEndType.setTextColor(mContext.getResources().getColor(R.color.blue));
-                break;
-            case 5:
-                holder.tvMorningEndType.setText("状        态:  请 假");
+                holder.tvMorningEndType.setText("状        态:  补 卡");
                 holder.tvMorningEndType.setTextColor(mContext.getResources().getColor(R.color.yell));
                 break;
             default:
@@ -216,19 +218,11 @@ public class AttendListAdapter extends RecyclerView.Adapter<AttendListAdapter.Vi
 
                 break;
             case 3:
-                holder.tvAfternoonStartType.setText("状        态:  忘记打卡");
+                holder.tvAfternoonStartType.setText("状        态:  补 卡");
                 holder.tvAfternoonStartType.setTextColor(mContext.getResources().getColor(R.color.yell));
 
                 break;
-            case 4:
-                holder.tvAfternoonStartType.setText("状        态:  补卡");
-                holder.tvAfternoonStartType.setTextColor(mContext.getResources().getColor(R.color.blue));
 
-                break;
-            case 5:
-                holder.tvAfternoonStartType.setText("状        态:  请 假");
-                holder.tvAfternoonStartType.setTextColor(mContext.getResources().getColor(R.color.yell));
-                break;
             default:
                 holder.tvAfternoonStartType.setText("状        态:  正常打卡");
                 holder.tvAfternoonStartType.setTextColor(mContext.getResources().getColor(R.color.green));
@@ -243,30 +237,17 @@ public class AttendListAdapter extends RecyclerView.Adapter<AttendListAdapter.Vi
             case 0:
                 holder.tvAfternoonEndType.setText("状        态:  正常打卡");
                 holder.tvAfternoonEndType.setTextColor(mContext.getResources().getColor(R.color.green));
-
                 break;
             case 1:
                 holder.tvAfternoonEndType.setText("状        态:  迟到打卡");
                 holder.tvAfternoonEndType.setTextColor(mContext.getResources().getColor(R.color.red));
-
                 break;
             case 2:
                 holder.tvAfternoonEndType.setText("状        态:  早退打卡");
                 holder.tvAfternoonEndType.setTextColor(mContext.getResources().getColor(R.color.red));
-
                 break;
             case 3:
-                holder.tvAfternoonEndType.setText("状        态:  忘记打卡");
-                holder.tvAfternoonEndType.setTextColor(mContext.getResources().getColor(R.color.yell));
-
-                break;
-            case 4:
-                holder.tvAfternoonEndType.setText("状        态:  补卡");
-                holder.tvAfternoonEndType.setTextColor(mContext.getResources().getColor(R.color.blue));
-
-                break;
-            case 5:
-                holder.tvAfternoonEndType.setText("状        态:  请 假");
+                holder.tvAfternoonEndType.setText("状        态:  补 卡");
                 holder.tvAfternoonEndType.setTextColor(mContext.getResources().getColor(R.color.yell));
                 break;
             default:
@@ -288,7 +269,7 @@ public class AttendListAdapter extends RecyclerView.Adapter<AttendListAdapter.Vi
             }
         });
 
-
+        holder.tvEditorInfo.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
         holder.tvEditorInfo.setOnClickListener(v -> {
             Intent intent = new Intent(mContext, AttendancemEditorActivity.class);
             intent.putExtra("id", atten.getId() + "");

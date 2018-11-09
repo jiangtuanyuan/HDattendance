@@ -16,7 +16,8 @@ public class HealthTable extends LitePalSupport {
     private int weekid; //1 2 3 4 5 6 7  只能1到7
     @Column
     private String weeki; //对应上面的 星期一 星期二....
-
+    @Column
+    private int weeks; //单双周 1 是单周  2：双周
     @Column
     private String OnFloorUserID;//一楼的用户ID
     @Column
@@ -31,6 +32,13 @@ public class HealthTable extends LitePalSupport {
     @Column
     private String TwoFloorInfo;//二楼的详情卫生安排
 
+    public int getWeeks() {
+        return weeks;
+    }
+
+    public void setWeeks(int weeks) {
+        this.weeks = weeks;
+    }
 
     public int getId() {
         return id;

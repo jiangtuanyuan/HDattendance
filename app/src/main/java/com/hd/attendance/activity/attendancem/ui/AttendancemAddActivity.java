@@ -44,8 +44,6 @@ public class AttendancemAddActivity extends BaseActivity {
     TextView tvDate;
     @BindView(R.id.tv_name)
     TextView tvName;
-    @BindView(R.id.sp_atten)
-    Spinner spAtten;
     @BindView(R.id.tv_morning_start_time)
     TextView tvMorningStartTime;
     @BindView(R.id.tv_morning_start_time_update)
@@ -100,6 +98,10 @@ public class AttendancemAddActivity extends BaseActivity {
     EditText etDeductionsInfo;
     @BindView(R.id.bt_save)
     Button btSave;
+    @BindView(R.id.sp_morning_atten_type)
+    Spinner spMorningAttenType;
+    @BindView(R.id.sp_afternoon_atten_type)
+    Spinner spAfternoonAttenType;
 
 
     private AttendancemTable attendancem;
@@ -117,17 +119,22 @@ public class AttendancemAddActivity extends BaseActivity {
         setTitle("新  增");
         attendancem = new AttendancemTable();
 
-        tvMorningStartTimeUpdate.getPaint().setFlags(Paint. UNDERLINE_TEXT_FLAG );
-        tvMorningStartTypeUpdate.getPaint().setFlags(Paint. UNDERLINE_TEXT_FLAG );
+        //添加下划线
+        tvName.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+        tvDate.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
 
-        tvMorningEndTimeUpdate.getPaint().setFlags(Paint. UNDERLINE_TEXT_FLAG );
-        tvMorningEndTypeUpdate.getPaint().setFlags(Paint. UNDERLINE_TEXT_FLAG );
 
-        tvAfternoonStartTimeUpdate.getPaint().setFlags(Paint. UNDERLINE_TEXT_FLAG );
-        tvAfternoonStartTypeUpdate.getPaint().setFlags(Paint. UNDERLINE_TEXT_FLAG );
+        tvMorningStartTimeUpdate.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+        tvMorningStartTypeUpdate.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
 
-        tvAfternoonEndTimeUpdate.getPaint().setFlags(Paint. UNDERLINE_TEXT_FLAG );
-        tvAfternoonEndTypeUpdate.getPaint().setFlags(Paint. UNDERLINE_TEXT_FLAG );
+        tvMorningEndTimeUpdate.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+        tvMorningEndTypeUpdate.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+
+        tvAfternoonStartTimeUpdate.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+        tvAfternoonStartTypeUpdate.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+
+        tvAfternoonEndTimeUpdate.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+        tvAfternoonEndTypeUpdate.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
     }
 
     @Override
@@ -189,7 +196,12 @@ public class AttendancemAddActivity extends BaseActivity {
                     attendancem.setUser_Name(mCheckListS.get(0).getUser_name());
                     attendancem.setDate(dateS);
                     attendancem.setWeek(DateUtils.DateToDayB(dateS));
-                    attendancem.setWorkType(spAtten.getSelectedItemPosition() + 1);
+
+                    //上午出勤情况
+                    attendancem.setMorningWorkType(spMorningAttenType.getSelectedItemPosition());
+                    attendancem.setAfternoonWorkType(spAfternoonAttenType.getSelectedItemPosition());
+
+
                     if (rbYes.isChecked()) {
                         attendancem.setIsDeductions(true);
                     } else {
@@ -303,7 +315,7 @@ public class AttendancemAddActivity extends BaseActivity {
     /**
      * 选择打卡状态
      */
-    private String[] areas = new String[]{"正常打卡", "迟到打卡", "早退打卡", "忘记打卡", "补卡","请假"};
+    private String[] areas = new String[]{"正常打卡", "迟到打卡", "早退打卡", "补卡"};
 
     private void selevtType(int x) {
         new AlertDialog.Builder(this)
@@ -344,7 +356,7 @@ public class AttendancemAddActivity extends BaseActivity {
         //时间选择器
         TimePickerView pvTime = new TimePickerView.Builder(this, (date, v) -> {//选中事件回调
             dateS = getDate(date);
-            tvDate.setText(dateS);
+            tvDate.setText(dateS+" ["+DateUtils.DateToDayB(dateS)+"]");
 
             isDBUserInfo();
         })//默认全部显示

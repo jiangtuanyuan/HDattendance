@@ -92,6 +92,7 @@ public class MainActivity extends BaseActivity {
     TextView tvAttenAfternoonStart;
     @BindView(R.id.tv_atten_afternoon_end)
     TextView tvAttenAfternoonEnd;
+
     //卫生
     @BindView(R.id.tv_health_Ausers)
     TextView tvHealthAusers;
@@ -101,6 +102,8 @@ public class MainActivity extends BaseActivity {
     TextView tvHealthBusers;
     @BindView(R.id.tv_health_Binfo)
     TextView tvHealthBinfo;
+    @BindView(R.id.tv_Today_arrange)
+    TextView tvTodayArrange;
 
 
     //考勤打卡显示的
@@ -160,7 +163,7 @@ public class MainActivity extends BaseActivity {
     protected void initViews(Bundle savedInstanceState) {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        setTitle("考 勤 系 统");
+        setTitle("考勤系统");
         initToolbarIcon(R.mipmap.hd_logo);
         setSupportActionBar(mToolbar);
 
@@ -188,7 +191,8 @@ public class MainActivity extends BaseActivity {
                 onBackPressed();
                 return true;
             case R.id.query:
-                ToastUtil.showToast("查询");
+                //ToastUtil.showToast("查询");
+                showHealthDialog("蒋团圆");
                 return true;
             case R.id.manger:
                 startActivity(new Intent(this, ManagementActivity.class));
@@ -205,9 +209,21 @@ public class MainActivity extends BaseActivity {
     private HealthTable healthTable;
 
     private void showHealth() {
-        int weekid = DateUtils.getWeek();
         HList.clear();
-        HList.addAll(LitePal.where("weekid = ?", String.valueOf(weekid)).find(HealthTable.class));
+        int weekid = DateUtils.getWeek();
+        if (weekid == 6) {
+            //大扫除
+            int number = DateUtils.getThisWeeks();
+            if (number % 2 == 0) {
+                tvTodayArrange.setText("今日卫生安排:[大扫除-双周]");
+                HList.addAll(LitePal.where("weekid = 6 and weeks= 2").find(HealthTable.class));
+            } else {
+                HList.addAll(LitePal.where("weekid = 6 and weeks= 1").find(HealthTable.class));
+            }
+        } else {
+            HList.addAll(LitePal.where("weekid = ?", String.valueOf(weekid)).find(HealthTable.class));
+        }
+
         if (HList.size() > 0) {
             healthTable = HList.get(0);
             tvHealthAusers.setText("打扫人员:" + healthTable.getOnFloorUserName());
@@ -231,12 +247,12 @@ public class MainActivity extends BaseActivity {
         if (HealthDialog == null) {
             HealthDialog = new AlertDialog.Builder(MainActivity.this);
             HealthDialog.setCancelable(false);
-            HealthDialog.setPositiveButton("我知道了！", (dialog, which) -> {
+            HealthDialog.setPositiveButton("我知道了", (dialog, which) -> {
                 dialog.dismiss();
             });
         }
         HealthDialog.setTitle("[" + name + "] 今天轮到您打扫卫生!");
-        HealthDialog.setMessage("今天轮到您打扫卫生,切记！切记！切记！\n 详情请看顶部通知栏！");
+        HealthDialog.setMessage("今天轮到您打扫卫生!\n今天轮到您打扫卫生!\n今天轮到您打扫卫生!\n 切记!\n 详情请查看顶部通知栏！");
         HealthDialog.show();
     }
 
@@ -460,7 +476,7 @@ public class MainActivity extends BaseActivity {
 
 
                                                 //设置界面
-                                                tvLeftAttenType.setText("  打开类型:[上午上班卡]");
+                                                tvLeftAttenType.setText("  打卡状态:[正常]");
                                                 tvLeftAttenTime.setText("  打卡时间：" + userAtten.getMorning_start_time());
 
                                                 //记录进日志文件
@@ -498,7 +514,7 @@ public class MainActivity extends BaseActivity {
 
                                                 //设置界面
                                                 llLeftLayout.setVisibility(View.VISIBLE);
-                                                tvLeftAttenType.setText("  打卡类型:[上午上班 迟到 卡]");
+                                                tvLeftAttenType.setText("  打卡状态:[迟到]");
                                                 tvLeftAttenTime.setText("  打卡时间 :" + userAtten.getMorning_start_time());
 
 
@@ -542,7 +558,7 @@ public class MainActivity extends BaseActivity {
 
                                                 //设置界面
                                                 llLeftLayout.setVisibility(View.VISIBLE);
-                                                tvLeftAttenType.setText("  打开类型:[上午上班 早退 卡]");
+                                                tvLeftAttenType.setText("  打卡状态:[早退]");
                                                 tvLeftAttenTime.setText("  打卡时间：" + userAtten.getMorning_end_time());
 
 
@@ -568,7 +584,7 @@ public class MainActivity extends BaseActivity {
                                                 return;
                                             }
                                             userAtten.setMorning_end_time(DateUtils.getTimeHM());
-                                            userAtten.setMorning_end_type(0);//正常打卡
+                                            userAtten.setMorning_end_type(AttendType.NORMAL_CODE);//正常打卡
                                             userAtten.setMorning_end_note("无");
                                             userAtten.save();
                                             ToastUtil.showToast("[" + names[1] + "] 上午下班打卡成功!");
@@ -576,7 +592,7 @@ public class MainActivity extends BaseActivity {
 
                                             //设置界面
                                             llLeftLayout.setVisibility(View.VISIBLE);
-                                            tvLeftAttenType.setText("  打开类型:[上午下班卡]");
+                                            tvLeftAttenType.setText("  打卡状态:[正常]");
                                             tvLeftAttenTime.setText("  打卡时间：" + userAtten.getMorning_end_time());
 
 
@@ -600,7 +616,7 @@ public class MainActivity extends BaseActivity {
 
                                                 //设置界面
                                                 llLeftLayout.setVisibility(View.VISIBLE);
-                                                tvLeftAttenType.setText("  打开类型:[下午上班卡]");
+                                                tvLeftAttenType.setText("  打卡状态:[正常]");
                                                 tvLeftAttenTime.setText("  打卡时间：" + userAtten.getAfternoon_start_time());
 
                                                 //记录进日志文件
@@ -635,7 +651,7 @@ public class MainActivity extends BaseActivity {
 
                                                 //设置界面
                                                 llLeftLayout.setVisibility(View.VISIBLE);
-                                                tvLeftAttenType.setText("  打开类型:[上午上班 迟到 打卡]");
+                                                tvLeftAttenType.setText("  打卡状态:[迟到]");
                                                 tvLeftAttenTime.setText("  打卡时间：" + userAtten.getAfternoon_start_time());
 
 
@@ -676,7 +692,7 @@ public class MainActivity extends BaseActivity {
 
                                                 //设置界面
                                                 llLeftLayout.setVisibility(View.VISIBLE);
-                                                tvLeftAttenType.setText("  打开类型:[下午下班 早退 卡]");
+                                                tvLeftAttenType.setText("  打卡状态:[早退]");
                                                 tvLeftAttenTime.setText("  打卡时间：" + userAtten.getAfternoon_end_time());
 
                                                 //记录进日志文件
@@ -709,7 +725,7 @@ public class MainActivity extends BaseActivity {
 
                                             //设置界面
                                             llLeftLayout.setVisibility(View.VISIBLE);
-                                            tvLeftAttenType.setText("  打开类型:[下午下班卡]");
+                                            tvLeftAttenType.setText("  打卡状态:[正常]");
                                             tvLeftAttenTime.setText("  打卡时间：" + userAtten.getAfternoon_end_time());
 
                                             //记录进日志文件
@@ -1120,7 +1136,6 @@ public class MainActivity extends BaseActivity {
                     ATTEN_CODE = 7;//下午下班 为 7
                     return;
                 }
-
 
             } catch (NumberFormatException e) {
                 e.printStackTrace();
