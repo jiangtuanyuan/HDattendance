@@ -49,7 +49,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:gravity="center"
-                    android:text=" 张 三"
+                    android:text=""
                     android:textColor="@color/blue"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -75,7 +75,6 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:gravity="center"
-                    android:text=" 10月份    (共31天，星期日4天!)"
                     android:textColor="@color/blue"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -109,7 +108,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:gravity="center"
-                    android:text=" 20天"
+                    android:text=" 0天"
                     android:textColor="@color/blue"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -135,7 +134,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:gravity="center"
-                    android:text=" 2天"
+                    android:text=" 0天"
                     android:textColor="@color/blue"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -162,7 +161,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:gravity="center"
-                    android:text=" 2天"
+                    android:text=" 0天"
                     android:textColor="@color/blue"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -188,7 +187,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:gravity="center"
-                    android:text=" 2天"
+                    android:text=" 0天"
                     android:textColor="@color/blue"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -215,7 +214,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:gravity="center"
-                    android:text=" 2天"
+                    android:text=" 0天"
                     android:textColor="@color/blue"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -250,7 +249,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:gravity="center"
-                    android:text="正常打卡:20次    迟到打卡:3次    补卡:3次"
+                    android:text="正常打卡:0次    迟到打卡:0次    补卡:0次"
                     android:textColor="@color/blue"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -276,7 +275,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:gravity="center"
-                    android:text="正常打卡:20次    早退打卡:3次    补卡:3次"
+                    android:text="正常打卡:0次    早退打卡:0次    补卡:0次"
                     android:textColor="@color/blue"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -303,7 +302,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:gravity="center"
-                    android:text="正常打卡:20次    迟到打卡:3次    补卡:3次"
+                    android:text="正常打卡:0次    迟到打卡:0次    补卡:0次"
                     android:textColor="@color/blue"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -329,7 +328,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:gravity="center"
-                    android:text="正常打卡:20次    早退打卡:3次    补卡:3次"
+                    android:text="正常打卡:0次    早退打卡:0次    补卡:0次"
                     android:textColor="@color/blue"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -364,7 +363,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:gravity="center"
-                    android:text=" 3次"
+                    android:text=" 0次"
                     android:textColor="@color/blue"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -391,7 +390,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:gravity="center"
-                    android:text=" 130元"
+                    android:text=" 0元"
                     android:textColor="@color/blue"
                     android:textSize="16sp" />
             </LinearLayout>

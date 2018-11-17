@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -74,9 +75,16 @@ public class AttendancemSummaryActivity extends BaseActivity {
         isDBUserInfo();
     }
 
+    //主界面跳转过来的用户查询 不能显示编辑
+    private String UserID = "";
+    private String UserNmae = "";
+
     @Override
     protected void initVariables() {
-
+        if (getIntent() != null) {
+            UserID = getIntent().getStringExtra("id");
+            UserNmae = getIntent().getStringExtra("name");
+        }
     }
 
     @Override
@@ -87,6 +95,16 @@ public class AttendancemSummaryActivity extends BaseActivity {
         setTitle("考勤数据汇总");
         setSupportActionBar(toolbar);
         fragmentManager = getSupportFragmentManager();
+
+        if (!TextUtils.isEmpty(UserID)
+                && !TextUtils.isEmpty(UserNmae)) {
+            UserBean userBean = new UserBean();
+            userBean.setUser_id(Integer.parseInt(UserID));
+            userBean.setUser_name(UserNmae);
+            tvChooseUser.setText(UserNmae);
+            mCheckListS.clear();
+            mCheckListS.add(userBean);
+        }
 
         setSelectYear();//设置年
         setMonthRecyclerw();//设置月
@@ -142,6 +160,11 @@ public class AttendancemSummaryActivity extends BaseActivity {
         attendListAdapter = new AttendListAdapter(this, AttenList);
         attendListAdapter.isAddTime(true);
         recyclerData.setAdapter(attendListAdapter);
+
+        if (!TextUtils.isEmpty(UserID) && !TextUtils.isEmpty(UserNmae)) {
+            attendListAdapter.setShowEditor(false);
+        }
+
     }
 
     /**
@@ -223,10 +246,17 @@ public class AttendancemSummaryActivity extends BaseActivity {
      */
     @OnClick(R.id.tv_choose_user)
     public void onViewClicked() {
-        Intent intent = new Intent(this, UserChooseActivity.class);
-        intent.putExtra("mChooseNums", "single");
-        intent.putExtra("isalls", "1");
-        startActivityForResult(intent, 100);
+        if (!TextUtils.isEmpty(UserID)
+                && !TextUtils.isEmpty(UserNmae)) {
+            ToastUtil.showToast("只能查看自己的数据!");
+        } else {
+            Intent intent = new Intent(this, UserChooseActivity.class);
+            intent.putExtra("mChooseNums", "single");
+            intent.putExtra("isalls", "1");
+            startActivityForResult(intent, 100);
+        }
+
+
     }
 
     private List<UserBean> mCheckListS = new ArrayList<>();
@@ -292,5 +322,4 @@ public class AttendancemSummaryActivity extends BaseActivity {
         }
         tvMonthInfo.setText("[ 共:" + AttenList.size() + "条记录! ]");
     }
-
 }

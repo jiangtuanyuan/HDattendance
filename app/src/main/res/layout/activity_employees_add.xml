@@ -105,6 +105,45 @@
             android:singleLine="true" />
     </LinearLayout>
 
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="是否是系统管理员:"
+            android:textSize="20sp" />
+
+
+        <RadioGroup
+            android:id="@+id/rg_admin"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="12dp"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rb_admin_yes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="是" />
+
+            <RadioButton
+                android:id="@+id/rb_admin_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="50dp"
+                android:checked="true"
+                android:text="否" />
+        </RadioGroup>
+    </LinearLayout>
+
     <Button
         android:id="@+id/bt_save"
         android:layout_width="wrap_content"

@@ -49,10 +49,9 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <TextView
@@ -60,7 +59,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
                 android:gravity="center_horizontal"
-                android:text="2.指纹采集需要录取三次,请轻触左边指纹仪.."
+                android:text="2.指纹采集需要录取三次,请轻触左边指纹仪!"
                 android:textColor="@color/green"
                 android:textSize="16sp" />
 
@@ -80,7 +79,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
-                        android:text="第一次"
+                        android:text="【第一次】"
                         android:textColor="@color/blue"
                         android:textSize="16sp" />
 
@@ -108,7 +107,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
-                        android:text="第二次"
+                        android:text="【第二次】"
                         android:textColor="@color/blue"
                         android:textSize="16sp" />
 
@@ -136,7 +135,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
-                        android:text="第三次"
+                        android:text="【第三次】"
                         android:textColor="@color/blue"
                         android:textSize="16sp" />
 

@@ -28,16 +28,21 @@ import butterknife.ButterKnife;
 
 /**
  * 考勤的列表信息
- *
  */
 public class AttendListAdapter extends RecyclerView.Adapter<AttendListAdapter.ViewHolder> {
 
     private Context mContext;
     private List<AttendancemTable> mDataBeans;
+    private boolean isShowEditor = true;//是否显示编辑 默认显示
 
-    private boolean isAdddateTop=false;//是否添加时间到头部
-    public void isAddTime(boolean isAdddateTop){
-        this.isAdddateTop=isAdddateTop;
+    public void setShowEditor(boolean showEditor) {
+        isShowEditor = showEditor;
+    }
+
+    private boolean isAdddateTop = false;//是否添加时间到头部
+
+    public void isAddTime(boolean isAdddateTop) {
+        this.isAdddateTop = isAdddateTop;
     }
 
     public AttendListAdapter(Context mContext, List<AttendancemTable> dataBeans) {
@@ -61,8 +66,8 @@ public class AttendListAdapter extends RecyclerView.Adapter<AttendListAdapter.Vi
         //1.设置头部信息 姓名  出勤情况:正常上班 打卡情况:
         StringBuffer sTop = new StringBuffer();
 
-        if(isAdddateTop){
-            sTop.append("时   间: "+atten.getDate()+"  ["+atten.getWeek() +"]\n");
+        if (isAdddateTop) {
+            sTop.append("时   间: " + atten.getDate() + "  [" + atten.getWeek() + "]\n");
         }
 
         sTop.append("[" + atten.getUser_Name() + "]");
@@ -112,8 +117,6 @@ public class AttendListAdapter extends RecyclerView.Adapter<AttendListAdapter.Vi
         sTop.append(")");
 
 
-
-
         sTop.append("\n打卡情况: ");
         if (atten.getMorning_start_type() == 0 && atten.getMorning_end_type() == 0 && atten.getAfternoon_start_type() == 0 && atten.getAfternoon_end_type() == 0) {
             sTop.append("正 常");
@@ -126,7 +129,7 @@ public class AttendListAdapter extends RecyclerView.Adapter<AttendListAdapter.Vi
             sTop.append("\n扣款情况: 有 (金额:" + atten.getDeductions() + " ￥)");
 
             holder.tvIsDeductions.setText("扣款情况: 有");
-            holder.tvDeductions.setText("扣款金额:" + atten.getDeductions()+" ￥");
+            holder.tvDeductions.setText("扣款金额:" + atten.getDeductions() + " ￥");
             holder.tvDeductionsInfo.setText("扣款说明:" + atten.getDeductionsInfo());
         } else {
             sTop.append("\n扣款情况: 无");
@@ -268,6 +271,12 @@ public class AttendListAdapter extends RecyclerView.Adapter<AttendListAdapter.Vi
                 holder.ivStatus.setImageResource(R.drawable.icon_shangla);
             }
         });
+
+        if (isShowEditor) {
+            holder.tvEditorInfo.setVisibility(View.VISIBLE);
+        } else {
+            holder.tvEditorInfo.setVisibility(View.GONE);
+        }
 
         holder.tvEditorInfo.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
         holder.tvEditorInfo.setOnClickListener(v -> {

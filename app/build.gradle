@@ -15,7 +15,7 @@ android {
         minSdkVersion 20
         targetSdkVersion 27
         versionCode 1
-        versionName "1.0"
+        versionName "v1.0"
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -79,4 +79,6 @@ dependencies {
     compile 'com.contrarywind:Android-PickerView:3.2.6'
     /*gson 解析*/
     compile 'com.google.code.gson:gson:2.8.5'
+    /*二维码*/
+    compile 'com.google.zxing:core:3.3.0'
 }

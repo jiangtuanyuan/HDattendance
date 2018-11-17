@@ -57,8 +57,16 @@ public class EmployeesItemAdapter extends RecyclerView.Adapter<EmployeesItemAdap
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final EmployeesTable bean = mList.get(position);
         holder.tv_LeftName.setText(bean.getName().substring(bean.getName().length() - 1, bean.getName().length()));
-        holder.tvName.setText(bean.getName());
-        holder.tvNum.setText("" + bean.getId());
+        if (bean.getAdministrator().equals("1")) {
+            holder.tvName.setText(bean.getName() + "[系统管理员]");
+            holder.tvName.setTextColor(mContext.getResources().getColor(R.color.red));
+        } else {
+            holder.tvName.setText(bean.getName());
+            holder.tvName.setTextColor(mContext.getResources().getColor(R.color.black));
+        }
+
+
+        holder.tvNum.setText(bean.getId() + "");
 
         if (bean.getSex().equals("女")) {
             holder.tvSex.setBackgroundResource(R.drawable.ic_sex_famale);
@@ -113,6 +121,7 @@ public class EmployeesItemAdapter extends RecyclerView.Adapter<EmployeesItemAdap
         intent.putExtra("name", e.getName());
         intent.putExtra("sex", e.getSex());
         intent.putExtra("jobs", e.getJobs());
+        intent.putExtra("admin", e.getAdministrator());
         mContext.startActivity(intent);
     }
 

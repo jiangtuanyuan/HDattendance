@@ -4,7 +4,6 @@ package com.hd.attendance.activity.employees.ui;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,11 +16,6 @@ import com.hd.attendance.base.BaseActivity;
 import com.hd.attendance.db.EmployeesTable;
 import com.hd.attendance.utils.SystemLog;
 import com.hd.attendance.utils.ToastUtil;
-
-import org.litepal.LitePal;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,12 +39,20 @@ public class EmployeesAddActivity extends BaseActivity {
     RadioGroup rgSex;
     @BindView(R.id.et_jobs)
     EditText etJobs;
+
+    @BindView(R.id.rb_admin_yes)
+    RadioButton rbAdminYes;
+    @BindView(R.id.rb_admin_no)
+    RadioButton rbAdminNo;
+    @BindView(R.id.rg_admin)
+    RadioGroup rgAdmin;
+
     @BindView(R.id.bt_save)
     Button btSave;
 
     //编辑的数据
     private int id;
-    private String name = "", jobs = "", sex = "";
+    private String name = "", jobs = "", sex = "", admin = "0";
     private boolean isEditor = false;
 
     @Override
@@ -61,6 +63,7 @@ public class EmployeesAddActivity extends BaseActivity {
             name = getIntent().getStringExtra("name");
             sex = getIntent().getStringExtra("sex");
             jobs = getIntent().getStringExtra("jobs");
+            admin = getIntent().getStringExtra("admin");
         }
     }
 
@@ -74,7 +77,7 @@ public class EmployeesAddActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(jobs) && !TextUtils.isEmpty(sex)) {
+        if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(jobs) && !TextUtils.isEmpty(sex) && !TextUtils.isEmpty(admin)) {
             isEditor = true;
             tvNum.setVisibility(View.VISIBLE);
             tvNum.setText("工     号: " + id);
@@ -85,6 +88,12 @@ public class EmployeesAddActivity extends BaseActivity {
                 rbSexMale.setChecked(true);
             } else {
                 rbSexFamale.setChecked(true);
+            }
+
+            if (admin.equals("1")) {
+                rbAdminYes.setChecked(true);
+            } else {
+                rbAdminNo.setChecked(true);
             }
             btSave.setText("修  改");
         }
@@ -117,6 +126,11 @@ public class EmployeesAddActivity extends BaseActivity {
             e.setSex("男");
         }
         e.setJobs(etJobs.getText().toString());
+        if (rbAdminYes.isChecked()) {
+            e.setAdministrator("1");
+        } else {
+            e.setAdministrator("0");
+        }
 
         if (!isEditor) {
             e.save();
@@ -135,4 +149,6 @@ public class EmployeesAddActivity extends BaseActivity {
         }
         finish();
     }
+
+
 }

@@ -17,6 +17,10 @@ public class EmployeesTable extends LitePalSupport {
     private String Sex;//性别
     @Column
     private String jobs;//岗位
+
+    @Column(defaultValue = "0")
+    private String administrator;//是否是系统管理员 0:不是  1：是
+
     @Column(defaultValue = "0")
     private int group_ID;//所属小组 默认0 表示没分组
 
@@ -49,6 +53,18 @@ public class EmployeesTable extends LitePalSupport {
             this.Sex = sex;
         } else {
             this.Sex = "男";
+        }
+    }
+
+    public String getAdministrator() {
+        return administrator;
+    }
+
+    public void setAdministrator(String administrator) {
+        if (administrator.equals("0") || administrator.equals("1")) {
+            this.administrator = administrator;
+        } else {
+            this.administrator = "0";
         }
     }
 

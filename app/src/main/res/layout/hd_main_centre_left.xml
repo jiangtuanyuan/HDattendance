@@ -64,22 +64,26 @@
 
         <TextView
             android:id="@+id/tv_left_success_name"
+            android:layout_width="200dp"
             style="@style/MinDakaStyle"
             android:text="姓名:" />
 
         <TextView
             android:id="@+id/tv_left_success_shift"
             style="@style/MinDakaStyle"
+            android:layout_width="200dp"
             android:text="打卡班次:" />
 
         <TextView
             android:id="@+id/tv_left_success_state"
             style="@style/MinDakaStyle"
+            android:layout_width="200dp"
             android:text="打卡状态:" />
 
         <TextView
             android:id="@+id/tv_left_success_time"
             style="@style/MinDakaStyle"
+            android:layout_width="200dp"
             android:text="打卡时间:" />
 
     </LinearLayout>
@@ -122,6 +126,7 @@
             android:id="@+id/tv_left_log_afternoon_start"
             style="@style/MinDakaStyle"
             android:layout_width="200dp"
+            android:layout_height="wrap_content"
             android:text="下午上班:" />
 
         <TextView

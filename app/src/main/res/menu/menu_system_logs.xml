@@ -6,4 +6,10 @@
         android:orderInCategory="100"
         android:title="系统日志"
         app:showAsAction="always" />
+
+    <item
+        android:id="@+id/system_pwd"
+        android:orderInCategory="100"
+        android:title="系统密码"
+        app:showAsAction="always" />
 </menu>

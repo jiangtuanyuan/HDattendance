@@ -1,25 +1,23 @@
-package com.hd.attendance.activity.attendancem.ui;
+package com.hd.attendance.activity.repast.ui;
 
 import android.content.Intent;
-import android.graphics.Paint;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.hd.attendance.R;
-import com.hd.attendance.activity.attendancem.AttendType;
+import com.hd.attendance.activity.ManagementActivity;
 import com.hd.attendance.activity.attendancem.adapter.AttenMonthAdapter;
-import com.hd.attendance.activity.attendancem.adapter.AttendListAdapter;
+import com.hd.attendance.activity.repast.adapter.RepastListAdapter;
+import com.hd.attendance.activity.repast.dialog.SummRepastDialog;
 import com.hd.attendance.base.BaseActivity;
 import com.hd.attendance.db.AttendancemTable;
+import com.hd.attendance.db.RepastTable;
 import com.hd.attendance.utils.DateUtils;
 import com.hd.attendance.utils.ToastUtil;
 
@@ -30,14 +28,10 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
-/**
- * 考勤管理主界面
- */
-public class AttendancemMainActivity extends BaseActivity {
+public class RepastMainActivity extends BaseActivity implements Toolbar.OnMenuItemClickListener {
     @BindView(R.id.toolbar)
-    Toolbar toolbar;
+    Toolbar mToolbar;
     @BindView(R.id.recycler_year)
     RecyclerView recyclerYear;//年
     @BindView(R.id.recycler_month)
@@ -46,14 +40,10 @@ public class AttendancemMainActivity extends BaseActivity {
     RecyclerView recyclerDay;//日
     @BindView(R.id.tv_nodata)
     TextView tvNodata;//没有数据
+    @BindView(R.id.tv_info)
+    TextView tvInfo;//详情
     @BindView(R.id.recycler_data)
     RecyclerView recyclerData;//数据
-    @BindView(R.id.sp_stauts_type)
-    TextView spStautsType;//状态
-    @BindView(R.id.tv_list_size)
-    TextView tvListSize;//共N条数据
-    @BindView(R.id.ll_stauts_layout)
-    LinearLayout llStautsLayout;//状态布局
 
     //选择的年月日 默认当年当月当天
     private int selectYear = DateUtils.getThisYear();
@@ -73,36 +63,42 @@ public class AttendancemMainActivity extends BaseActivity {
     private List<String> DayList = new ArrayList<>();
 
     //数据列表
-    private AttendListAdapter attendListAdapter;
-    private List<AttendancemTable> AttenList = new ArrayList<>();
+    private RepastListAdapter repastListAdapter;
+    private List<RepastTable> repastList = new ArrayList<>();
 
-    private List<AttendancemTable> SumAttenList = new ArrayList<>();//保存数库里面的总数据
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        initListData();//加载列表数据
-        ScreebListData();
-    }
+    //弹框
+    private FragmentManager fragmentManager;
+    private SummRepastDialog summRepastDialog;
 
     @Override
     protected void initVariables() {
 
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initListData();//加载列表数据
+    }
+
     @Override
     protected void initViews(Bundle savedInstanceState) {
-        setContentView(R.layout.activity_attendancem_main);
+        setContentView(R.layout.activity_repast_main);
         ButterKnife.bind(this);
+        setTitle("就餐管理");
         initToolbarNav();
-        setTitle("考勤管理");
-        setSupportActionBar(toolbar);
+
+        mToolbar.inflateMenu(R.menu.menu_attendancem_sum);
+        mToolbar.setOnMenuItemClickListener(this);
+
+        fragmentManager = getSupportFragmentManager();
 
         setSelectYear();//设置年
         setMonthRecyclerw();//设置月
         setDayRecyclerw();//设置天数
         setAttenRecyclerw();
-        spStautsType.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
     }
 
     @Override
@@ -111,22 +107,24 @@ public class AttendancemMainActivity extends BaseActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_attendancem_sum, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
                 return true;
             case R.id.atten_add:
-                startActivity(new Intent(this, AttendancemAddActivity.class));
+                startActivity(new Intent(this, RepastAddActivity.class));
                 return true;
             case R.id.atten_sum:
-                startActivity(new Intent(this, AttendancemSummaryActivity.class));
+                if (summRepastDialog == null) {
+                    summRepastDialog = new SummRepastDialog();
+                }
+                showProgressDialog("正在汇总,请稍后");
+                summRepastDialog.setRepastList(getMonthData());
+                summRepastDialog.setMonthinfo(selectMonth + "月份 [共" + sumday + "天,星期日: " + sun + "天.]");
+                summRepastDialog.show(fragmentManager, "summaryAttenDialog");
+                closeProgressDialog();
+
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -164,7 +162,6 @@ public class AttendancemMainActivity extends BaseActivity {
         recyclerYear.setAdapter(YearAdapter);
     }
 
-
     /**
      * 设置月份
      */
@@ -200,18 +197,6 @@ public class AttendancemMainActivity extends BaseActivity {
         });
         recyclerDay.setAdapter(DayAdapter);
     }
-
-
-    /**
-     * 设置数据的Re
-     */
-    private void setAttenRecyclerw() {
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        recyclerData.setLayoutManager(layoutManager);
-        attendListAdapter = new AttendListAdapter(this, AttenList);
-        recyclerData.setAdapter(attendListAdapter);
-    }
-
 
     /**
      * 设置年月日 的数据
@@ -260,7 +245,6 @@ public class AttendancemMainActivity extends BaseActivity {
         }
     }
 
-
     /**
      * 通过年月 加载天数横向滚动
      */
@@ -299,121 +283,95 @@ public class AttendancemMainActivity extends BaseActivity {
         recyclerDay.scrollToPosition(0);
     }
 
+
     /**
-     * 筛选数据
+     * 设置数据的Re
      */
-    private String[] areas = new String[]{"全部", "正常打卡", "迟到打卡", "早退打卡", "补卡"};
-    private AlertDialog.Builder TypeDialog;
-    private int selectType = 0;
-
-    private void setStautsType() {
-        if (TypeDialog == null) {
-            TypeDialog = new AlertDialog.Builder(this)
-                    .setTitle("选择状态类型筛选")
-                    .setItems(areas, (dialog, which) -> {
-                        spStautsType.setText(areas[which]);
-                        selectType = which;
-
-                        ScreebListData();
-                        dialog.dismiss();
-                    });
-        }
-        TypeDialog.show();
+    private void setAttenRecyclerw() {
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerData.setLayoutManager(layoutManager);
+        repastListAdapter = new RepastListAdapter(this, repastList);
+        recyclerData.setAdapter(repastListAdapter);
     }
 
     /**
      * 加载数据库的考勤数据
      */
+    private int noon_meal = 0;//中午报餐人数
+    private int noon_eat = 0;
+    private int evening_meal = 0;
+    private int evening_eat = 0;
+
     private void initListData() {
         String selectDBdateStr = selectYear + "-" + (selectMonth > 9 ? selectMonth + "" : "0" + selectMonth) + "-" + (selectDay > 9 ? selectDay + "" : "0" + selectDay);
 
-        SumAttenList.clear();
-        AttenList.clear();
-        AttenList.addAll(LitePal.where("Date = ?", selectDBdateStr).find(AttendancemTable.class));
+        repastList.clear();
+        repastList.addAll(LitePal.where("Date = ?", selectDBdateStr).find(RepastTable.class));
 
-        //保存到从数据
-        for (AttendancemTable a : AttenList) {
-            SumAttenList.add(a);
-        }
+        noon_meal = 0;
+        noon_eat = 0;
+        evening_meal = 0;
+        evening_eat = 0;
 
-        if (AttenList.size() > 0) {
+        if (repastList.size() > 0) {
             tvNodata.setVisibility(View.GONE);
-            llStautsLayout.setVisibility(View.VISIBLE);
+            for (RepastTable e : repastList) {
+                if (e.isAfternoon_Report()) {
+                    noon_meal++;
+                }
+                if (e.isAfternoon_Eat()) {
+                    noon_eat++;
+                }
+                if (e.isEvening_Report()) {
+                    evening_meal++;
+                }
+                if (e.isEvening_Eat()) {
+                    evening_eat++;
+                }
+
+                tvInfo.setText("【中餐报餐人数:" + noon_meal + "人,中餐就餐人数:" + noon_eat + "人】-【晚餐报餐人数：" + evening_meal + "人,晚餐就餐人数:" + evening_eat + "人】");
+            }
         } else {
+            tvInfo.setText("");
             tvNodata.setVisibility(View.VISIBLE);
-            llStautsLayout.setVisibility(View.GONE);
         }
-        attendListAdapter.notifyDataSetChanged();
+        repastListAdapter.notifyDataSetChanged();
+
+        ShowMonthInfo();
+    }
 
 
-        spStautsType.setText("全部");
-        selectType = 0;
-        ScreebListData();
+    /**
+     * 查找
+     *
+     * @return
+     */
+    private List<RepastTable> getMonthData() {
+        List<RepastTable> MonthList = new ArrayList<>();
+        String sdate = selectYear + "-" + (selectMonth > 9 ? selectMonth + "" : "0" + selectMonth);
+        MonthList.clear();
+        MonthList.addAll(LitePal.where("Date >= ? and Date <= ?",
+                sdate + "-01", sdate + "-31")
+                .order("Date")
+                .find(RepastTable.class));
+        return MonthList;
     }
 
     /**
-     * 对已经显示的数据做筛选
+     * 显示月份信息
      */
-    private void ScreebListData() {
-        switch (selectType) {
-            case 0://显示全部
-                AttenList.clear();
-                for (AttendancemTable a : SumAttenList) {
-                    AttenList.add(a);
-                }
-                break;
-            case 1://显示正常打卡
-                AttenList.clear();
-                for (AttendancemTable a : SumAttenList) {
-                    if (a.getMorning_start_type() == AttendType.NORMAL_CODE && a.getMorning_end_type() == AttendType.NORMAL_CODE && a.getAfternoon_start_type() == AttendType.NORMAL_CODE && a.getAfternoon_end_type() == AttendType.NORMAL_CODE) {
-                        AttenList.add(a);
-                    }
-                }
-                break;
+    private int sun = 0;
+    private int sumday = 0;
 
-            case 2://显示迟到打卡
-                AttenList.clear();
-                for (AttendancemTable a : SumAttenList) {
-                    if (a.getMorning_start_type() == AttendType.LATE_CODE || a.getAfternoon_start_type() == AttendType.LATE_CODE) {
-                        AttenList.add(a);
-                    }
-                }
-
-                break;
-
-            case 3://显示早退打卡
-                AttenList.clear();
-                for (AttendancemTable a : SumAttenList) {
-                    if (a.getMorning_end_type() == AttendType.LEAVE_CODE || a.getAfternoon_end_type() == AttendType.LEAVE_CODE) {
-                        AttenList.add(a);
-                    }
-                }
-                break;
-
-            case 4://显示补卡
-                AttenList.clear();
-                for (AttendancemTable a : SumAttenList) {
-                    if (a.getMorning_start_type() == AttendType.FILL_CODE || a.getMorning_end_type() == AttendType.FILL_CODE || a.getAfternoon_start_type() == AttendType.FILL_CODE || a.getAfternoon_end_type() == AttendType.FILL_CODE) {
-                        AttenList.add(a);
-                    }
-                }
-                break;
-
-            default:
-                break;
+    private void ShowMonthInfo() {
+        //选中的年月有多少天
+        sun = 0;
+        sumday = DateUtils.getMonthLastDay(selectYear, selectMonth);
+        String weeksstr = selectYear + "-" + (selectMonth > 9 ? selectMonth + "" : "0" + selectMonth) + "-";
+        for (int i = 1; i <= sumday; i++) {
+            String str = weeksstr + (i > 9 ? i + "" : "0" + i);
+            if (DateUtils.DateToDayB(str).equals("星期日"))
+                sun++;
         }
-
-        if (AttenList.size() > 0) {
-            tvNodata.setVisibility(View.GONE);
-        } else {
-            tvNodata.setVisibility(View.VISIBLE);
-        }
-        tvListSize.setText("(共" + AttenList.size() + "条数据!)");
-        attendListAdapter.notifyDataSetChanged();
-    }
-
-    @OnClick(R.id.sp_stauts_type)
-    public void onViewClicked() {
-        setStautsType();
     }
 }

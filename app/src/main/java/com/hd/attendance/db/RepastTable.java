@@ -21,15 +21,24 @@ public class RepastTable extends LitePalSupport {
     @Column
     private String Week;//当天星期几 周六
 
-    @Column
+    @Column(defaultValue = "false")
     private boolean Afternoon_Report;// 中餐是否报餐 false and true
-    @Column
+    @Column(defaultValue = "00:00")
+    private String Afternoon_Report_time;// 中餐是否报餐 报餐时间
+    @Column(defaultValue = "false")
     private boolean Afternoon_Eat;// 中餐是否吃了饭 false and true
+    @Column(defaultValue = "00:00")
+    private String Afternoon_Eat_time;// 中餐吃饭打卡的时间
 
-    @Column
+    @Column(defaultValue = "false")
     private boolean Evening_Report;// 晚餐是否报餐 false and true
-    @Column
+    @Column(defaultValue = "00:00")
+    private String Evening_Report_time;// 晚餐是否报餐 false and true
+
+    @Column(defaultValue = "false")
     private boolean Evening_Eat;// 晚餐是否吃了饭 false and true
+    @Column(defaultValue = "00:00")
+    private String Evening_Eat_time;// 晚餐是否吃了饭 false and true
 
     @Column
     private String Note;//备注内容
@@ -108,5 +117,37 @@ public class RepastTable extends LitePalSupport {
 
     public void setEvening_Eat(boolean evening_Eat) {
         Evening_Eat = evening_Eat;
+    }
+
+    public String getAfternoon_Report_time() {
+        return Afternoon_Report_time;
+    }
+
+    public void setAfternoon_Report_time(String afternoon_Report_time) {
+        Afternoon_Report_time = afternoon_Report_time;
+    }
+
+    public String getAfternoon_Eat_time() {
+        return Afternoon_Eat_time;
+    }
+
+    public void setAfternoon_Eat_time(String afternoon_Eat_time) {
+        Afternoon_Eat_time = afternoon_Eat_time;
+    }
+
+    public String getEvening_Report_time() {
+        return Evening_Report_time;
+    }
+
+    public void setEvening_Report_time(String evening_Report_time) {
+        Evening_Report_time = evening_Report_time;
+    }
+
+    public String getEvening_Eat_time() {
+        return Evening_Eat_time;
+    }
+
+    public void setEvening_Eat_time(String evening_Eat_time) {
+        Evening_Eat_time = evening_Eat_time;
     }
 }

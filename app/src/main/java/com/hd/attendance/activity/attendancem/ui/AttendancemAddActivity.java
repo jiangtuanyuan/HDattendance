@@ -226,9 +226,9 @@ public class AttendancemAddActivity extends BaseActivity {
                     closeProgressDialog();
 
                     ToastUtil.showToast("新增成功!");
-                    finish();
 
                     SystemLog.getInstance().AddLog("[管理员] 新增了[" + tvName + "] " + tvDate + " 的考勤!");
+                    finish();
 
                 } else {
                     ToastUtil.showToast("当前员工在当前选择的时间下已有考勤信息!");

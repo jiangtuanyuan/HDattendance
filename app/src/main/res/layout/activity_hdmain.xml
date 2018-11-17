@@ -48,20 +48,23 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/white"
                 android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
                     android:layout_marginRight="40dp"
                     android:layout_marginTop="16dp"
                     android:layout_weight="1"
                     android:text="考勤打卡说明:
-                   \n 1.卡次分为:上午上班,上午下班,下午上班,下午下班.
-                   \n 2.上午上班卡:07:00-8:45 分批次打卡.
-                   \n 3.上午下班卡:12:00-13:00.
-                   \n 4.下午上班卡:13:00-13:30.
-                   \n 5.下午下班卡:18:00之后." />
+                   \n 1.班次分为:上午上班,上午下班,下午上班,下午下班.
+                   \n 2.上午上班:07:00-8:45 分批次打卡.
+                   \n 3.上午下班:12:00-13:00.
+                   \n 4.下午上班:13:00-13:30.
+                   \n 5.下午下班:18:00之后."
+                    android:textSize="16sp" />
 
 
                 <TextView
@@ -71,22 +74,22 @@
                     android:layout_marginTop="16dp"
                     android:layout_weight="1"
                     android:text="就餐打卡说明:
-                   \n 1.公司提供中晚两餐,就餐方式采用:报餐->就餐.
+                   \n 1.中晚两餐,采用:先报餐->再就餐.
                    \n 2.中餐报餐时间:07:00-09:30,就餐打卡时间:12:00-13:00.
-                   \n 3.晚餐报餐时间:13:00-14:30,就餐打卡时间:18:00之后." />
+                   \n 3.晚餐报餐时间:13:00-14:30,就餐打卡时间:18:00之后."
+                    android:textSize="16sp" />
 
             </LinearLayout>
 
 
             <TextView
+                android:id="@+id/tv_version"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:background="@color/gray_q"
+                android:layout_margin="10dp"
                 android:gravity="center"
-                android:padding="4dp"
-                android:text="版本:v1.0"
-                android:textColor="@color/white" />
+                android:text="版本:"
+                android:textColor="@color/gray" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

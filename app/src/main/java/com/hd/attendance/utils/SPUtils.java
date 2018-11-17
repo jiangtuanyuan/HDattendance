@@ -129,6 +129,7 @@ public class SPUtils {
     /**
      * Key
      */
+    public static final String SYSTEM_PWD = "system_pwd";
 
 
 }
