@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.hd.attendance.R;
 import com.hd.attendance.activity.ManagementActivity;
@@ -59,7 +60,6 @@ import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 public class HDMainActivity extends BaseActivity implements Toolbar.OnMenuItemClickListener {
     @BindView(R.id.toolbar)
@@ -273,18 +273,27 @@ public class HDMainActivity extends BaseActivity implements Toolbar.OnMenuItemCl
                 onBackPressed();
                 return true;
             case R.id.menu_search:
-                Personal = true;
+                Intent PerIntent = new Intent(this, PersonalCenterMainActivity.class);
+                PerIntent.putExtra("id", "1");
+                PerIntent.putExtra("name", "蒋团圆");
+                startActivity(PerIntent);
+
+               /* Personal = true;
                 Personarry = null;
-                showPersonalDialog(null);
+                showPersonalDialog(null);*/
+
                 return true;
             case R.id.menu_set:
+                startActivity(new Intent(this, ManagementActivity.class));
+
+                /*
                 if (MainUtils.getAdminEmp().size() == 0) {
                     showAndminPwd();
                 } else {
                     AdminTF = true;
                     Adminarry = null;
                     showAdminDialog(null);
-                }
+                }*/
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -331,7 +340,7 @@ public class HDMainActivity extends BaseActivity implements Toolbar.OnMenuItemCl
                 isFingerC = false;
 
                 //进入到个人中心
-                Intent PerIntent = new Intent(this, AttendancemSummaryActivity.class);
+                Intent PerIntent = new Intent(this, PersonalCenterMainActivity.class);
                 PerIntent.putExtra("id", Personarry[0]);
                 PerIntent.putExtra("name", Personarry[1]);
                 startActivity(PerIntent);
@@ -498,7 +507,6 @@ public class HDMainActivity extends BaseActivity implements Toolbar.OnMenuItemCl
                                 REPAST_CODE = MainUtils.isRepastTime(Time, tvCenterRepastPrompt);//就餐
                                 fingerprintSensor.setFingerprintCaptureListener(1, FingerListener2);
                                 llCenterRightLog.setVisibility(View.VISIBLE);
-
                             } else {
                                 fingerprintSensor.setFingerprintCaptureListener(1, FingerListener3);
                                 llCenterRightLog.setVisibility(View.GONE);
@@ -514,9 +522,8 @@ public class HDMainActivity extends BaseActivity implements Toolbar.OnMenuItemCl
                             MainUtils.showTopTime(tvTopWeeks, tvDate, tvWeek);
                             healthTable = MainUtils.showHealth(tvHealthAuser, tvHealthAuserInfo, tvHealthBuser, tvHealthBuserInfo);
                         }
-                        if (!TextUtils.isEmpty(Time)) {
-                            tvCenterTime.setText(Time);
-                        }
+
+                        tvCenterTime.setText(Time + "");
                     }
 
                     @Override
@@ -594,7 +601,6 @@ public class HDMainActivity extends BaseActivity implements Toolbar.OnMenuItemCl
  * 07：00 -12：00 两个指纹仪都是考勤
  * 12：00-13：00  指纹仪1不变，指纹仪2逻辑指向就餐指纹仪逻辑
  */
-
     /**
      * ————————————————————————————考勤指纹仪——————————————————————————
      **/
@@ -1091,7 +1097,7 @@ public class HDMainActivity extends BaseActivity implements Toolbar.OnMenuItemCl
             public void captureOK(final byte[] fpImage) {
                 int width = fingerprintSensor.getImageWidth();
                 int height = fingerprintSensor.getImageHeight();
-                //图片采集成功
+                //指纹数据采集成功 转化成Bitmap显示到ImageView上
                 runOnUiThread(() -> {
 
                     if (null != fpImage) {
@@ -1103,7 +1109,6 @@ public class HDMainActivity extends BaseActivity implements Toolbar.OnMenuItemCl
                         ivRightUserFinger.setImageBitmap(bitmapFp);
 
                     }
-
                 });
             }
 

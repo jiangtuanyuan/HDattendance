@@ -232,7 +232,9 @@ public class RepastAddActivity extends BaseActivity {
 
                     repastTable.save();
 
-                    showProgressDialog("修改成功!");
+                    ToastUtil.showToast("修改成功!");
+                    SystemLog.getInstance().AddLog("[管理员] 修改了[" + tvName.getText().toString() + "] " + tvDate.getText().toString() + " 的就餐记录!");
+
                     finish();
                     return;
                 }
@@ -289,7 +291,7 @@ public class RepastAddActivity extends BaseActivity {
                     closeProgressDialog();
 
                     ToastUtil.showToast("新增成功!");
-                    SystemLog.getInstance().AddLog("[管理员] 新增了[" + tvName + "] " + tvDate + " 的就餐记录!");
+                    SystemLog.getInstance().AddLog("[管理员] 新增了[" + tvName.getText().toString() + "] " + tvDate.getText().toString() + " 的就餐记录!");
 
                     finish();
 

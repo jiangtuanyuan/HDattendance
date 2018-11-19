@@ -34,12 +34,16 @@ public class AttendListAdapter extends RecyclerView.Adapter<AttendListAdapter.Vi
     private Context mContext;
     private List<AttendancemTable> mDataBeans;
     private boolean isShowEditor = true;//是否显示编辑 默认显示
+    private boolean isAdddateTop = false;//是否添加时间到头部
+    private boolean isShowName = true;
+
+    public void setShowName(boolean showName) {
+        isShowName = showName;
+    }
 
     public void setShowEditor(boolean showEditor) {
         isShowEditor = showEditor;
     }
-
-    private boolean isAdddateTop = false;//是否添加时间到头部
 
     public void isAddTime(boolean isAdddateTop) {
         this.isAdddateTop = isAdddateTop;
@@ -62,16 +66,17 @@ public class AttendListAdapter extends RecyclerView.Adapter<AttendListAdapter.Vi
     public void onBindViewHolder(final ViewHolder holder, int position) {
         AttendancemTable atten = mDataBeans.get(position);
 
+        if (isShowName) {
+            holder.tvName.setText(atten.getUser_Name());
+        } else {
+            holder.tvName.setText(atten.getDate().substring(atten.getDate().length() - 2, atten.getDate().length())
+                    + "日 \n 【" + atten.getWeek() + "】");
+        }
 
         //1.设置头部信息 姓名  出勤情况:正常上班 打卡情况:
         StringBuffer sTop = new StringBuffer();
 
-        if (isAdddateTop) {
-            sTop.append("时   间: " + atten.getDate() + "  [" + atten.getWeek() + "]\n");
-        }
-
-        sTop.append("[" + atten.getUser_Name() + "]");
-        sTop.append("\n出勤情况:");
+        sTop.append("出勤情况:");
         sTop.append(" (上午:");
         switch (atten.getMorningWorkType()) {
             case 0:
@@ -295,6 +300,8 @@ public class AttendListAdapter extends RecyclerView.Adapter<AttendListAdapter.Vi
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.tv_name)
+        TextView tvName;
         @BindView(R.id.tv_top_info)
         TextView tvTopInfo;
         @BindView(R.id.iv_status)

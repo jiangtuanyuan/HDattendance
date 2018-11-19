@@ -159,6 +159,7 @@ public class AttendancemSummaryActivity extends BaseActivity {
         recyclerData.setLayoutManager(layoutManager);
         attendListAdapter = new AttendListAdapter(this, AttenList);
         attendListAdapter.isAddTime(true);
+        attendListAdapter.setShowName(false);
         recyclerData.setAdapter(attendListAdapter);
 
         if (!TextUtils.isEmpty(UserID) && !TextUtils.isEmpty(UserNmae)) {

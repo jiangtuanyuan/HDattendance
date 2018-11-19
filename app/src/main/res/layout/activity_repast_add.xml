@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical"
     tools:context="com.hd.attendance.activity.repast.ui.RepastAddActivity">
 
@@ -63,16 +64,18 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_margin="4dp"
             android:layout_weight="1"
+            android:background="@drawable/shaper_white_line"
             android:gravity="center"
             android:orientation="vertical">
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="100dp"
                 android:layout_height="40dp"
                 android:layout_margin="5dp"
                 android:layout_weight="1"
-                android:background="@color/yellb"
+                android:background="@color/blue"
                 android:gravity="center"
                 android:padding="5dp"
                 android:text="中  餐"
@@ -192,16 +195,18 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_margin="4dp"
             android:layout_weight="1"
+            android:background="@drawable/shaper_white_line"
             android:gravity="center"
             android:orientation="vertical">
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="100dp"
                 android:layout_height="40dp"
                 android:layout_margin="5dp"
                 android:layout_weight="1"
-                android:background="@color/black"
+                android:background="@color/blue"
                 android:gravity="center"
                 android:padding="5dp"
                 android:text="晚  餐"
@@ -341,6 +346,7 @@
             android:background="@color/white"
             android:gravity="left|top"
             android:hint="无"
+            android:padding="6dp"
             android:textSize="16sp" />
     </LinearLayout>
 

@@ -81,7 +81,7 @@ public class SummRepastDialog extends DialogFragment {
             if (e.isEvening_Report()) {
                 evening_meal++;
             }
-            if (e.isAfternoon_Eat()) {
+            if (e.isEvening_Eat()) {
                 evening_eat++;
             }
         }

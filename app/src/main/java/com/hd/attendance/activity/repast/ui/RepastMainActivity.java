@@ -329,7 +329,7 @@ public class RepastMainActivity extends BaseActivity implements Toolbar.OnMenuIt
                     evening_eat++;
                 }
 
-                tvInfo.setText("【中餐报餐人数:" + noon_meal + "人,中餐就餐人数:" + noon_eat + "人】-【晚餐报餐人数：" + evening_meal + "人,晚餐就餐人数:" + evening_eat + "人】");
+                tvInfo.setText("【中餐报餐人数:" + noon_meal + "人,中餐就餐人数:" + noon_eat + "人】\n【晚餐报餐人数:" + evening_meal + "人,晚餐就餐人数:" + evening_eat + "人】");
             }
         } else {
             tvInfo.setText("");

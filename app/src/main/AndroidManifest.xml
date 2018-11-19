@@ -37,6 +37,7 @@
         <activity android:name=".activity.WelcomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -46,6 +47,7 @@
             <intent-filter>
                 <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
             </intent-filter>
+
             <meta-data
                 android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
                 android:resource="@xml/device_filter" />
@@ -70,7 +72,7 @@
         <activity android:name=".activity.Personalcenter.ui.PersonalCenterMainActivity" />
         <activity android:name=".activity.repast.ui.RepastMainActivity" />
         <activity android:name=".activity.repast.ui.RepastAddActivity" />
-
+        <activity android:name=".activity.repast.ui.ShowUserRepastActivity"></activity>
     </application>
 
 </manifest>

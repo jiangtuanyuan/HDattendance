@@ -24,6 +24,11 @@ import butterknife.ButterKnife;
 public class RepastListAdapter extends RecyclerView.Adapter<RepastListAdapter.ViewHolder> {
     private Context mContext;
     private List<RepastTable> mDataBeans;
+    private boolean isShowDate = false;//是否显示时间
+
+    public void setShowDate(boolean showDate) {
+        isShowDate = showDate;
+    }
 
     public RepastListAdapter(Context mContext, List<RepastTable> dataBeans) {
         this.mContext = mContext;
@@ -41,8 +46,16 @@ public class RepastListAdapter extends RecyclerView.Adapter<RepastListAdapter.Vi
     public void onBindViewHolder(final ViewHolder holder, int position) {
         RepastTable repastTable = mDataBeans.get(position);
 
-        holder.tvName.setText(repastTable.getUser_Name());
-        holder.tvNote.setText(repastTable.getNote()==null?"":repastTable.getNote());
+        if (isShowDate) {
+            //显示时间
+            holder.tvName.setText(repastTable.getDate().substring(repastTable.getDate().length() - 2, repastTable.getDate().length()) + "日"
+                    + "\n【" + repastTable.getWeek() + "】"
+            );
+        } else {
+            holder.tvName.setText(repastTable.getUser_Name());
+        }
+
+        holder.tvNote.setText(repastTable.getNote() == null ? "" : repastTable.getNote());
         if (repastTable.isAfternoon_Report() && repastTable.isAfternoon_Eat()) {
             //同时报了餐 又吃了饭
             holder.tvAfternoonIsMeal.setTextColor(mContext.getResources().getColor(R.color.green));
@@ -102,9 +115,11 @@ public class RepastListAdapter extends RecyclerView.Adapter<RepastListAdapter.Vi
             holder.tvEveningIsRepast.setText("是否就餐:否");
         }
         holder.itemView.setOnClickListener(v -> {
-            Intent intent = new Intent(mContext, RepastAddActivity.class);
-            intent.putExtra("RepastID", repastTable.getId() + "");
-            mContext.startActivity(intent);
+            if (!isShowDate) {
+                Intent intent = new Intent(mContext, RepastAddActivity.class);
+                intent.putExtra("RepastID", repastTable.getId() + "");
+                mContext.startActivity(intent);
+            }
         });
 
     }

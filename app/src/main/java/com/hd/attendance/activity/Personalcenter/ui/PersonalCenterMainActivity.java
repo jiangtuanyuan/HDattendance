@@ -1,31 +1,33 @@
 package com.hd.attendance.activity.Personalcenter.ui;
 
-import android.graphics.Bitmap;
+import android.content.Intent;
 import android.os.Bundle;
-import android.widget.ImageView;
-import android.widget.Toast;
+import android.view.View;
+import android.widget.TextView;
 
-import com.google.zxing.BarcodeFormat;
 import com.hd.attendance.R;
+import com.hd.attendance.activity.attendancem.ui.AttendancemSummaryActivity;
+import com.hd.attendance.activity.repast.ui.ShowUserRepastActivity;
 import com.hd.attendance.base.BaseActivity;
-import com.hd.attendance.utils.ZXingUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class PersonalCenterMainActivity extends BaseActivity {
-
-    @BindView(R.id.iv_zxing)
-    ImageView ivZxing;
+    @BindView(R.id.tv_kq)
+    TextView tvKq;
+    @BindView(R.id.tv_jc)
+    TextView tvJc;
 
     private String UserID = "";
-    private String UserNmae = "";
+    private String UserName = "";
 
     @Override
     protected void initVariables() {
         if (getIntent() != null) {
             UserID = getIntent().getStringExtra("id");
-            UserNmae = getIntent().getStringExtra("name");
+            UserName = getIntent().getStringExtra("name");
         }
 
     }
@@ -35,15 +37,35 @@ public class PersonalCenterMainActivity extends BaseActivity {
         setContentView(R.layout.activity_personal_center_main);
         ButterKnife.bind(this);
         initToolbarNav();
-        setTitle("个人中心");
+        setTitle(UserName + "—的个人中心");
 
-
-        Bitmap bitmap = ZXingUtils.createQRImage(UserID + ":" + UserNmae, 200, 200);
-        ivZxing.setImageBitmap(bitmap);
     }
 
     @Override
     protected void initData() {
 
+    }
+
+    @OnClick({R.id.tv_kq, R.id.tv_jc})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.tv_kq://进入到考勤管理
+                Intent PerIntent = new Intent(this, AttendancemSummaryActivity.class);
+                PerIntent.putExtra("id", UserID);
+                PerIntent.putExtra("name", UserName);
+                startActivity(PerIntent);
+                break;
+            case R.id.tv_jc:
+                //进入到就餐管理
+                Intent RepastIntent = new Intent(this, ShowUserRepastActivity.class);
+                RepastIntent.putExtra("id", UserID);
+                RepastIntent.putExtra("name", UserName);
+                startActivity(RepastIntent);
+
+
+                break;
+            default:
+                break;
+        }
     }
 }

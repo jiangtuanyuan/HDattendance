@@ -13,9 +13,9 @@
         android:layout_margin="10dp"
         android:background="@drawable/shape_rectangle_blue_bg"
         android:gravity="center"
-        android:text="嘿"
+        android:text="HD"
         android:textColor="@color/white"
-        android:textSize="20sp" />
+        android:textSize="16sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -29,7 +29,7 @@
             android:layout_height="40dp"
             android:layout_margin="5dp"
             android:layout_weight="1"
-            android:background="@color/yellb"
+            android:background="@color/blue"
             android:gravity="center"
             android:padding="5dp"
             android:text="中  餐"
@@ -69,7 +69,7 @@
             android:layout_height="40dp"
             android:layout_margin="5dp"
             android:layout_weight="1"
-            android:background="@color/gray"
+            android:background="@color/blue"
             android:gravity="center"
             android:padding="5dp"
             android:text="晚  餐"
@@ -106,7 +106,7 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_margin="5dp"
-            android:background="@color/blue"
+            android:background="@color/gray"
             android:gravity="center"
             android:padding="5dp"
             android:text="备 注"
