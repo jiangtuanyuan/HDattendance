@@ -81,4 +81,8 @@ dependencies {
     compile 'com.google.code.gson:gson:2.8.5'
     /*二维码*/
     compile 'com.google.zxing:core:3.3.0'
+    /*图表库*/
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0-alpha'
+
+
 }

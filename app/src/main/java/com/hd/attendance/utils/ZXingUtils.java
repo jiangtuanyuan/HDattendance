@@ -21,6 +21,7 @@ import java.util.Hashtable;
 
 /**
  * Created by 蒋 on 2018/11/12.
+ * 二维码工具类
  */
 
 public class ZXingUtils {

@@ -16,6 +16,8 @@ import android.widget.TextView;
 import com.hd.attendance.R;
 import com.hd.attendance.activity.attendancem.adapter.AttenMonthAdapter;
 import com.hd.attendance.activity.attendancem.adapter.AttendListAdapter;
+import com.hd.attendance.activity.attendancem.dialog.CanlendarDialog;
+import com.hd.attendance.activity.attendancem.dialog.PieChartDialog;
 import com.hd.attendance.activity.attendancem.dialog.SummaryAttenDialog;
 import com.hd.attendance.activity.group.user.UserBean;
 import com.hd.attendance.activity.group.user.UserChooseActivity;
@@ -38,6 +40,8 @@ public class AttendancemSummaryActivity extends BaseActivity {
     Toolbar toolbar;
     @BindView(R.id.tv_choose_user)
     TextView tvChooseUser;
+    @BindView(R.id.tv_show_calendar)
+    TextView tvCaendar;
     @BindView(R.id.tv_month_info)
     TextView tvMonthInfo;
     @BindView(R.id.recycler_year)
@@ -48,6 +52,7 @@ public class AttendancemSummaryActivity extends BaseActivity {
     RecyclerView recyclerData;
     @BindView(R.id.tv_nodata)
     TextView tvNodata;//没有数据
+
 
     //选择的年月日 默认当年当月当天
     private int selectYear = DateUtils.getThisYear();
@@ -69,15 +74,24 @@ public class AttendancemSummaryActivity extends BaseActivity {
     private FragmentManager fragmentManager;
     private SummaryAttenDialog summaryAttenDialog;
 
+    //日历的数据dialog
+    private CanlendarDialog mCanlendarDialog;
+
+    //饼图
+    private PieChartDialog mPieChartDialog;
+
+
+    //主界面跳转过来的用户查询 不能显示编辑
+    private String UserID = "";
+    private String UserNmae = "";
+
+
     @Override
     protected void onResume() {
         super.onResume();
         isDBUserInfo();
     }
 
-    //主界面跳转过来的用户查询 不能显示编辑
-    private String UserID = "";
-    private String UserNmae = "";
 
     @Override
     protected void initVariables() {
@@ -93,7 +107,6 @@ public class AttendancemSummaryActivity extends BaseActivity {
         ButterKnife.bind(this);
         initToolbarNav();
         setTitle("考勤数据汇总");
-        setSupportActionBar(toolbar);
         fragmentManager = getSupportFragmentManager();
 
         if (!TextUtils.isEmpty(UserID)
@@ -115,39 +128,6 @@ public class AttendancemSummaryActivity extends BaseActivity {
     @Override
     protected void initData() {
         initMonth(true);
-    }
-
-    //菜单
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_user_dance_sum, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-            case R.id.report:
-                if (mCheckListS.size() == 0) {
-                    ToastUtil.showToast("请选择一个员工!");
-                } else {
-                    if (summaryAttenDialog == null) {
-                        summaryAttenDialog = new SummaryAttenDialog();
-                    }
-
-                    summaryAttenDialog.setName(mCheckListS.get(0).getUser_name());
-                    summaryAttenDialog.setMonthinfo(selectMonth + "月份 [共" + sumday + "天,星期日: " + sun + "天.]");
-                    summaryAttenDialog.setAttenList(AttenList);
-                    summaryAttenDialog.show(fragmentManager, "summaryAttenDialog");
-                }
-
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
     }
 
 
@@ -242,22 +222,65 @@ public class AttendancemSummaryActivity extends BaseActivity {
         }
     }
 
-    /**
-     * 选择用户
-     */
-    @OnClick(R.id.tv_choose_user)
-    public void onViewClicked() {
-        if (!TextUtils.isEmpty(UserID)
-                && !TextUtils.isEmpty(UserNmae)) {
-            ToastUtil.showToast("只能查看自己的数据!");
-        } else {
-            Intent intent = new Intent(this, UserChooseActivity.class);
-            intent.putExtra("mChooseNums", "single");
-            intent.putExtra("isalls", "1");
-            startActivityForResult(intent, 100);
+
+    @OnClick({R.id.tv_choose_user, R.id.tv_show_calendar, R.id.tv_show_chart, R.id.tv_show_sum})
+    public void onViewClicked(View v) {
+        switch (v.getId()) {
+            case R.id.tv_choose_user:
+                if (!TextUtils.isEmpty(UserID)
+                        && !TextUtils.isEmpty(UserNmae)) {
+                    ToastUtil.showToast("只能查看自己的数据!");
+                } else {
+                    Intent intent = new Intent(this, UserChooseActivity.class);
+                    intent.putExtra("mChooseNums", "single");
+                    intent.putExtra("isalls", "1");
+                    startActivityForResult(intent, 100);
+                }
+                break;
+            case R.id.tv_show_calendar:
+                if (mCheckListS.size() == 0) {
+                    ToastUtil.showToast("请选择一个员工!");
+                    return;
+                }
+
+                if (mCanlendarDialog == null) {
+                    mCanlendarDialog = new CanlendarDialog();
+                }
+                mCanlendarDialog.setAttenList(AttenList, selectYear, selectMonth);
+                mCanlendarDialog.show(fragmentManager, "mCanlendarDialog");
+
+                break;
+            case R.id.tv_show_chart:
+                if (mCheckListS.size() == 0) {
+                    ToastUtil.showToast("请选择一个员工!");
+                    return;
+                }
+                if (mPieChartDialog == null) {
+                    mPieChartDialog = new PieChartDialog();
+                }
+                mPieChartDialog.setAttenList(AttenList, selectMonth);
+                mPieChartDialog.show(fragmentManager, "mPieChartDialog");
+
+                break;
+            case R.id.tv_show_sum:
+                if (mCheckListS.size() == 0) {
+                    ToastUtil.showToast("请选择一个员工!");
+                    return;
+                }
+
+                if (summaryAttenDialog == null) {
+                    summaryAttenDialog = new SummaryAttenDialog();
+                }
+                summaryAttenDialog.setName(mCheckListS.get(0).getUser_name());
+                summaryAttenDialog.setMonthinfo(selectMonth + "月份 [共" + sumday + "天,星期日: " + sun + "天.]");
+                summaryAttenDialog.setAttenList(AttenList);
+                summaryAttenDialog.show(fragmentManager, "summaryAttenDialog");
+
+                break;
+            default:
+                break;
+
         }
-
-
     }
 
     private List<UserBean> mCheckListS = new ArrayList<>();
@@ -292,7 +315,7 @@ public class AttendancemSummaryActivity extends BaseActivity {
         String sdate = selectYear + "-" + (selectMonth > 9 ? selectMonth + "" : "0" + selectMonth);
         AttenList.addAll(LitePal.where("User_ID = ? and Date >= ? and Date <= ?",
                 mCheckListS.get(0).getUser_id() + "", sdate + "-01", sdate + "-31")
-                .order("Date")
+                .order("Date desc")
                 .find(AttendancemTable.class));
         if (AttenList.size() == 0) {
             tvNodata.setVisibility(View.VISIBLE);

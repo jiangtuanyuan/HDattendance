@@ -160,9 +160,6 @@ public class HDMainActivity extends BaseActivity implements Toolbar.OnMenuItemCl
     @BindView(R.id.ll_center_right_log)
     LinearLayout llCenterRightLog;//就餐记录的父布局
 
-    //版本
-    @BindView(R.id.tv_version)
-    TextView TvVersion;//版本
 
     //今日搞卫生的人员
     private HealthTable healthTable;
@@ -256,7 +253,6 @@ public class HDMainActivity extends BaseActivity implements Toolbar.OnMenuItemCl
         mToolbar.inflateMenu(R.menu.main_menu);
         mToolbar.setOnMenuItemClickListener(this);
         SystemLog.getInstance().AddLog("系统启动");
-        TvVersion.setText("版本:" + MainUtils.getVersion(this));
     }
 
 
@@ -273,27 +269,27 @@ public class HDMainActivity extends BaseActivity implements Toolbar.OnMenuItemCl
                 onBackPressed();
                 return true;
             case R.id.menu_search:
-                Intent PerIntent = new Intent(this, PersonalCenterMainActivity.class);
+                /*Intent PerIntent = new Intent(this, PersonalCenterMainActivity.class);
                 PerIntent.putExtra("id", "1");
                 PerIntent.putExtra("name", "蒋团圆");
-                startActivity(PerIntent);
+                startActivity(PerIntent);*/
 
-               /* Personal = true;
+                Personal = true;
                 Personarry = null;
-                showPersonalDialog(null);*/
+                showPersonalDialog(null);
 
                 return true;
             case R.id.menu_set:
-                startActivity(new Intent(this, ManagementActivity.class));
+           //  startActivity(new Intent(this, ManagementActivity.class));
 
-                /*
+
                 if (MainUtils.getAdminEmp().size() == 0) {
                     showAndminPwd();
                 } else {
                     AdminTF = true;
                     Adminarry = null;
                     showAdminDialog(null);
-                }*/
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

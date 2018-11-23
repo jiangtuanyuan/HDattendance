@@ -17,21 +17,62 @@
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:text="员  工 :"
+            android:text="姓            名:"
             android:textSize="18sp" />
 
         <TextView
             android:id="@+id/tv_choose_user"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
             android:text="请 选 择"
             android:textColor="@color/blue"
             android:textSize="18sp" />
+
     </LinearLayout>
 
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="预 览 模 式:"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tv_show_calendar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="日 历"
+            android:textColor="@color/blue"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tv_show_chart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="14dp"
+            android:text=" 饼 状 图"
+            android:textColor="@color/blue"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tv_show_sum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="14dp"
+            android:text="汇 总"
+            android:textColor="@color/blue"
+            android:textSize="18sp" />
+
+
+    </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_year"

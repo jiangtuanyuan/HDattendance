@@ -4,6 +4,6 @@
     <item
         android:id="@+id/report"
         android:orderInCategory="100"
-        android:title="查看当月汇总报告"
+        android:title="当月汇总"
         app:showAsAction="always" />
 </menu>

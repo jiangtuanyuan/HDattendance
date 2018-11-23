@@ -204,4 +204,16 @@ public class DateUtils {
         c.setTime(d);
         return c.get(Calendar.WEEK_OF_YEAR);
     }
+
+    /**
+     * 时间戳转换为字符串
+     *
+     * @param time:时间戳
+     * @return
+     */
+    public static String getToday(long time) {
+        Date d = new Date(time);
+        SimpleDateFormat sf = new SimpleDateFormat("yyyy年MM月");
+        return sf.format(d);
+    }
 }
