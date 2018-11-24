@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.hd.attendance.R;
 import com.hd.attendance.activity.attendancem.adapter.AttenMonthAdapter;
 import com.hd.attendance.activity.attendancem.adapter.AttendListAdapter;
+import com.hd.attendance.activity.attendancem.dialog.BarChartDialog;
 import com.hd.attendance.activity.attendancem.dialog.CanlendarDialog;
 import com.hd.attendance.activity.attendancem.dialog.PieChartDialog;
 import com.hd.attendance.activity.attendancem.dialog.SummaryAttenDialog;
@@ -40,8 +41,6 @@ public class AttendancemSummaryActivity extends BaseActivity {
     Toolbar toolbar;
     @BindView(R.id.tv_choose_user)
     TextView tvChooseUser;
-    @BindView(R.id.tv_show_calendar)
-    TextView tvCaendar;
     @BindView(R.id.tv_month_info)
     TextView tvMonthInfo;
     @BindView(R.id.recycler_year)
@@ -52,6 +51,15 @@ public class AttendancemSummaryActivity extends BaseActivity {
     RecyclerView recyclerData;
     @BindView(R.id.tv_nodata)
     TextView tvNodata;//没有数据
+
+    @BindView(R.id.tv_show_calendar)
+    TextView tvCaendar;//日历
+    @BindView(R.id.tv_show_chart)
+    TextView tvChart;//饼状图
+    @BindView(R.id.tv_show_bar)
+    TextView tvBar;//饼状图
+    @BindView(R.id.tv_show_sum)
+    TextView tvSum;//汇总
 
 
     //选择的年月日 默认当年当月当天
@@ -79,6 +87,9 @@ public class AttendancemSummaryActivity extends BaseActivity {
 
     //饼图
     private PieChartDialog mPieChartDialog;
+
+    //柱状图
+    private BarChartDialog mBarChartDialog;
 
 
     //主界面跳转过来的用户查询 不能显示编辑
@@ -122,7 +133,12 @@ public class AttendancemSummaryActivity extends BaseActivity {
         setSelectYear();//设置年
         setMonthRecyclerw();//设置月
         setAttenRecyclerw();
+
         tvChooseUser.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+        tvCaendar.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+        tvChart.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+        tvSum.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+        tvBar.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
     }
 
     @Override
@@ -223,7 +239,7 @@ public class AttendancemSummaryActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.tv_choose_user, R.id.tv_show_calendar, R.id.tv_show_chart, R.id.tv_show_sum})
+    @OnClick({R.id.tv_choose_user, R.id.tv_show_calendar, R.id.tv_show_chart, R.id.tv_show_bar, R.id.tv_show_sum})
     public void onViewClicked(View v) {
         switch (v.getId()) {
             case R.id.tv_choose_user:
@@ -242,6 +258,10 @@ public class AttendancemSummaryActivity extends BaseActivity {
                     ToastUtil.showToast("请选择一个员工!");
                     return;
                 }
+                if (AttenList.size() == 0) {
+                    ToastUtil.showToast("无数据!");
+                    return;
+                }
 
                 if (mCanlendarDialog == null) {
                     mCanlendarDialog = new CanlendarDialog();
@@ -255,16 +275,41 @@ public class AttendancemSummaryActivity extends BaseActivity {
                     ToastUtil.showToast("请选择一个员工!");
                     return;
                 }
+                if (AttenList.size() == 0) {
+                    ToastUtil.showToast("无数据!");
+                    return;
+                }
+
                 if (mPieChartDialog == null) {
                     mPieChartDialog = new PieChartDialog();
                 }
-                mPieChartDialog.setAttenList(AttenList, selectMonth);
+                mPieChartDialog.setAttenList(AttenList, selectYear, selectMonth);
                 mPieChartDialog.show(fragmentManager, "mPieChartDialog");
 
+                break;
+            case R.id.tv_show_bar:
+                if (mCheckListS.size() == 0) {
+                    ToastUtil.showToast("请选择一个员工!");
+                    return;
+                }
+                if (AttenList.size() == 0) {
+                    ToastUtil.showToast("无数据!");
+                    return;
+                }
+                if (mBarChartDialog == null) {
+                    mBarChartDialog = new BarChartDialog();
+                }
+                mBarChartDialog.setAttenList(AttenList, selectYear, selectMonth);
+                mBarChartDialog.show(fragmentManager, "mBarChartDialog");
                 break;
             case R.id.tv_show_sum:
                 if (mCheckListS.size() == 0) {
                     ToastUtil.showToast("请选择一个员工!");
+                    return;
+                }
+
+                if (AttenList.size() == 0) {
+                    ToastUtil.showToast("无数据!");
                     return;
                 }
 
@@ -311,16 +356,30 @@ public class AttendancemSummaryActivity extends BaseActivity {
             ToastUtil.showToast("请选择一个员工!");
             return;
         }
+
         AttenList.clear();
         String sdate = selectYear + "-" + (selectMonth > 9 ? selectMonth + "" : "0" + selectMonth);
         AttenList.addAll(LitePal.where("User_ID = ? and Date >= ? and Date <= ?",
                 mCheckListS.get(0).getUser_id() + "", sdate + "-01", sdate + "-31")
                 .order("Date desc")
                 .find(AttendancemTable.class));
+
         if (AttenList.size() == 0) {
             tvNodata.setVisibility(View.VISIBLE);
+
+            tvCaendar.setTextColor(this.getResources().getColor(R.color.gray));
+            tvChart.setTextColor(this.getResources().getColor(R.color.gray));
+            tvSum.setTextColor(this.getResources().getColor(R.color.gray));
+            tvBar.setTextColor(this.getResources().getColor(R.color.gray));
+
         } else {
             tvNodata.setVisibility(View.GONE);
+
+            tvCaendar.setTextColor(this.getResources().getColor(R.color.blue));
+            tvChart.setTextColor(this.getResources().getColor(R.color.blue));
+            tvSum.setTextColor(this.getResources().getColor(R.color.blue));
+            tvBar.setTextColor(this.getResources().getColor(R.color.blue));
+
         }
 
         attendListAdapter.notifyDataSetChanged();

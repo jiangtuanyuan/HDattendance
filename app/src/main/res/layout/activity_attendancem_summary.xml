@@ -19,7 +19,7 @@
         <TextView
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:text="姓            名:"
+            android:text="姓         名:"
             android:textSize="18sp" />
 
         <TextView
@@ -42,7 +42,7 @@
         <TextView
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:text="预 览 模 式:"
+            android:text="预览模式:"
             android:textSize="18sp" />
 
         <TextView
@@ -58,7 +58,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="14dp"
-            android:text=" 饼 状 图"
+            android:text="饼 状 图"
+            android:textColor="@color/blue"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tv_show_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="14dp"
+            android:text="柱 状 图"
             android:textColor="@color/blue"
             android:textSize="18sp" />
 

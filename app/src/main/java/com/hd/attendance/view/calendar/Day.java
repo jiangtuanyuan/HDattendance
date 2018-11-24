@@ -45,7 +45,7 @@ public class Day {
      */
     public int backgroundR;
     /**
-     * 出勤的类型 0为不画，1为正常考勤，2为异常
+     * 出勤的类型:0-正常班  1-请假 2-旷工 3-加班 4-出差
      */
     public int workState;
     /**
@@ -113,28 +113,31 @@ public class Day {
         float y = location_y * height + (height + textSize / 2) / 2;
         //0为不画，1为正常考勤，2为异常
         switch (workState) {
-            case 0:
-                paint.setColor(Color.parseColor("#868789"));
+            case 0://正常上班 绿色
+                paint.setColor(Color.parseColor("#339933"));
                 break;
-            case 1:
-                paint.setColor(Color.parseColor("#39CBA4"));
+            case 1://请假 黄色
+                paint.setColor(Color.parseColor("#FF9224"));
                 break;
-            case 2:
-                paint.setColor(Color.parseColor("#EC5D57"));
+            case 2://旷工 红色
+                paint.setColor(Color.parseColor("#f60606"));
+                break;
+            case 3://加班 蓝色
+                paint.setColor(Color.parseColor("#1DA1F2"));
+                break;
+            case 4://出差 紫色
+                paint.setColor(Color.parseColor("#8B008B"));
                 break;
             default:
-
+                paint.setColor(Color.parseColor("#868789"));
                 break;
 
         }
         if (backgroundStyle == 3) {
-//            if (workState == 2) {
-//                paint.setColor(Color.parseColor("#EC5D57"));
-//            } else {
             paint.setColor(Color.parseColor("#ffffff"));
-//            }
         }
         canvas.drawText(text, x, y, paint);
+
     }
 
     /**
@@ -174,7 +177,6 @@ public class Day {
         float cx = location_x * width + width / 2;
         float cy = location_y * height + height / 2;
         canvas.drawCircle(cx, cy, backgroundR * 9 / 20, paint);
-
     }
 
 

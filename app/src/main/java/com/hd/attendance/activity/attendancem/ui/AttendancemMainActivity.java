@@ -7,7 +7,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,7 +20,6 @@ import com.hd.attendance.activity.attendancem.adapter.AttendListAdapter;
 import com.hd.attendance.base.BaseActivity;
 import com.hd.attendance.db.AttendancemTable;
 import com.hd.attendance.utils.DateUtils;
-import com.hd.attendance.utils.ToastUtil;
 
 import org.litepal.LitePal;
 
@@ -31,6 +29,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
 
 /**
  * 考勤管理主界面

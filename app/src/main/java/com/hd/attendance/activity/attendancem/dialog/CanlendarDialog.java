@@ -88,14 +88,37 @@ public class CanlendarDialog extends DialogFragment implements CalendarView.OnSe
         String str = formatter.format(curDate);
         tvMonth.setText(str);
 
-        DayManager.removeNomalDays();
-        DayManager.removeAbnormalDays();
+        DayManager.ClearAll();
 
         for (AttendancemTable a : AttenList) {
             //正常上班
             if (a.getMorningWorkType() == WorkType.NORMAL_CODE && a.getAfternoonWorkType() == WorkType.NORMAL_CODE) {
                 String day = a.getDate().substring(a.getDate().length() - 2, a.getDate().length());
                 DayManager.addNomalDays(Integer.parseInt(day));
+                continue;
+            }
+            //请假
+            if (a.getMorningWorkType() == WorkType.LEAVE_CODE || a.getAfternoonWorkType() == WorkType.LEAVE_CODE) {
+                String day = a.getDate().substring(a.getDate().length() - 2, a.getDate().length());
+                DayManager.addLeavedDays(Integer.parseInt(day));
+                continue;
+            }
+            //旷工
+            if (a.getMorningWorkType() == WorkType.ABSENTEEISM_CODE || a.getAfternoonWorkType() == WorkType.ABSENTEEISM_CODE) {
+                String day = a.getDate().substring(a.getDate().length() - 2, a.getDate().length());
+                DayManager.addAbsenteeisnDays(Integer.parseInt(day));
+                continue;
+            }
+            //加班
+            if (a.getMorningWorkType() == WorkType.OVERTIME_CODE || a.getAfternoonWorkType() == WorkType.OVERTIME_CODE) {
+                String day = a.getDate().substring(a.getDate().length() - 2, a.getDate().length());
+                DayManager.addOvertimeDays(Integer.parseInt(day));
+                continue;
+            }
+            //出差
+            if (a.getMorningWorkType() == WorkType.TRIP_CODE || a.getAfternoonWorkType() == WorkType.TRIP_CODE) {
+                String day = a.getDate().substring(a.getDate().length() - 2, a.getDate().length());
+                DayManager.addTripDays(Integer.parseInt(day));
             }
         }
 

@@ -5,17 +5,15 @@
     android:background="@drawable/shape_rectangle_white_bg"
     android:orientation="vertical">
 
-
     <TextView
         android:id="@+id/tv_month"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_margin="8dp"
         android:gravity="center_horizontal"
-        android:text="0000年00月"
+        android:text="0月份考勤柱状图"
         android:textColor="@color/blue"
-        android:textSize="18sp" />
-
+        android:textSize="16sp" />
 
     <View
         android:layout_width="match_parent"
@@ -23,8 +21,8 @@
         android:layout_marginTop="5dp"
         android:background="@color/gray" />
 
-    <com.hd.attendance.view.calendar.CalendarView
-        android:id="@+id/calendar"
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/pic_chart"
         android:layout_width="match_parent"
         android:layout_height="350dp" />
 
@@ -33,7 +31,6 @@
         android:layout_height="1dp"
         android:layout_marginTop="5dp"
         android:background="@color/gray" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -51,7 +48,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="6dp"
-            android:text="正常上班" />
+            android:text="上班" />
 
         <View
             android:layout_width="15dp"
@@ -103,15 +100,6 @@
             android:text="出差" />
 
     </LinearLayout>
-
-
-    <TextView
-        android:id="@+id/tv_msg"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="6dp"
-        android:gravity="center_horizontal"
-        android:textSize="16sp" />
 
 
 </LinearLayout>

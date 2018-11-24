@@ -19,6 +19,7 @@ import com.hd.attendance.activity.attendancem.AttendType;
 import com.hd.attendance.activity.attendancem.WorkType;
 import com.hd.attendance.activity.attendancem.ui.AttendancemEditorActivity;
 import com.hd.attendance.db.AttendancemTable;
+import com.hd.attendance.utils.NoMoreClickListener;
 import com.hd.attendance.utils.ToastUtil;
 
 import java.util.List;
@@ -267,15 +268,26 @@ public class AttendListAdapter extends RecyclerView.Adapter<AttendListAdapter.Vi
         holder.tvAfternoonEndNote.setText("备注内容:  " + atten.getAfternoon_end_note());
 
 
-        holder.reLayout.setOnClickListener(v -> {
-            if (holder.Ll_data_layout.getVisibility() == View.GONE) {
-                holder.Ll_data_layout.setVisibility(View.VISIBLE);
-                holder.ivStatus.setImageResource(R.drawable.icon_xiala);
-            } else {
-                holder.Ll_data_layout.setVisibility(View.GONE);
-                holder.ivStatus.setImageResource(R.drawable.icon_shangla);
-            }
-        });
+        holder.reLayout.setOnClickListener(
+                new NoMoreClickListener(2000) {
+                    @Override
+                    public void OnMoreClick(View view) {
+                        super.OnMoreClick(view);
+                        if (holder.Ll_data_layout.getVisibility() == View.GONE) {
+                            holder.Ll_data_layout.setVisibility(View.VISIBLE);
+                            holder.ivStatus.setImageResource(R.drawable.icon_xiala);
+                        } else {
+                            holder.Ll_data_layout.setVisibility(View.GONE);
+                            holder.ivStatus.setImageResource(R.drawable.icon_shangla);
+                        }
+                    }
+                    @Override
+                    public void OnMoreErrorClick() {
+                        ToastUtil.showToast("操作过快!");
+                    }
+                }
+        );
+
 
         if (isShowEditor) {
             holder.tvEditorInfo.setVisibility(View.VISIBLE);

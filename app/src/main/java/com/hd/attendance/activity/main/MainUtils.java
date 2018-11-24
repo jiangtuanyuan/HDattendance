@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.hd.attendance.R;
 import com.hd.attendance.db.AttendancemTable;
 import com.hd.attendance.db.EmployeesTable;
+import com.hd.attendance.db.FingerInfoTable;
 import com.hd.attendance.db.HealthTable;
 import com.hd.attendance.db.RepastTable;
 import com.hd.attendance.utils.DateUtils;
@@ -502,12 +503,41 @@ public class MainUtils {
     }
 
     /**
-     * 查找员工中的管理员
+     * 查找员工中的管理员 并且已经录入指纹的
      */
-    public static List<EmployeesTable> getAdminEmp() {
+    public static boolean getAdminEmp() {
         List<EmployeesTable> admins = new ArrayList<>();
         admins.addAll(LitePal.where("administrator = ?", "1").find(EmployeesTable.class));
-        return admins;
+        if (admins.size() == 0) {
+            //说明不存在管理员  直接false
+            return false;
+        } else {
+            //判断管理员是否录入指纹
+            for (EmployeesTable e : admins) {
+                if (getUser(e.getId())) {
+                    //该管理员存在指纹数据
+                    return true;
+                }
+
+            }
+            return false;
+        }
     }
+
+    /**
+     * 查找员工是否录入了指纹
+     * 默认未录入
+     */
+    public static boolean getUser(int userID) {
+        List<FingerInfoTable> FList = new ArrayList<>();
+        FList.addAll(LitePal.findAll(FingerInfoTable.class));
+        for (FingerInfoTable f : FList) {
+            if (f.getUser_ID() == userID) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
 }

@@ -1,29 +1,29 @@
 package com.hd.attendance.activity.attendancem.dialog;
 
 
-import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
-import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.Description;
-import com.github.mikephil.charting.data.PieData;
-import com.github.mikephil.charting.data.PieDataSet;
-import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
 import com.hd.attendance.R;
 import com.hd.attendance.activity.attendancem.WorkType;
 import com.hd.attendance.db.AttendancemTable;
+import com.hd.attendance.utils.DateUtils;
 
 import java.util.ArrayList;
-
 import java.util.List;
 import java.util.Objects;
 
@@ -33,17 +33,18 @@ import butterknife.ButterKnife;
 
 /**
  * Created by 蒋 on 2018/8/31.
- * 饼状图
+ * 柱状图
  */
 
-public class PieChartDialog extends DialogFragment {
+public class BarChartDialog extends DialogFragment {
     @BindView(R.id.pic_chart)
-    PieChart picChart;
+    BarChart mBarChart;
     @BindView(R.id.tv_month)
     TextView tvMonth;
 
     private int year;
     private int month;
+    private int monthDay;//当前月份有多少天
     private float[] attens;
     private List<AttendancemTable> AttenList = new ArrayList<>();
 
@@ -59,16 +60,20 @@ public class PieChartDialog extends DialogFragment {
     public Dialog onCreateDialog(@NonNull Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getActivity()));
         View view = LayoutInflater.from(getActivity())
-                .inflate(R.layout.atten_piechart_dialog_layout, null);
+                .inflate(R.layout.atten_barchart_dialog_layout, null);
         ButterKnife.bind(this, view);
-        tvMonth.setText(year + "年" + "月份考勤饼状图");
-        init();
+        tvMonth.setText(year + "年" + month + "月份考勤柱状图");
+        //得到当前年当前月多少天
+        monthDay = DateUtils.getMonthLastDay(year, month);
+        initData();
+
+        initBarChart();
         builder.setView(view);
         return builder.create();
     }
 
 
-    private void init() {
+    private void initData() {
         attens = new float[]{0, 0, 0, 0, 0};//出勤情况：正常上班,请假，旷工，加班，出差
 
         for (AttendancemTable atten : AttenList) {
@@ -112,45 +117,68 @@ public class PieChartDialog extends DialogFragment {
                 default:
                     break;
             }
-
-
         }
-
-        float attens_sum = attens[0] + attens[1] + attens[2] + attens[3] + attens[4];
-
-        List<PieEntry> strings = new ArrayList<>();
-        strings.add(new PieEntry(attens[0] / attens_sum * 100, "正常上班[" + attens[0] + "天]"));
-        strings.add(new PieEntry(attens[1] / attens_sum * 100, "请假[" + attens[1] + "天]"));
-        strings.add(new PieEntry(attens[2] / attens_sum * 100, "旷工[" + attens[2] + "天]"));
-        strings.add(new PieEntry(attens[3] / attens_sum * 100, "加班[" + attens[3] + "天]"));
-        strings.add(new PieEntry(attens[4] / attens_sum * 100, "出差[" + attens[4] + "天]"));
-
-        PieDataSet dataSet = new PieDataSet(strings, "  出勤记录饼状图");
-
-        ArrayList<Integer> colors = new ArrayList<>();
-
-        colors.add(Color.parseColor("#339933"));
-        colors.add(Color.parseColor("#FF9224"));
-        colors.add(Color.parseColor("#f60606"));
-        colors.add(Color.parseColor("#1DA1F2"));
-        colors.add(Color.parseColor("#8B008B"));
-
-        dataSet.setValueTextSize(16f);
-        dataSet.setColors(colors);
-
-        PieData pieData = new PieData(dataSet);
-        pieData.setDrawValues(true);
-        pieData.setValueFormatter(new PercentFormatter());
-        pieData.setValueTextSize(16f);
-
-        picChart.setData(pieData);
-        picChart.invalidate();
-
-        Description description = new Description();
-        description.setText("");
-        picChart.setDescription(description);
-        picChart.setHoleRadius(0f);
-        picChart.setTransparentCircleRadius(0f);
     }
+
+    /**
+     * 初始化BarChart图表
+     */
+    private void initBarChart() {
+        Description description = new Description();
+        description.setText("-月度出勤柱状图-");
+        description.setEnabled(false);
+        mBarChart.setDescription(description);
+
+        mBarChart.setTouchEnabled(false);//禁止所有点击拖拽事件
+
+        mBarChart.setMaxVisibleValueCount(60);
+        mBarChart.setPinchZoom(false);
+        mBarChart.setDrawBarShadow(false);
+        mBarChart.setDrawGridBackground(false);
+
+        XAxis xAxis = mBarChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setDrawGridLines(false);
+        xAxis.setGranularity(0f);//设置最小间隔，防止当放大时，出现重复标签。
+
+
+        mBarChart.getAxisLeft().setDrawGridLines(true);
+        mBarChart.getAxisLeft().setAxisMaximum(monthDay);
+
+        mBarChart.getAxisRight().setEnabled(false);
+        mBarChart.getLegend().setEnabled(false);
+        setDataToBar();
+    }
+
+    /**
+     * 设置数据刀柱状图
+     */
+    private void setDataToBar() {
+        ArrayList<BarEntry> yVals1 = new ArrayList<>();
+        yVals1.add(new BarEntry(1f, attens[0]));
+        yVals1.add(new BarEntry(2f, attens[1]));
+        yVals1.add(new BarEntry(3f, attens[2]));
+        yVals1.add(new BarEntry(4f, attens[3]));
+        yVals1.add(new BarEntry(5f, attens[4]));
+
+        BarDataSet barDataSet = new BarDataSet(yVals1, "");
+        barDataSet.setDrawValues(true);
+        barDataSet.setValueTextSize(10f);
+
+        List<Integer> Colors = new ArrayList<>();
+        Colors.add(Color.parseColor("#339933"));
+        Colors.add(Color.parseColor("#FF9224"));
+        Colors.add(Color.parseColor("#f60606"));
+        Colors.add(Color.parseColor("#1DA1F2"));
+        Colors.add(Color.parseColor("#8B008B"));
+
+        barDataSet.setColors(Colors);
+
+        BarData barData = new BarData(barDataSet);
+        mBarChart.setData(barData);
+        mBarChart.setFitBars(true);
+        mBarChart.animateY(1500);
+    }
+
 
 }

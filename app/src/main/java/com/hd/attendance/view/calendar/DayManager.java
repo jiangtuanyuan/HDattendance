@@ -49,81 +49,67 @@ public class DayManager {
         return currentTime;
     }
 
+    static Set<Integer> NormalDays = new HashSet<>();//正常上班天数
 
-    /**
-     * 储存正常天数
-     */
-    static Set<Integer> normalDays = new HashSet<>();
-
-    /**
-     * 添加正常天数
-     *
-     * @param i
-     */
     public static void addNomalDays(int i) {
-        normalDays.add(i);
+        NormalDays.add(i);
+    }
+
+    public static void ClearNomalDays() {
+        NormalDays.clear();
+    }
+
+    static Set<Integer> LeavedDays = new HashSet<>();//请假天数
+
+    public static void addLeavedDays(int i) {
+        LeavedDays.add(i);
+    }
+
+    public static void ClearLeavedDays() {
+        LeavedDays.clear();
+    }
+
+    static Set<Integer> AbsenteeisnDays = new HashSet<>();//旷工天数
+
+    public static void addAbsenteeisnDays(int i) {
+        AbsenteeisnDays.add(i);
+    }
+
+    public static void ClearAbsenteeisnDays() {
+        AbsenteeisnDays.clear();
+    }
+
+    static Set<Integer> OvertimeDays = new HashSet<>();//加班天数
+
+    public static void addOvertimeDays(int i) {
+        OvertimeDays.add(i);
+    }
+
+    public static void ClearOvertimeDays() {
+        OvertimeDays.clear();
+    }
+
+    static Set<Integer> TripDays = new HashSet<>();//出差天数
+
+    public static void addTripDays(int i) {
+        TripDays.add(i);
+    }
+
+    public static void ClearTripDays() {
+        TripDays.clear();
     }
 
     /**
-     * 移除正常的天数
+     * 清空五个出勤
      */
-    public static void removeNomalDays() {
-        normalDays.clear();
+    public static void ClearAll() {
+        NormalDays.clear();
+        LeavedDays.clear();
+        AbsenteeisnDays.clear();
+        OvertimeDays.clear();
+        TripDays.clear();
     }
 
-    /**
-     * 储存异常天数
-     */
-    static Set<Integer> abnormalDays = new HashSet<>();
-
-    /**
-     * 添加异常天数
-     *
-     * @param i
-     */
-    public static void addAbnormalDays(int i) {
-        abnormalDays.add(i);
-    }
-
-    /**
-     * 移除异常的天数
-     *
-     * @param i
-     */
-    public static void removeAbnormalDays(int i) {
-        if (abnormalDays.contains(i)) {
-            abnormalDays.remove(i);
-        }
-    }
-    public static void removeAbnormalDays() {
-        abnormalDays.clear();
-    }
-
-
-    /**
-     * 储存未到天数
-     */
-    static Set<Integer> restDays = new HashSet<>();
-
-    /**
-     * 添加未到天数
-     *
-     * @param i
-     */
-    public static void addRestDays(int i) {
-        restDays.add(i);
-    }
-
-    /**
-     * 移除未到的天数
-     *
-     * @param i
-     */
-    public static void removeRestDays(int i) {
-        if (restDays.contains(i)) {
-            restDays.remove(i);
-        }
-    }
 
     public static void setTempcurrent(int tempcurrent) {
         DayManager.tempcurrent = tempcurrent;
@@ -153,17 +139,9 @@ public class DayManager {
      * @return 返回的天数的集合
      */
     public static List<Day> createDayByCalendar(Calendar calendar, int width, int heigh) {
-        //初始化休息的天数
-//        initRestDays(calendar);
-        //模拟数据
-//        imitateData();
 
         List<Day> days = new ArrayList<>();
-
-
-        Day day = null;
-
-
+        Day day;
         int dayWidth = width / 7;
         int dayHeight = heigh / (calendar.getActualMaximum(Calendar.WEEK_OF_MONTH) + 1);
         //添加星期标识，
@@ -174,7 +152,8 @@ public class DayManager {
             day.location_y = 0;
             day.text = weeks[i];
             //设置日期颜色
-            day.textClor = 0xFF699CF0;
+            day.textClor = 0xFF699CF0;//灰色
+            day.workState = 5;
             days.add(day);
         }
 
@@ -182,6 +161,7 @@ public class DayManager {
         calendar.set(Calendar.DAY_OF_MONTH, 1);
         int firstWeekCount = calendar.getActualMaximum(Calendar.DAY_OF_WEEK);
         //生成每一天的对象，其中第i次创建的是第i+1天
+
         for (int i = 0; i < count; i++) {
             day = new Day(dayWidth, dayHeight);
             day.text = dayArray[i];
@@ -192,6 +172,7 @@ public class DayManager {
             day.location_x = calendar.get(Calendar.DAY_OF_WEEK) - 1;
             //设置日期选择状态
             if (i == current - 1) {
+                //当前日期
                 day.backgroundStyle = 3;
                 day.textClor = 0xFF4384ED;
 
@@ -203,13 +184,20 @@ public class DayManager {
                 day.textClor = 0xFF8696A5;
             }
 
-            //设置工作状态
-            if (abnormalDays.contains(i + 1)) {
-                day.workState = 2;
-            } else if (normalDays.contains(i + 1)) {
+            //设置数字颜色 当天出勤状态
+            if (NormalDays.contains(i + 1)) {
+                //正常上班
+                day.workState = 0;
+            } else if (LeavedDays.contains(i + 1)) {
                 day.workState = 1;
-            } else {
+            } else if (AbsenteeisnDays.contains(i + 1)) {
                 day.workState = 2;
+            } else if (OvertimeDays.contains(i + 1)) {
+                day.workState = 3;
+            } else if (TripDays.contains(i + 1)) {
+                day.workState = 4;
+            } else {
+                day.workState = 5;
             }
             days.add(day);
         }

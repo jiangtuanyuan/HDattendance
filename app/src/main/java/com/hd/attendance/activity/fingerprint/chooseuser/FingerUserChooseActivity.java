@@ -1,5 +1,6 @@
 package com.hd.attendance.activity.fingerprint.chooseuser;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -82,6 +83,7 @@ public class FingerUserChooseActivity extends BaseActivity implements Toolbar.On
     /**
      * 加载数据库的用户数据
      */
+    @SuppressLint("CheckResult")
     private void initDBData() {
         EList.addAll(LitePal.findAll(EmployeesTable.class));
         FList.addAll(LitePal.findAll(FingerInfoTable.class));
@@ -99,20 +101,17 @@ public class FingerUserChooseActivity extends BaseActivity implements Toolbar.On
         adapter.notifyDataSetChanged();
 
         RxTextView.textChanges(mSearchEdt)
-                .subscribe(new Consumer<CharSequence>() {
-                    @Override
-                    public void accept(CharSequence charSequence) throws Exception {
+                .subscribe(charSequence -> {
 
-                        if (charSequence.length() > 0) {
-                            mSearchEdtClear.setVisibility(View.VISIBLE);
-                            Search(charSequence.toString() + "");
+                    if (charSequence.length() > 0) {
+                        mSearchEdtClear.setVisibility(View.VISIBLE);
+                        Search(charSequence.toString() + "");
 
-                        } else {
-                            mList.clear();
-                            mList.addAll(mSumList);
-                            adapter.notifyDataSetChanged();
-                            mSearchEdtClear.setVisibility(View.INVISIBLE);
-                        }
+                    } else {
+                        mList.clear();
+                        mList.addAll(mSumList);
+                        adapter.notifyDataSetChanged();
+                        mSearchEdtClear.setVisibility(View.INVISIBLE);
                     }
                 });
     }

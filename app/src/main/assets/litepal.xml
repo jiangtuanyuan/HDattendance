@@ -21,5 +21,6 @@
         <!-- 就餐表 -->
         <mapping class="com.hd.attendance.db.RepastTable" />
 
+
     </list>
 </litepal>

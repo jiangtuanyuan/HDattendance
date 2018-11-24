@@ -71,7 +71,7 @@ public class CalendarView extends View {
     }
 
     /***
-     * 初始化控件
+     * 初始化控件 设置默认年和月
      */
     private void initView() {
         paint = new Paint();
@@ -104,6 +104,7 @@ public class CalendarView extends View {
             //计算点击的是哪个日期
             int locationX = (int) (x * 7 / getMeasuredWidth());
             int locationY = (int) ((calendar.getActualMaximum(Calendar.WEEK_OF_MONTH) + 1) * y / getMeasuredHeight());
+
             Log.e(TAG, "onTouchEvent: " + locationX + "y" + locationY + "星期" + calendar.get(Calendar.DAY_OF_WEEK));
 
             if (locationY == 0) {

@@ -249,7 +249,7 @@ public class HDMainActivity extends BaseActivity implements Toolbar.OnMenuItemCl
     protected void initViews(Bundle savedInstanceState) {
         setContentView(R.layout.activity_hdmain);
         ButterKnife.bind(this);
-        setTitle("  黑 豆 考 勤 系 统");
+        setTitle(" 黑 豆 考 勤 系 统");
         mToolbar.inflateMenu(R.menu.main_menu);
         mToolbar.setOnMenuItemClickListener(this);
         SystemLog.getInstance().AddLog("系统启动");
@@ -269,7 +269,7 @@ public class HDMainActivity extends BaseActivity implements Toolbar.OnMenuItemCl
                 onBackPressed();
                 return true;
             case R.id.menu_search:
-                /*Intent PerIntent = new Intent(this, PersonalCenterMainActivity.class);
+               /* Intent PerIntent = new Intent(this, PersonalCenterMainActivity.class);
                 PerIntent.putExtra("id", "1");
                 PerIntent.putExtra("name", "蒋团圆");
                 startActivity(PerIntent);*/
@@ -280,10 +280,9 @@ public class HDMainActivity extends BaseActivity implements Toolbar.OnMenuItemCl
 
                 return true;
             case R.id.menu_set:
-           //  startActivity(new Intent(this, ManagementActivity.class));
+                // startActivity(new Intent(this, ManagementActivity.class));
 
-
-                if (MainUtils.getAdminEmp().size() == 0) {
+                if (!MainUtils.getAdminEmp()) {
                     showAndminPwd();
                 } else {
                     AdminTF = true;
@@ -463,6 +462,7 @@ public class HDMainActivity extends BaseActivity implements Toolbar.OnMenuItemCl
                         mDisposable = disposable;
                     }
 
+                    @SuppressLint("SetTextI18n")
                     @Override
                     public void onNext(@NonNull Long number) {
                         Time = DateUtils.getTime();
@@ -491,18 +491,21 @@ public class HDMainActivity extends BaseActivity implements Toolbar.OnMenuItemCl
                             tvRightLogEveningMeal.setText("晚餐是否报餐:");
                             tvRightLogEveningEatMeal.setText("晚餐是否就餐:");
 
-
                             fngerI = 0;
                         }
+
                         ATTEN_CODE = MainUtils.isCharmTime(Time, tvCenterAttenPrompt, ivCenter_time_below);//考勤
 
 
                         RepastFinger = MainUtils.isAttenOrRepast(Time);
                         try {
                             if (RepastFinger == 1) {
+
                                 REPAST_CODE = MainUtils.isRepastTime(Time, tvCenterRepastPrompt);//就餐
+
                                 fingerprintSensor.setFingerprintCaptureListener(1, FingerListener2);
                                 llCenterRightLog.setVisibility(View.VISIBLE);
+                                tvCenterRepastPrompt.setText("当前就餐指纹仪为-就餐打卡模式!");
                             } else {
                                 fingerprintSensor.setFingerprintCaptureListener(1, FingerListener3);
                                 llCenterRightLog.setVisibility(View.GONE);
@@ -552,7 +555,7 @@ public class HDMainActivity extends BaseActivity implements Toolbar.OnMenuItemCl
         return super.onKeyDown(keyCode, event);
     }
 
-/*————————————————————————————指纹仪相关S——————————————————————————*/
+    /*————————————————————————————指纹仪相关S——————————————————————————*/
 
     /**
      * 将数据库的指纹注册到指纹服务中
@@ -1555,7 +1558,6 @@ public class HDMainActivity extends BaseActivity implements Toolbar.OnMenuItemCl
                         isFingerC = false;
                         ToastUtil.showToast("该指纹未入库,考勤指纹仪识别失败,请重试!");
                     }
-
                 });
             }
 
@@ -1893,7 +1895,7 @@ public class HDMainActivity extends BaseActivity implements Toolbar.OnMenuItemCl
         }
 
     }
-/*————————————————————————————指纹仪相关E——————————————————————————*/
+    /*————————————————————————————指纹仪相关E——————————————————————————*/
 
 
     /**
