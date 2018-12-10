@@ -15,11 +15,13 @@ import android.widget.TextView;
 
 import com.hd.attendance.R;
 import com.hd.attendance.activity.attendancem.AttendType;
+import com.hd.attendance.activity.attendancem.WorkType;
 import com.hd.attendance.activity.attendancem.adapter.AttenMonthAdapter;
 import com.hd.attendance.activity.attendancem.adapter.AttendListAdapter;
 import com.hd.attendance.base.BaseActivity;
 import com.hd.attendance.db.AttendancemTable;
 import com.hd.attendance.utils.DateUtils;
+import com.hd.attendance.utils.ToastUtil;
 
 import org.litepal.LitePal;
 
@@ -53,6 +55,13 @@ public class AttendancemMainActivity extends BaseActivity {
     TextView tvListSize;//共N条数据
     @BindView(R.id.ll_stauts_layout)
     LinearLayout llStautsLayout;//状态布局
+
+    @BindView(R.id.tv_atten_type)
+    TextView tvAttenType;//类型
+    @BindView(R.id.tv_atten_size)
+    TextView tvAttenSize;//出勤总数
+    @BindView(R.id.ll_atten_layout)
+    LinearLayout llAttenLayout;//布局
 
     //选择的年月日 默认当年当月当天
     private int selectYear = DateUtils.getThisYear();
@@ -101,7 +110,10 @@ public class AttendancemMainActivity extends BaseActivity {
         setMonthRecyclerw();//设置月
         setDayRecyclerw();//设置天数
         setAttenRecyclerw();
+
         spStautsType.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+        tvAttenType.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+
     }
 
     @Override
@@ -299,7 +311,91 @@ public class AttendancemMainActivity extends BaseActivity {
     }
 
     /**
-     * 筛选数据
+     * 按照出勤情况赛选数据
+     */
+    private String[] AttenAray = new String[]{"全部", "正常上班", "请假", "旷工", "加班", "出差"};
+    private AlertDialog.Builder AttenDialog;
+    private int selectAtten = 0;
+
+    private void showAttenDialog() {
+        if (AttenDialog == null) {
+            AttenDialog = new AlertDialog.Builder(this)
+                    .setTitle("选择状态类型筛选")
+                    .setItems(AttenAray, (dialog, which) -> {
+                        tvAttenType.setText(AttenAray[which]);
+                        selectAtten = which;
+
+                        QuereyAttenListData();
+                        dialog.dismiss();
+                    });
+        }
+        AttenDialog.show();
+    }
+
+    /**
+     * 根据出勤情况 筛选数据
+     */
+    private void QuereyAttenListData() {
+        switch (selectAtten) {
+            case 0://全部
+                AttenList.clear();
+                AttenList.addAll(SumAttenList);
+                break;
+            case 1://正常上班
+                AttenList.clear();
+                for (AttendancemTable a : SumAttenList) {
+                    if (a.getMorningWorkType() == WorkType.NORMAL_CODE && a.getAfternoonWorkType() == WorkType.NORMAL_CODE) {
+                        AttenList.add(a);
+                    }
+                }
+                break;
+            case 2://请假
+                AttenList.clear();
+                for (AttendancemTable a : SumAttenList) {
+                    if (a.getMorningWorkType() == WorkType.LEAVE_CODE || a.getAfternoonWorkType() == WorkType.LEAVE_CODE) {
+                        AttenList.add(a);
+                    }
+                }
+                break;
+            case 3://旷工
+                AttenList.clear();
+                for (AttendancemTable a : SumAttenList) {
+                    if (a.getMorningWorkType() == WorkType.ABSENTEEISM_CODE || a.getAfternoonWorkType() == WorkType.ABSENTEEISM_CODE) {
+                        AttenList.add(a);
+                    }
+                }
+                break;
+            case 4://加班
+                AttenList.clear();
+                for (AttendancemTable a : SumAttenList) {
+                    if (a.getMorningWorkType() == WorkType.OVERTIME_CODE || a.getAfternoonWorkType() == WorkType.OVERTIME_CODE) {
+                        AttenList.add(a);
+                    }
+                }
+                break;
+            case 5://出差
+                AttenList.clear();
+                for (AttendancemTable a : SumAttenList) {
+                    if (a.getMorningWorkType() == WorkType.TRIP_CODE || a.getAfternoonWorkType() == WorkType.TRIP_CODE) {
+                        AttenList.add(a);
+                    }
+                }
+                break;
+            default:
+                break;
+        }
+        if (AttenList.size() > 0) {
+            tvNodata.setVisibility(View.GONE);
+        } else {
+            tvNodata.setVisibility(View.VISIBLE);
+        }
+        tvAttenSize.setText("(共" + AttenList.size() + "条数据!)");
+        attendListAdapter.notifyDataSetChanged();
+    }
+
+
+    /**
+     * 按照打卡状态-筛选数据
      */
     private String[] areas = new String[]{"全部", "正常打卡", "迟到打卡", "早退打卡", "补卡"};
     private AlertDialog.Builder TypeDialog;
@@ -338,14 +434,18 @@ public class AttendancemMainActivity extends BaseActivity {
         if (AttenList.size() > 0) {
             tvNodata.setVisibility(View.GONE);
             llStautsLayout.setVisibility(View.VISIBLE);
+            llAttenLayout.setVisibility(View.VISIBLE);
         } else {
             tvNodata.setVisibility(View.VISIBLE);
+
             llStautsLayout.setVisibility(View.GONE);
+            llAttenLayout.setVisibility(View.GONE);
         }
         attendListAdapter.notifyDataSetChanged();
 
 
         spStautsType.setText("全部");
+
         selectType = 0;
         ScreebListData();
     }
@@ -411,8 +511,19 @@ public class AttendancemMainActivity extends BaseActivity {
         attendListAdapter.notifyDataSetChanged();
     }
 
-    @OnClick(R.id.sp_stauts_type)
-    public void onViewClicked() {
-        setStautsType();
+    @OnClick({R.id.sp_stauts_type, R.id.tv_atten_type})
+    public void onViewClicked(View v) {
+        switch (v.getId()) {
+            case R.id.sp_stauts_type:
+                setStautsType();
+                break;
+            case R.id.tv_atten_type:
+                showAttenDialog();
+                break;
+            default:
+                break;
+        }
+
     }
+
 }

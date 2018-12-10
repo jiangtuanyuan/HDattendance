@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hd.attendance.R;
+import com.hd.attendance.activity.attendancem.WorkType;
 import com.hd.attendance.db.AttendancemTable;
 import com.hd.attendance.db.EmployeesTable;
 import com.hd.attendance.db.FingerInfoTable;
@@ -45,6 +46,9 @@ public class MainUtils {
             table.setUser_Name(UserName);
             table.setDate(date);
             table.setWeek(DateUtils.DateToDayB(date));
+            //设置上午下午上班状态 默认都是正常上班
+            table.setMorningWorkType(WorkType.NORMAL_CODE);
+            table.setAfternoonWorkType(WorkType.NORMAL_CODE);
             table.save();//保存之后再返回
             return table;
         }
@@ -279,8 +283,13 @@ public class MainUtils {
                     tvCenterRepastPrompt.setText("【00:00-7:00】-禁止就餐指纹仪操作！");
                     return 0;
                 }
-                if (h <= 9 && m <= 30) {
-                    //中午报餐时间   9：30之前报餐
+
+                //中午报餐时间   9：30之前报餐
+                if (h == 8 || h == 7) {
+                    tvCenterRepastPrompt.setText("【午餐报餐】07:00-09:30 之间 请轻触右边指纹仪报中餐！");
+                    return 1;
+                }
+                if (h == 9 && m <= 30) {
                     tvCenterRepastPrompt.setText("【午餐报餐】07:00-09:30 之间 请轻触右边指纹仪报中餐！");
                     return 1;
                 }
@@ -291,7 +300,13 @@ public class MainUtils {
                     return 2;
                 }
 
-                if (h <= 14 && m <= 20) {
+
+                if (h == 13) {
+                    tvCenterRepastPrompt.setText("【晚餐报餐】13:00-14:20 之间 请轻触右边指纹仪报晚餐！");
+                    return 3;
+                }
+
+                if (h == 14 && m <= 20) {
                     //晚餐报餐时间   14：20之前报餐
                     tvCenterRepastPrompt.setText("【晚餐报餐】13:00-14:20 之间 请轻触右边指纹仪报晚餐！");
                     return 3;
@@ -302,6 +317,7 @@ public class MainUtils {
                     tvCenterRepastPrompt.setText("【晚餐就餐】 18：00之后 请轻触右边指纹仪确定就餐！");
                     return 4;
                 }
+
             }
             tvCenterRepastPrompt.setText("未到报餐或者就餐打卡时间!");
             return 0;
@@ -418,7 +434,7 @@ public class MainUtils {
                     break;
             }
         } else {
-            tvAttenAfternoonStart.setText("上午上班卡: 暂未打卡");
+            tvAttenAfternoonStart.setText("下午上班卡: 暂未打卡");
         }
 
 

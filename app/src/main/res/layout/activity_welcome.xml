@@ -17,10 +17,11 @@
         android:id="@+id/tv_version"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="10dp"
         android:text="版本:"
-        android:textColor="@color/gray" />
+        android:textColor="@color/gray"
+        android:visibility="gone" />
 
 </RelativeLayout>

@@ -26,6 +26,43 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp" />
 
+
+    <LinearLayout
+        android:id="@+id/ll_atten_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="出勤情况:"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tv_atten_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="全部"
+            android:textColor="@color/blue"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tv_atten_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="共0条记录!"
+            android:textColor="@color/gray"
+            android:textSize="15sp" />
+
+    </LinearLayout>
+
+
     <LinearLayout
         android:id="@+id/ll_stauts_layout"
         android:layout_width="match_parent"
@@ -58,7 +95,6 @@
             android:text="共0条记录!"
             android:textColor="@color/gray"
             android:textSize="15sp" />
-
     </LinearLayout>
 
 

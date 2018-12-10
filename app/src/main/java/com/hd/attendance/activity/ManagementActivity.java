@@ -45,7 +45,6 @@ import butterknife.OnClick;
  * 管理的界面
  */
 public class ManagementActivity extends BaseActivity {
-
     @BindView(R.id.tv_kq)
     TextView tvKq;
     @BindView(R.id.tv_jc)

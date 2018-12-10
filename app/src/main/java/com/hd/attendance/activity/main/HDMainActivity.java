@@ -375,6 +375,7 @@ public class HDMainActivity extends BaseActivity implements Toolbar.OnMenuItemCl
                 AdminTF = false;
                 Adminarry = null;
                 isFingerA = false;
+
                 isFingerC = false;
 
                 dialog.dismiss();
@@ -391,6 +392,7 @@ public class HDMainActivity extends BaseActivity implements Toolbar.OnMenuItemCl
                 dialog.dismiss();
                 AdminTF = false;
                 isFingerA = false;
+
                 isFingerC = false;
 
                 //进入到管理中心
@@ -401,6 +403,7 @@ public class HDMainActivity extends BaseActivity implements Toolbar.OnMenuItemCl
                 dialog.dismiss();
                 AdminTF = false;
                 isFingerA = false;
+
                 isFingerC = false;
             });
             AdminDialog = builder.create();
@@ -496,8 +499,10 @@ public class HDMainActivity extends BaseActivity implements Toolbar.OnMenuItemCl
 
                         ATTEN_CODE = MainUtils.isCharmTime(Time, tvCenterAttenPrompt, ivCenter_time_below);//考勤
 
+                        REPAST_CODE = MainUtils.isRepastTime(Time, tvCenterRepastPrompt);//就餐
 
-                        RepastFinger = MainUtils.isAttenOrRepast(Time);
+
+                      /*  RepastFinger = MainUtils.isAttenOrRepast(Time);
                         try {
                             if (RepastFinger == 1) {
 
@@ -511,9 +516,10 @@ public class HDMainActivity extends BaseActivity implements Toolbar.OnMenuItemCl
                                 llCenterRightLog.setVisibility(View.GONE);
                                 tvCenterRepastPrompt.setText("当前就餐指纹仪为-考勤打卡模式!");
                             }
+
                         } catch (Exception e) {
                             e.printStackTrace();
-                        }
+                        }*/
 
 
                         if (Time.equals("00:00:00")) {
@@ -991,7 +997,7 @@ public class HDMainActivity extends BaseActivity implements Toolbar.OnMenuItemCl
                                                 //设置界面
                                                 llCenterLeftSuccess.setVisibility(View.VISIBLE);
                                                 tvLeftSuccessName.setText(" 姓 名:" + f.getUser_Name());
-                                                tvLeftSuccessShift.setText(" 打 卡 班 次:下午上班");
+                                                tvLeftSuccessShift.setText(" 打 卡 班 次:下午下班");
                                                 tvLeftSuccessState.setText(" 打 卡 状 态:【早退】");
                                                 tvLeftSuccessTime.setText(" 打 卡 时 间:" + userAtten.getAfternoon_end_time());
 
@@ -1677,7 +1683,7 @@ public class HDMainActivity extends BaseActivity implements Toolbar.OnMenuItemCl
                                                     }
                                                     if (which == 1) {
                                                         userRepast.setEvening_Report(true);
-                                                        userRepast.setAfternoon_Report_time(DateUtils.getTimeHM());
+                                                        userRepast.setEvening_Report_time(DateUtils.getTimeHM());
                                                     }
 
                                                 } else {
@@ -1689,7 +1695,7 @@ public class HDMainActivity extends BaseActivity implements Toolbar.OnMenuItemCl
                                                     }
                                                     if (which == 1) {
                                                         userRepast.setEvening_Report(false);
-                                                        userRepast.setAfternoon_Report_time("00:00");
+                                                        userRepast.setEvening_Report_time("00:00");
                                                     }
 
                                                 }
@@ -1717,7 +1723,7 @@ public class HDMainActivity extends BaseActivity implements Toolbar.OnMenuItemCl
                                                     tvRightSuccessType.setText("打卡类型:【晚餐报餐】");
                                                     SystemLog.getInstance().AddLog("[" + names[1] + "] 【晚餐报餐】成功! ");
                                                 }
-                                                tvRightSuccessTime.setText(userRepast.getAfternoon_Report_time());
+                                                tvRightSuccessTime.setText("时   间:" + userRepast.getAfternoon_Report_time());
 
                                                 //显示今日报餐、就餐记录
                                                 MainUtils.showRepast(userRepast,
@@ -1753,7 +1759,7 @@ public class HDMainActivity extends BaseActivity implements Toolbar.OnMenuItemCl
 
                                             llCenterRightSuccess.setVisibility(View.VISIBLE);
                                             tvRightSuccessType.setText("打卡类型:【中餐就餐】");
-                                            tvRightSuccessTime.setText(userRepast.getAfternoon_Eat_time());
+                                            tvRightSuccessTime.setText("时   间:" + userRepast.getAfternoon_Eat_time());
 
                                             SystemLog.getInstance().AddLog("[" + names[1] + "] 【中餐就餐】打卡成功! ");
 
@@ -1780,7 +1786,7 @@ public class HDMainActivity extends BaseActivity implements Toolbar.OnMenuItemCl
 
                                             llCenterRightSuccess.setVisibility(View.VISIBLE);
                                             tvRightSuccessType.setText("打卡类型:【晚餐报餐】");
-                                            tvRightSuccessTime.setText(userRepast.getEvening_Report_time());
+                                            tvRightSuccessTime.setText("时   间:" + userRepast.getEvening_Report_time());
 
                                             SystemLog.getInstance().AddLog("[" + names[1] + "] 【晚餐报餐】打卡成功! ");
                                         }
@@ -1807,7 +1813,7 @@ public class HDMainActivity extends BaseActivity implements Toolbar.OnMenuItemCl
 
                                             llCenterRightSuccess.setVisibility(View.VISIBLE);
                                             tvRightSuccessType.setText("打卡类型:【晚餐就餐】");
-                                            tvRightSuccessTime.setText(userRepast.getEvening_Eat_time());
+                                            tvRightSuccessTime.setText("时   间:"+ userRepast.getEvening_Eat_time());
 
                                             SystemLog.getInstance().AddLog("[" + names[1] + "] 【晚餐就餐】打卡成功! ");
                                         }
@@ -1857,7 +1863,6 @@ public class HDMainActivity extends BaseActivity implements Toolbar.OnMenuItemCl
             SystemLog.getInstance().AddLog("考勤指纹仪启动成功!");
         } catch (FingerprintException f) {
             tvLeftFingetState.setText("启动异常!");
-
             SystemLog.getInstance().AddLog("考勤指纹仪启动异常!FingerprintException=" + f.getMessage());
         }
 
@@ -1865,7 +1870,14 @@ public class HDMainActivity extends BaseActivity implements Toolbar.OnMenuItemCl
             //同上
             fingerprintSensor.open(1);
 
-            if (RepastFinger == 1) {
+            fingerprintSensor.setFingerprintCaptureListener(1, FingerListener2);
+
+            //启动采集 这句
+            fingerprintSensor.startCapture(1);
+            tvRightFingetState.setText("【启动成功-就餐模式】");
+            SystemLog.getInstance().AddLog("就餐指纹仪启动成功,切换到就餐模式!");
+
+          /*  if (RepastFinger == 1) {
                 fingerprintSensor.setFingerprintCaptureListener(1, FingerListener2);
                 SystemLog.getInstance().AddLog("就餐指纹仪启动成功,切换到就餐模式!");
                 tvRightFingetState.setText("【启动成功-就餐模式】");
@@ -1875,8 +1887,9 @@ public class HDMainActivity extends BaseActivity implements Toolbar.OnMenuItemCl
                 SystemLog.getInstance().AddLog("就餐指纹仪启动成功,切换到考勤模式!");
                 tvRightFingetState.setText("【启动成功-考勤模式】");
             }
+             fingerprintSensor.startCapture(1);
+     */
 
-            fingerprintSensor.startCapture(1);
         } catch (FingerprintException f) {
             tvRightFingetState.setText("启动异常!");
             SystemLog.getInstance().AddLog("就餐指纹仪启动异常!FingerprintException=" + f.getMessage());
@@ -1936,7 +1949,7 @@ public class HDMainActivity extends BaseActivity implements Toolbar.OnMenuItemCl
         }
     }
 
-    /**
+       /**
      * 弹出今天是谁搞卫生的对话框！
      */
     private AlertDialog.Builder HealthDialog;
