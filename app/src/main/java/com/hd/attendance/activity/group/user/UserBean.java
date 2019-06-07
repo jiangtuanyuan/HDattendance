@@ -14,6 +14,7 @@ public class UserBean implements Serializable {
     private String jobs;//岗位
     private int group_id;
     private String group_name;
+
     private boolean checked = false;//是否选择了此用户
 
 

@@ -6,7 +6,7 @@ android {
         config {
             keyAlias 'heidou'
             keyPassword 'heidou'
-            storeFile file('D:/key/hdattendance.jks')
+            storeFile file('F:/key/hdattendance.jks')
             storePassword 'heidou'
         }
     }
@@ -18,6 +18,10 @@ android {
         versionName "v1.0"
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
     }
     buildTypes {
         release {
